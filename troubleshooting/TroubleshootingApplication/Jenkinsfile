@@ -13,9 +13,7 @@ pipeline {
     stage('Building image') {
       steps{
         sh "cd C:/Users/y509476/apimanagement/troubleshooting/TroubleshootingApplication"
-        script {
-          docker.build registry + ":$BUILD_NUMBER"
-        }
+        sh "docker build -f Dockerfile -t troubleshootingapplication-1.0 ."
       }
     }
   }
