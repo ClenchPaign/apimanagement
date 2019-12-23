@@ -12,7 +12,6 @@ pipeline {
     }
     stage('Building image') {
       steps{
-        sh "cd C:/Users/y509476/apimanagement/troubleshooting/TroubleshootingApplication"
         sh "docker build -f Dockerfile -t troubleshootingapplication-1.0 ."
       }
     }
