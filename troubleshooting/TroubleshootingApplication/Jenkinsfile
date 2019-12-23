@@ -11,9 +11,7 @@ pipeline {
       }
     }
     stage('Building image') {
-      steps{
         sh "docker build -f Dockerfile -t troubleshootingapplication-1.0 ."
-      }
     }
   }
 }
