@@ -5,12 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.example</groupId>
-    <artifactId>TroubleshootingApplication</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <artifactId>troubleshootingapplication</artifactId>
+    <version>1.0</version>
 
     <packaging>jar</packaging>
     <name>TroubleshootingApplication</name>
-    <description>sourcefiles.bean.Application in springboot framework</description>
+    <description>sourcefiles.Application in springboot framework</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
