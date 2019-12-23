@@ -1,6 +1,6 @@
 pipeline {
   environment {
-    registry = 'troubleshootingapplication-1.0'
+    registry = 'divyabhaarathy/troubleshootingapplication-1.0'
     registryCredential = 'dockerhub'
   }
   agent any
