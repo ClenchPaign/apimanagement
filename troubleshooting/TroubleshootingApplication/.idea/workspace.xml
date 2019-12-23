@@ -2,19 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ded2ff9e-3cbb-4b73-b1ca-5bb646035c10" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/TroubleshootingApplication.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Jenkinsfile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/sourcefiles/Application.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sourcefiles/Application.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/TroubleshootingApplication-1.0-SNAPSHOT.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/TroubleshootingApplication-1.0-SNAPSHOT.jar.original" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/META-INF/TroubleshootingApplication.kotlin_module" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/sourcefiles/bean/Application.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-archiver/pom.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -102,6 +91,14 @@
       <option name="presentableId" value="Default" />
       <updated>1576659799288</updated>
     </task>
+    <task id="LOCAL-00001" summary="Added Dockerfile.&#10;Change application name in lowercase">
+      <created>1577078064552</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1577078064552</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -116,6 +113,10 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Added Dockerfile.&#10;Change application name in lowercase" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added Dockerfile.&#10;Change application name in lowercase" />
   </component>
   <component name="WindowStateProjectService">
     <state x="361" y="70" key="#Project_Structure" timestamp="1576660110603">
@@ -134,6 +135,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="414" y="337" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog/0.0.1536.824@0.0.1536.824" timestamp="1576663591453" />
+    <state x="282" y="6" key="CommitChangelistDialog2" timestamp="1577078062306">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="282" y="6" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1577078062306" />
     <state x="549" y="153" key="FileChooserDialogImpl" timestamp="1576665625728">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -158,6 +163,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="277" y="54" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1576662520527" />
+    <state x="361" y="145" key="Vcs.Push.Dialog.v2" timestamp="1577078074244">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1577078074244" />
     <state x="465" y="236" key="com.intellij.ide.util.TipDialog" timestamp="1577074055977">
       <screen x="0" y="0" width="1536" height="824" />
     </state>

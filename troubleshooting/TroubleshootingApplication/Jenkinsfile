@@ -1,0 +1,21 @@
+pipeline {
+  environment {
+    registry = "divyabhaarathy/troubleshootingapplication-1.0"
+    registryCredential = ‘dockerhub’
+  }
+  agent any
+  stages {
+    stage('Cloning Git') {
+      steps {
+        git 'https://github.com/divyabharathik/apimanagement.git'
+      }
+    }
+    stage('Building image') {
+      steps{
+        script {
+          docker.build registry + ":$BUILD_NUMBER"
+        }
+      }
+    }
+  }
+}
