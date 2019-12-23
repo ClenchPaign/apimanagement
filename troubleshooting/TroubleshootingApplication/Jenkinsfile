@@ -1,6 +1,6 @@
 pipeline {
   environment {
-    registry = "troubleshootingapplication-1.0"
+    registry = 'troubleshootingapplication-1.0'
     registryCredential = 'dockerhub'
   }
   agent any
@@ -12,6 +12,7 @@ pipeline {
     }
     stage('Building image') {
       steps{
+        cd 'C:\Users\y509476\apimanagement\troubleshooting\TroubleshootingApplication'
         script {
           docker.build registry + ":$BUILD_NUMBER"
         }
