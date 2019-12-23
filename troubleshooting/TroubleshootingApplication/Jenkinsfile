@@ -12,7 +12,7 @@ pipeline {
     }
     stage('Building image') {
       steps{
-        sh "docker build -t troubleshootingapplication-1.0 \"C:\Users\y509476\apimanagement\troubleshooting\TroubleshootingApplication\""
+        sh "docker build -t troubleshootingapplication-1.0 \"C:/Users/y509476/apimanagement/troubleshooting/TroubleshootingApplication\""
       }
     }
   }
