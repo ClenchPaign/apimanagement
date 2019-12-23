@@ -1,7 +1,7 @@
 pipeline {
   environment {
-    registry = 'divyabhaarathy/troubleshootingapplication-1.0'
-    registryCredential = 'dockerhub'
+    registry = "divyabhaarathy/troubleshootingapplication-1.0"
+    registryCredential = ‘dockerhub’
   }
   agent any
   stages {
@@ -11,7 +11,9 @@ pipeline {
       }
     }
     stage('Building image') {
-        sh "docker build -f Dockerfile -t troubleshootingapplication-1.0 ."
+      steps{
+        sh "docker build -t troubleshootingapplication-1.0 \"C:\Users\y509476\apimanagement\troubleshooting\TroubleshootingApplication\""
+      }
     }
   }
 }
