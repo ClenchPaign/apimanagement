@@ -1,6 +1,0 @@
-sourcefiles\bean\DataModel.class
-sourcefiles\bean\dao\DataDao.class
-sourcefiles\bean\config\ElasticSearchConfigurationClass.class
-sourcefiles\Application.class
-sourcefiles\bean\controller\DataController.class
-sourcefiles\bean\RestConfig.class
