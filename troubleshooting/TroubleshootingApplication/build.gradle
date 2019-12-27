@@ -7,6 +7,12 @@ plugins {
     id 'maven-publish'
 }
 
+jar {
+    manifest {
+        attributes 'Main-Class': 'com.package.app.Class'
+    }
+}
+
 repositories {
     mavenLocal()
     maven {
