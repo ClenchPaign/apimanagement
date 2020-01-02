@@ -10,3 +10,5 @@ services:
     image: "docker.elastic.co/elasticsearch/elasticsearch:7.5.1"
     ports:
         - "9200:9200"
+    environment:
+            - cluster.initial_master_nodes=elasticsearch

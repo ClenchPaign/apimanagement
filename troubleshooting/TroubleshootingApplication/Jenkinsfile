@@ -3,7 +3,9 @@ pipeline {
     registry = "divyabhaarathy/troubleshootingapplication-1.0"
     registryCredential = "dockerhub"
   }
-  agent any
+  agent {
+    dockerfile true
+  }
   stages {
     stage('Cloning Git') {
       steps {
