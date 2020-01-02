@@ -9,7 +9,7 @@ plugins {
 
 jar {
     manifest {
-        attributes 'Main-Class': 'sourcefiles.Application'
+        attributes 'Main-Class': 'org.example.sourcefiles.Application'
     }
 }
 
