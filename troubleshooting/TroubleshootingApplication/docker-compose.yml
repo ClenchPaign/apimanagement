@@ -4,11 +4,3 @@ services:
     image: "divyabhaarathy/troubleshootingapplication-1.0"
     ports:
       - "4343:4343"
-    depends_on:
-      - "elasticsearch"
-  elasticsearch:
-    image: "docker.elastic.co/elasticsearch/elasticsearch:7.5.1"
-    ports:
-        - "9200:9200"
-    environment:
-            - cluster.initial_master_nodes=elasticsearch
