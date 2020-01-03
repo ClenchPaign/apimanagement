@@ -1,12 +1,15 @@
-version: '3.7'
+version: '3.3'
 services:
   troubleshootingapplication-1.0:
     image: "divyabhaarathy/troubleshootingtool-0.0.1"
     ports:
       - "4343:4343"
-elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:6.3.2
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.1
     container_name: elasticsearch
+    ports:
+      - "9200:9200"
+      - "9300:9300"
     networks:
       - my-network
 
