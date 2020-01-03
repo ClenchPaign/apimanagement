@@ -1,4 +1,4 @@
 FROM openjdk:8
-ADD troubleshooting/TroubleshootingApplication/build/libs/troubleshootingapplication-1.0.jar troubleshootingapplication-1.0.jar
+ADD troubleshooting/troubleshootingtool/build/libs/troubleshootingtool-0.0.1.jar troubleshootingtool-0.0.1.jar
 EXPOSE 4343
-ENTRYPOINT ["java","-jar","troubleshootingapplication-1.0.jar"]
+ENTRYPOINT ["java","-jar","troubleshootingtool-0.0.1.jar"]
