@@ -11,6 +11,7 @@ build/tmp
 !**/src/test/**
 
 
+
 ### STS ###
 .apt_generated
 .classpath
@@ -36,3 +37,4 @@ out/
 
 ### VS Code ###
 .vscode/
+/src/main/resources/static/
