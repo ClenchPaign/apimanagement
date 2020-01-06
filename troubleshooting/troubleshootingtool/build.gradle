@@ -22,6 +22,12 @@ jar {
     from(configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }) {}
 }
 
+processResources {
+    from ('application/dist/') {
+        into 'static'
+    }
+}
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter:1.5.9.RELEASE'
     implementation 'org.springframework.boot:spring-boot-starter-web:1.5.9.RELEASE'
