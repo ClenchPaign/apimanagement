@@ -8,10 +8,16 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 
+import { HttpClientModule } from '@angular/common/http';
+import {ListingService} from './listing.service';
+import { MessageService } from './message.service';
+import { ListOfCategoriesComponent } from './list-of-categories/list-of-categories.component';
+
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    ListOfCategoriesComponent
   ],
   imports: [
     BrowserModule,
@@ -19,9 +25,10 @@ import {MatInputModule} from '@angular/material/input';
     MatCardModule,
     MatToolbarModule,
     MatButtonModule,
-    MatInputModule
+    MatInputModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [ListingService, MessageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

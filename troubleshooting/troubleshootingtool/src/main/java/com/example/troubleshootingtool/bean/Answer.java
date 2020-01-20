@@ -6,21 +6,21 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-        "ansId",
-        "answerDesc",
+        "id",
+        "description",
         "postedDate",
         "ownerUserId",
         "ownerUserName",
         "lastEditedDate",
-        "vote",
+        "voteCount",
         "isApproved"
 })
 public class Answer {
 
-    @JsonProperty("ansId")
-    private String ansId;
-    @JsonProperty("answerDesc")
-    private String answerDesc;
+    @JsonProperty("id")
+    private String id;
+    @JsonProperty("description")
+    private String description;
     @JsonProperty("postedDate")
     private String postedDate;
     @JsonProperty("ownerUserId")
@@ -29,41 +29,59 @@ public class Answer {
     private String ownerUserName;
     @JsonProperty("lastEditedDate")
     private String lastEditedDate;
-    @JsonProperty("vote")
-    private Integer vote;
+    @JsonProperty("voteCount")
+    private Integer voteCount;
     @JsonProperty("isApproved")
     private Boolean isApproved;
-    public Answer() {}
-    public Answer(String ansId, String answerDesc, String postedDate, String ownerUserId, String ownerUserName, String lastEditedDate, Integer vote, Boolean isApproved) {
+
+    /**
+     * No args constructor for use in serialization
+     *
+     */
+    public Answer() {
+    }
+
+    /**
+     *
+     * @param ownerUserId
+     * @param description
+     * @param ownerUserName
+     * @param lastEditedDate
+     * @param id
+     * @param voteCount
+     * @param isApproved
+     * @param postedDate
+     */
+    public Answer(String id, String description, String postedDate, String ownerUserId, String ownerUserName, String lastEditedDate, Integer voteCount, Boolean isApproved) {
         super();
-        this.ansId = ansId;
-        this.answerDesc = answerDesc;
+        this.id = id;
+        this.description = description;
         this.postedDate = postedDate;
         this.ownerUserId = ownerUserId;
         this.ownerUserName = ownerUserName;
         this.lastEditedDate = lastEditedDate;
-        this.vote = vote;
+        this.voteCount = voteCount;
         this.isApproved = isApproved;
     }
 
-    @JsonProperty("ansId")
-    public String getAnsId() {
-        return ansId;
+    @JsonProperty("id")
+    public String getId() {
+        return id;
     }
 
-    @JsonProperty("ansId")
-    public void setAnsId(String ansId) {
-        this.ansId = ansId;
+    @JsonProperty("id")
+    public void setId(String id) {
+        this.id = id;
     }
 
-    @JsonProperty("answerDesc")
-    public String getAnswerDesc() {
-        return answerDesc;
+    @JsonProperty("description")
+    public String getDescription() {
+        return description;
     }
 
-    @JsonProperty("answerDesc")
-    public void setAnswerDesc(String answerDesc) {
-        this.answerDesc = answerDesc;
+    @JsonProperty("description")
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @JsonProperty("postedDate")
@@ -106,14 +124,14 @@ public class Answer {
         this.lastEditedDate = lastEditedDate;
     }
 
-    @JsonProperty("vote")
-    public Integer getVote() {
-        return vote;
+    @JsonProperty("voteCount")
+    public Integer getVoteCount() {
+        return voteCount;
     }
 
-    @JsonProperty("vote")
-    public void setVote(Integer vote) {
-        this.vote = vote;
+    @JsonProperty("voteCount")
+    public void setVoteCount(Integer voteCount) {
+        this.voteCount = voteCount;
     }
 
     @JsonProperty("isApproved")

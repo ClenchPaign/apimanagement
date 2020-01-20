@@ -1,7 +1,7 @@
 package com.example.troubleshootingtool.dao;
 
 import com.example.troubleshootingtool.bean.Answer;
-import com.example.troubleshootingtool.bean.QandA;
+import com.example.troubleshootingtool.bean.QAEntry;
 import com.example.troubleshootingtool.bean.Question;
 import com.example.troubleshootingtool.config.ElasticSearchConfigurationClass;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -47,12 +47,12 @@ public class DataDao {
         this.restHighLevelClient = restHighLevelClient;
     }
 
-    public String insertQandA(QandA data) {
-//        @PostMapping("/insertQandA")
+    public String insertQAEntry(QAEntry data) {
+//        @PostMapping("/insertQAEntry")
         String uniqueID = UUID.randomUUID().toString();
         Map dataMap = objectMapper.convertValue(data, Map.class);
         String INDEX = "qa";
-        data.getQuestion().setQuestionId(uniqueID);
+        data.getQuestion().setId(uniqueID);
         IndexRequest indexRequest = new IndexRequest(INDEX).source(dataMap);
         try {
             IndexResponse response = restHighLevelClient.index(indexRequest, RequestOptions.DEFAULT);
@@ -66,9 +66,9 @@ public class DataDao {
         }
     }
 
-    public List<QandA> getAllQandA() {
+    public List<QAEntry> getAllQAEntry() {
 //        @GetMapping("/all")
-        ArrayList<QandA> list = new ArrayList<>();
+        ArrayList<QAEntry> list = new ArrayList<>();
         SearchRequest searchRequest = new SearchRequest();
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         searchSourceBuilder.query(QueryBuilders.matchQuery("_index", "qa"));
@@ -79,8 +79,8 @@ public class DataDao {
             SearchHit[] searchHits = searchResponse.getHits().getHits();
 
             for (SearchHit searchHit : searchHits) {
-                QandA q_a = new ObjectMapper().readValue(searchHit.getSourceAsString(), QandA.class);
-                System.out.println("---   :" + q_a.getQuestion().getQuestionId());
+                QAEntry q_a = new ObjectMapper().readValue(searchHit.getSourceAsString(), QAEntry.class);
+                System.out.println("---   :" + q_a.getQuestion().getId());
                 list.add(q_a);
             }
             System.out.println("List size: --- " + list.size());
@@ -90,9 +90,9 @@ public class DataDao {
         }
     }
 
-    public QandA getQandAById(String id) throws IOException {
+    public QAEntry getQAEntryById(String id) throws IOException {
 //        @RequestMapping(value = "/get_qa/{id}", method = RequestMethod.GET)
-        QandA obj = null;
+        QAEntry obj = null;
         SearchRequest searchRequest = new SearchRequest();
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         searchSourceBuilder.query(QueryBuilders.matchQuery("_id", id));
@@ -102,12 +102,12 @@ public class DataDao {
         SearchHit[] searchHits = searchResponse.getHits().getHits();
 
         for (SearchHit searchHit : searchHits) {
-            obj = new ObjectMapper().readValue(searchHit.getSourceAsString(), QandA.class);
+            obj = new ObjectMapper().readValue(searchHit.getSourceAsString(), QAEntry.class);
         }
         return obj;
     }
 
-    public QandA updateQandAById(String id, QandA qandA) throws IOException {
+    public QAEntry updateQAEntryById(String id, QAEntry qandA) throws IOException {
 //        @RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
         Map dataMap = objectMapper.convertValue(qandA, Map.class);
         UpdateRequest updateRequest = new UpdateRequest("qa", id).doc(dataMap);
@@ -115,7 +115,7 @@ public class DataDao {
         return qandA;
     }
 
-    public String deleteQandAById(String id) throws IOException {
+    public String deleteQAEntryById(String id) throws IOException {
 //        @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
         DeleteRequest deleteRequest = new DeleteRequest("qa", id);
         DeleteResponse deleteResponse = restHighLevelClient.delete(deleteRequest, RequestOptions.DEFAULT);
@@ -139,9 +139,9 @@ public class DataDao {
         return list;
     }
 
-    public List<QandA> getQandAforCategory(String category) throws IOException {
+    public List<QAEntry> getQAEntryforCategory(String category) throws IOException {
 //        @RequestMapping(value = "/get_qa_cat/{cat}", method = RequestMethod.GET)
-        ArrayList<QandA> list = new ArrayList<>();
+        ArrayList<QAEntry> list = new ArrayList<>();
         SearchRequest searchRequest = new SearchRequest();
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         searchSourceBuilder.query(QueryBuilders.matchQuery("Question.category", category));
@@ -150,16 +150,16 @@ public class DataDao {
         SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
         SearchHit[] searchHits = searchResponse.getHits().getHits();
         for (SearchHit searchHit : searchHits) {
-            QandA q_a = new ObjectMapper().readValue(searchHit.getSourceAsString(), QandA.class);
+            QAEntry q_a = new ObjectMapper().readValue(searchHit.getSourceAsString(), QAEntry.class);
             System.out.println(q_a.getQuestion().getCategory());
             list.add(q_a);
         }
         return list;
     }
 
-    public List<QandA> matchQuestion(String keyword) throws IOException {
+    public List<QAEntry> matchQuestion(String keyword) throws IOException {
 //        @RequestMapping(value = "/search/{keyword}", method = RequestMethod.GET)
-        ArrayList<QandA> list = new ArrayList<>();
+        ArrayList<QAEntry> list = new ArrayList<>();
         SearchRequest searchRequest = new SearchRequest();
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         searchSourceBuilder.query(QueryBuilders.wildcardQuery("Question.question.keyword", "*" + keyword + "*"));
@@ -168,7 +168,7 @@ public class DataDao {
         SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
         SearchHit[] searchHits = searchResponse.getHits().getHits();
         for (SearchHit searchHit : searchHits) {
-            QandA q_a = new ObjectMapper().readValue(searchHit.getSourceAsString(), QandA.class);
+            QAEntry q_a = new ObjectMapper().readValue(searchHit.getSourceAsString(), QAEntry.class);
             list.add(q_a);
         }
         return list;

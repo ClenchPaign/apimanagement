@@ -6,59 +6,72 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-        "questionId",
+        "id",
         "category",
         "question",
-        "questionDesc",
+        "description",
         "attachment",
-        "postedDate",
-        "ownerUserId",
-        "ownerUserName",
-        "lastEditedDate"
+        "creationDate",
+        "ownerId",
+        "lastModifiedDate"
 })
 public class Question {
 
-    @JsonProperty("questionId")
-    private String questionId;
+    @JsonProperty("id")
+    private String id;
     @JsonProperty("category")
     private String category;
     @JsonProperty("question")
     private String question;
-    @JsonProperty("questionDesc")
-    private String questionDesc;
+    @JsonProperty("description")
+    private String description;
     @JsonProperty("attachment")
     private String attachment;
-    @JsonProperty("postedDate")
-    private String postedDate;
-    @JsonProperty("ownerUserId")
-    private String ownerUserId;
-    @JsonProperty("ownerUserName")
-    private String ownerUserName;
-    @JsonProperty("lastEditedDate")
-    private String lastEditedDate;
+    @JsonProperty("creationDate")
+    private String creationDate;
+    @JsonProperty("ownerId")
+    private String ownerId;
+    @JsonProperty("lastModifiedDate")
+    private String lastModifiedDate;
 
-    public Question() {}
-    public Question(String questionId, String category, String question, String questionDesc, String attachment, String postedDate, String ownerUserId, String ownerUserName, String lastEditedDate) {
+    /**
+     * No args constructor for use in serialization
+     *
+     */
+    public Question() {
+    }
+
+    /**
+     *
+     * @param question
+     * @param attachment
+     * @param lastModifiedDate
+     * @param description
+     * @param id
+     * @param category
+     * @param creationDate
+     * @param ownerId
+     */
+    public Question(String id, String category, String question, String description, String attachment, String creationDate, String ownerId, String lastModifiedDate) {
         super();
-        this.questionId = questionId;
+        this.id = id;
         this.category = category;
         this.question = question;
-        this.questionDesc = questionDesc;
+        this.description = description;
         this.attachment = attachment;
-        this.postedDate = postedDate;
-        this.ownerUserId = ownerUserId;
-        this.ownerUserName = ownerUserName;
-        this.lastEditedDate = lastEditedDate;
+        this.creationDate = creationDate;
+        this.ownerId = ownerId;
+        this.lastModifiedDate = lastModifiedDate;
     }
 
-    @JsonProperty("questionId")
-    public String getQuestionId() {
-        return questionId;
+    @JsonProperty("id")
+    public String getId() {
+        return id;
     }
 
-    @JsonProperty("questionId")
-    public void setQuestionId(String questionId) {
-        this.questionId = questionId;
+    @JsonProperty("id")
+    public void setId(String id) {
+        this.id = id;
     }
 
     @JsonProperty("category")
@@ -81,14 +94,14 @@ public class Question {
         this.question = question;
     }
 
-    @JsonProperty("questionDesc")
-    public String getQuestionDesc() {
-        return questionDesc;
+    @JsonProperty("description")
+    public String getDescription() {
+        return description;
     }
 
-    @JsonProperty("questionDesc")
-    public void setQuestionDesc(String questionDesc) {
-        this.questionDesc = questionDesc;
+    @JsonProperty("description")
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @JsonProperty("attachment")
@@ -101,44 +114,34 @@ public class Question {
         this.attachment = attachment;
     }
 
-    @JsonProperty("postedDate")
-    public String getPostedDate() {
-        return postedDate;
+    @JsonProperty("creationDate")
+    public String getCreationDate() {
+        return creationDate;
     }
 
-    @JsonProperty("postedDate")
-    public void setPostedDate(String postedDate) {
-        this.postedDate = postedDate;
+    @JsonProperty("creationDate")
+    public void setCreationDate(String creationDate) {
+        this.creationDate = creationDate;
     }
 
-    @JsonProperty("ownerUserId")
-    public String getOwnerUserId() {
-        return ownerUserId;
+    @JsonProperty("ownerId")
+    public String getOwnerId() {
+        return ownerId;
     }
 
-    @JsonProperty("ownerUserId")
-    public void setOwnerUserId(String ownerUserId) {
-        this.ownerUserId = ownerUserId;
+    @JsonProperty("ownerId")
+    public void setOwnerId(String ownerId) {
+        this.ownerId = ownerId;
     }
 
-    @JsonProperty("ownerUserName")
-    public String getOwnerUserName() {
-        return ownerUserName;
+    @JsonProperty("lastModifiedDate")
+    public String getLastModifiedDate() {
+        return lastModifiedDate;
     }
 
-    @JsonProperty("ownerUserName")
-    public void setOwnerUserName(String ownerUserName) {
-        this.ownerUserName = ownerUserName;
-    }
-
-    @JsonProperty("lastEditedDate")
-    public String getLastEditedDate() {
-        return lastEditedDate;
-    }
-
-    @JsonProperty("lastEditedDate")
-    public void setLastEditedDate(String lastEditedDate) {
-        this.lastEditedDate = lastEditedDate;
+    @JsonProperty("lastModifiedDate")
+    public void setLastModifiedDate(String lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
     }
 
 }

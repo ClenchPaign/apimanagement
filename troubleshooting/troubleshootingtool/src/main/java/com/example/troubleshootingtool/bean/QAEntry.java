@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "answerCount",
         "score"
 })
-public class QandA {
+public class QAEntry {
 
     @JsonProperty("Question")
     private Question question;
@@ -29,8 +29,23 @@ public class QandA {
     @JsonProperty("score")
     private Integer score;
 
-    public QandA() {}
-    public QandA(Question question, List<Answer> answers, List<String> tags, Boolean isAnswered, Integer answerCount, Integer score) {
+    /**
+     * No args constructor for use in serialization
+     *
+     */
+    public QAEntry() {
+    }
+
+    /**
+     *
+     * @param score
+     * @param answerCount
+     * @param question
+     * @param isAnswered
+     * @param answers
+     * @param tags
+     */
+    public QAEntry(Question question, List<Answer> answers, List<String> tags, Boolean isAnswered, Integer answerCount, Integer score) {
         super();
         this.question = question;
         this.answers = answers;
