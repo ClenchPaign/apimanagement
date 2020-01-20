@@ -1,7 +1,7 @@
 package com.example.troubleshootingtool.controller;
 
 import com.example.troubleshootingtool.bean.Answer;
-import com.example.troubleshootingtool.bean.QandA;
+import com.example.troubleshootingtool.bean.QAEntry;
 import com.example.troubleshootingtool.bean.Question;
 import com.example.troubleshootingtool.dao.DataDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,28 +27,28 @@ public class DataController {
     }
 
     @PostMapping("/insertQandA")
-    public String insertDataModel(@RequestBody QandA qandA) throws Exception {
-        return dataDao.insertQandA(qandA);
+    public String insertDataModel(@RequestBody QAEntry qandA) throws Exception {
+        return dataDao.insertQAEntry(qandA);
     }
 
     @GetMapping("/all")
-    public List<QandA> readAll() throws IOException {
-        return dataDao.getAllQandA();
+    public List<QAEntry> readAll() throws IOException {
+        return dataDao.getAllQAEntry();
     }
 
     @RequestMapping(value = "/get_qa/{id}", method = RequestMethod.GET)
-    public QandA getQandA(@PathVariable("id") String id) throws IOException {
-        return dataDao.getQandAById(id);
+    public QAEntry getQandA(@PathVariable("id") String id) throws IOException {
+        return dataDao.getQAEntryById(id);
     }
 
     @RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
-    public QandA updateQandA(@PathVariable("id") String id,@RequestBody QandA qandA) throws IOException {
-        return dataDao.updateQandAById(id,qandA);
+    public QAEntry updateQandA(@PathVariable("id") String id,@RequestBody QAEntry qandA) throws IOException {
+        return dataDao.updateQAEntryById(id,qandA);
     }
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
     public String deleteQandA(@PathVariable("id") String id) throws IOException {
-        return dataDao.deleteQandAById(id);
+        return dataDao.deleteQAEntryById(id);
     }
 
     @GetMapping("/categories")
@@ -57,12 +57,12 @@ public class DataController {
     }
 
     @RequestMapping(value = "/get_qa_cat/{cat}", method = RequestMethod.GET)
-    public List<QandA> getQandAforCategory(@PathVariable("cat") String category) throws IOException {
-        return dataDao.getQandAforCategory(category);
+    public List<QAEntry> getQandAforCategory(@PathVariable("cat") String category) throws IOException {
+        return dataDao.getQAEntryforCategory(category);
     }
 
     @RequestMapping(value = "/search/{keyword}", method = RequestMethod.GET)
-    public List<QandA> matchQuestion(@PathVariable("keyword") String keyword) throws IOException {
+    public List<QAEntry> matchQuestion(@PathVariable("keyword") String keyword) throws IOException {
         return dataDao.matchQuestion(keyword);
     }
 
