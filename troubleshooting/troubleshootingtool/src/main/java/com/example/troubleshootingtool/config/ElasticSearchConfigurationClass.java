@@ -1,6 +1,7 @@
 package com.example.troubleshootingtool.config;
 
 import org.apache.http.HttpHost;
+import org.apache.http.client.config.RequestConfig;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
@@ -57,9 +58,21 @@ public class ElasticSearchConfigurationClass extends AbstractFactoryBean<RestHig
     private RestHighLevelClient buildClient() {
         try {
             restHighLevelClient = new RestHighLevelClient(
-                    RestClient.builder(
-                            new HttpHost("192.168.99.1", 9200, "http"),
-                            new HttpHost("192.168.99.1", 9201, "http")));
+                   RestClient.builder(
+                    new HttpHost("192.168.99.1", 9200,"http"))
+                    .setRequestConfigCallback(
+                            new RestClientBuilder.RequestConfigCallback() {
+                                @Override
+                                public RequestConfig.Builder customizeRequestConfig(
+                                        RequestConfig.Builder requestConfigBuilder) {
+                                    return requestConfigBuilder
+                                            .setConnectTimeout(5000)
+                                            .setSocketTimeout(60000);
+                                }
+                            }));
+//                    RestClient.builder(
+//                            new HttpHost("192.168.99.1", 9200, "http"),
+//                            new HttpHost("192.168.99.1", 9201, "http")));
         } catch (Exception e) {
             LOG.error(e.getMessage());
         }
