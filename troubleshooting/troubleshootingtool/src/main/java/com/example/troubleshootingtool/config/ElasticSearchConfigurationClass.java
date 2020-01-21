@@ -28,7 +28,6 @@ public class ElasticSearchConfigurationClass extends AbstractFactoryBean<RestHig
     private RestHighLevelClient restHighLevelClient;
 
 
-
     @Override
     public void destroy() {
         try {
@@ -58,22 +57,23 @@ public class ElasticSearchConfigurationClass extends AbstractFactoryBean<RestHig
     private RestHighLevelClient buildClient() {
         try {
             restHighLevelClient = new RestHighLevelClient(
-//                    RestClient.builder(
-// //                    new HttpHost("localhost", 9200,"http"))
-//                     new HttpHost("192.168.99.1", 9200,"http"))
-//                     .setRequestConfigCallback(
-//                             new RestClientBuilder.RequestConfigCallback() {
-//                                 @Override
-//                                 public RequestConfig.Builder customizeRequestConfig(
-//                                         RequestConfig.Builder requestConfigBuilder) {
-//                                     return requestConfigBuilder
-//                                             .setConnectTimeout(5000)
-//                                             .setSocketTimeout(60000);
-//                                 }
-//                             }));
-                   RestClient.builder(
-                           new HttpHost("192.168.99.1", 9200, "http"),
-                           new HttpHost("192.168.99.1", 9201, "http")));
+                    RestClient.builder(
+                            new HttpHost("192.168.99.1", 9200, "http"),
+                            new HttpHost("192.168.99.1", 9201, "http"))
+                            .setRequestConfigCallback(
+                                    new RestClientBuilder.RequestConfigCallback() {
+                                        @Override
+                                        public RequestConfig.Builder customizeRequestConfig(
+                                                RequestConfig.Builder requestConfigBuilder) {
+                                            return requestConfigBuilder
+                                                    .setConnectTimeout(5000)
+                                                    .setSocketTimeout(60000);
+                                        }
+                                    }));
+
+//                   RestClient.builder(
+//                           new HttpHost("192.168.99.1", 9200, "http"),
+//                           new HttpHost("192.168.99.1", 9201, "http")));
         } catch (Exception e) {
             LOG.error(e.getMessage());
         }
