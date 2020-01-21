@@ -12,12 +12,14 @@ import { HttpClientModule } from '@angular/common/http';
 import {ListingService} from './listing.service';
 import { MessageService } from './message.service';
 import { ListOfCategoriesComponent } from './list-of-categories/list-of-categories.component';
+import { CategoryOfQuestionsComponent } from './category-of-questions/category-of-questions.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    ListOfCategoriesComponent
+    ListOfCategoriesComponent,
+    CategoryOfQuestionsComponent
   ],
   imports: [
     BrowserModule,

@@ -3,8 +3,10 @@ package com.example.troubleshootingtool.dao;
 import com.example.troubleshootingtool.bean.Answer;
 import com.example.troubleshootingtool.bean.QAEntry;
 import com.example.troubleshootingtool.bean.Question;
+import com.example.troubleshootingtool.bean.SearchQuery;
 import com.example.troubleshootingtool.config.ElasticSearchConfigurationClass;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.lucene.search.BooleanQuery;
 import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.delete.DeleteResponse;
@@ -16,6 +18,7 @@ import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.aggregations.AggregationBuilder;
@@ -31,13 +34,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import java.io.IOException;
 import java.util.*;
 
+import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
+import static org.elasticsearch.index.query.QueryBuilders.termQuery;
+
 @Repository
 public class DataDao {
 
     private ElasticSearchConfigurationClass elasticSearchConfigurationClass;
 
     private RestHighLevelClient restHighLevelClient;
-
+    String INDEX = "qa";
 
     private ObjectMapper objectMapper;
 
@@ -50,19 +56,18 @@ public class DataDao {
     public String insertQAEntry(QAEntry data) {
 //        @PostMapping("/insertQAEntry")
         String uniqueID = UUID.randomUUID().toString();
-        Map dataMap = objectMapper.convertValue(data, Map.class);
-        String INDEX = "qa";
         data.getQuestion().setId(uniqueID);
+        Map dataMap = objectMapper.convertValue(data, Map.class);
         IndexRequest indexRequest = new IndexRequest(INDEX).source(dataMap);
         try {
             IndexResponse response = restHighLevelClient.index(indexRequest, RequestOptions.DEFAULT);
             return uniqueID + " Inserted successfully";
         } catch (ElasticsearchException e) {
             e.getDetailedMessage();
-            return "elastic search exception "+e.getDetailedMessage();
+            return "elastic search exception " + e.getDetailedMessage();
         } catch (IOException ex) {
             ex.getLocalizedMessage();
-            return "IO exception "+ex.getLocalizedMessage()+"  "+ Arrays.toString(ex.getStackTrace());
+            return "IO exception " + ex.getLocalizedMessage() + "  " + Arrays.toString(ex.getStackTrace());
         }
     }
 
@@ -71,7 +76,7 @@ public class DataDao {
         ArrayList<QAEntry> list = new ArrayList<>();
         SearchRequest searchRequest = new SearchRequest();
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(QueryBuilders.matchQuery("_index", "qa"));
+        searchSourceBuilder.query(QueryBuilders.matchQuery("_index", INDEX));
         searchRequest.source(searchSourceBuilder);
         searchSourceBuilder.size(10000);
         try {
@@ -85,7 +90,7 @@ public class DataDao {
             }
             System.out.println("List size: --- " + list.size());
             return list;
-        }catch (Exception e){
+        } catch (Exception e) {
             return list;
         }
     }
@@ -95,7 +100,7 @@ public class DataDao {
         QAEntry obj = null;
         SearchRequest searchRequest = new SearchRequest();
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(QueryBuilders.matchQuery("_id", id));
+        searchSourceBuilder.query(QueryBuilders.matchQuery("Question.id.keyword", id));
         searchRequest.source(searchSourceBuilder);
         searchSourceBuilder.size(100);
         SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
@@ -107,19 +112,45 @@ public class DataDao {
         return obj;
     }
 
+
+    public String getDocumentIDforQAEntry(String id) throws IOException {
+//        @RequestMapping(value = "/get_qa/{id}", method = RequestMethod.GET)
+        String obj = null;
+        SearchRequest searchRequest = new SearchRequest();
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(QueryBuilders.matchQuery("Question.id.keyword", id));
+        searchRequest.source(searchSourceBuilder);
+        searchSourceBuilder.size(100);
+        SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        SearchHit[] searchHits = searchResponse.getHits().getHits();
+        for (SearchHit searchHit : searchHits) {
+            obj = searchHit.getId();
+        }
+        return obj;
+    }
+
     public QAEntry updateQAEntryById(String id, QAEntry qandA) throws IOException {
 //        @RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
         Map dataMap = objectMapper.convertValue(qandA, Map.class);
-        UpdateRequest updateRequest = new UpdateRequest("qa", id).doc(dataMap);
-        UpdateResponse updateResponse = restHighLevelClient.update(updateRequest, RequestOptions.DEFAULT);
-        return qandA;
+        UpdateRequest updateRequest = new UpdateRequest(INDEX, getDocumentIDforQAEntry(id)).doc(dataMap);
+        try {
+            UpdateResponse updateResponse = restHighLevelClient.update(updateRequest, RequestOptions.DEFAULT);
+            return qandA;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public String deleteQAEntryById(String id) throws IOException {
 //        @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
-        DeleteRequest deleteRequest = new DeleteRequest("qa", id);
-        DeleteResponse deleteResponse = restHighLevelClient.delete(deleteRequest, RequestOptions.DEFAULT);
-        return "Deleted successfully";
+        DeleteRequest deleteRequest = new DeleteRequest(INDEX, getDocumentIDforQAEntry(id));
+        try {
+            DeleteResponse deleteResponse = restHighLevelClient.delete(deleteRequest, RequestOptions.DEFAULT);
+            return "Deleted successfully";
+        } catch (Exception e) {
+            return "Deletion unsuccessful  " + e.toString();
+        }
     }
 
     public List<String> getAllCategories() throws IOException {
@@ -174,7 +205,41 @@ public class DataDao {
         return list;
     }
 
+    public List<QAEntry> searchQuery(SearchQuery searchQuery) throws IOException {
 
+        ArrayList<QAEntry> list = new ArrayList<>();
+        SearchRequest searchRequest = new SearchRequest();
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        BoolQueryBuilder boolQueryBuilder = boolQuery();
+        if (!searchQuery.getCategory().equals("")) {
+            boolQueryBuilder.must(termQuery("Question.category.keyword", searchQuery.getCategory()));
+        }
+        if (searchQuery.getKeyword().size() > 0) {
+            for (int i = 0; i < searchQuery.getKeyword().size(); i++) {
+                boolQueryBuilder.must(QueryBuilders.wildcardQuery("Question.question.keyword", "*" + searchQuery.getKeyword().get(i) + "*"));
+            }
+        }
+//        boolQueryBuilder.filter(termQuery("tags.keyword", searchQuery.getTags().toString()));
+        if (searchQuery.getTags().size() > 0) {
+            for (int i = 0; i < searchQuery.getKeyword().size(); i++) {
+                boolQueryBuilder.must(QueryBuilders.wildcardQuery("tags.keyword", "*"+searchQuery.getTags().get(i)+"*"));
+            }
+        }
+        searchSourceBuilder.query(boolQueryBuilder);
+        searchRequest.source(searchSourceBuilder);
+        searchSourceBuilder.size(10000);
+        SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        SearchHit[] searchHits = searchResponse.getHits().getHits();
+        for (SearchHit searchHit : searchHits) {
+            try {
+                QAEntry q_a = new ObjectMapper().readValue(searchHit.getSourceAsString(), QAEntry.class);
+                list.add(q_a);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        return list;
+    }
 }
 
 

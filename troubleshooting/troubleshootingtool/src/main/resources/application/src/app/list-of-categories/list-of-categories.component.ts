@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ListingService } from '../listing.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-list-of-categories',
@@ -13,7 +14,7 @@ export class ListOfCategoriesComponent implements OnInit {
   sub: any;
   route: any;
 
-  constructor(private listingService: ListingService) { }
+  constructor(private listingService: ListingService, private router: Router) { }
   ngOnInit() {
     this.listingService.getAllCategories().subscribe(
       data => {
@@ -24,6 +25,9 @@ export class ListOfCategoriesComponent implements OnInit {
   }
   getResponse() {
     return this.response;
+  }
+  onClick() {
+    this.router.navigateByUrl('/cat');
   }
 
 }

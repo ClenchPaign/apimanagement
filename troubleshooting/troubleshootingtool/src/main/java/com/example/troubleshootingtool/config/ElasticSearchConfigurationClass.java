@@ -59,6 +59,7 @@ public class ElasticSearchConfigurationClass extends AbstractFactoryBean<RestHig
         try {
             restHighLevelClient = new RestHighLevelClient(
                    RestClient.builder(
+//                    new HttpHost("localhost", 9200,"http"))
                     new HttpHost("192.168.99.1", 9200,"http"))
                     .setRequestConfigCallback(
                             new RestClientBuilder.RequestConfigCallback() {
