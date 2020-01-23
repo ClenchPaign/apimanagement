@@ -1,0 +1,77 @@
+.list-of-questions {
+  display: flex;
+  justify-content: center;
+}
+.question-card {
+  margin-bottom: 10px;
+  margin-top: 10px;
+  width: max-content;
+  height: max-content;
+}
+.question-item {
+  display: flex;
+  justify-content: left;
+  width: 800px;
+}
+.answer-layout {
+  width: max-content;
+  height: max-content;
+  text-align: center;
+  align-self: center;
+  padding: 5px;
+  float: left;
+}
+.answer-text {
+  color: lightslategrey;
+  font-size: small;
+  margin-top: 5px;
+}
+.no-of-answers {
+  color: darkgreen;
+  font-weight: bolder;
+  font-size: x-large;
+}
+
+.question-layout {
+  width: max-content;
+  float: left;
+  padding: 10px;
+  margin-left: 16px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.question {
+  color: darkslategray;
+  font-weight: bold;
+  font-size: medium;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.description {
+  margin-top: 5px;
+  margin-bottom: 10px;
+  color: lightslategrey;
+  font-weight: lighter;
+  font-size: smaller;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.chips {
+  font-size: smaller;
+  color: blue;
+  position: relative;
+  background-color: lightblue;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-right: 10px;
+  border-radius: 15px;
+}

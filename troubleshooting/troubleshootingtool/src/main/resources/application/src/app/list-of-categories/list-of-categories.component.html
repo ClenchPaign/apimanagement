@@ -1,6 +1,6 @@
 <h2 class="head">List of Categories</h2>
 <div class="categories">
-  <button mat-raised-button class="category_btn" *ngFor="let list of getResponse()" click=onClick()>
-    {{ list }}
-  </button>
+  <div class="button" *ngFor="let list of getResponse()" (click) = "onClick(list)" [routerLink]="['/categories', list]">
+     <p  class="button-text" > {{ list }}</p>
+  </div>
 </div>

@@ -1,1 +1,17 @@
-<p>category-of-questions works!</p>
+<div class="list-of-questions">
+  <ul>
+    <mat-card class="question-card" *ngFor="let list of getQuestions()">
+      <div class="question-item">
+        <div class="answer-layout">
+          <div class="no-of-answers">{{ list.answerCount }}</div>
+          <div class="answer-text">Answers</div>
+        </div>
+        <div class="question-layout">
+          <div class="question">{{ list.Question.question }}</div>
+          <div class="description">{{ list.Question.description }}</div>
+          <span class="chips" *ngFor="let tag of list.tags">{{ tag }}</span>
+        </div>
+      </div>
+    </mat-card>
+  </ul>
+</div>

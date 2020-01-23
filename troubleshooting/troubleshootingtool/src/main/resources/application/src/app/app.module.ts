@@ -3,10 +3,12 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+
 import {MatCardModule} from '@angular/material/card';
 import {MatToolbarModule} from '@angular/material/toolbar';
-import { MatButtonModule } from '@angular/material/button';
+import {MatButtonModule } from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
+import {MatChipsModule} from '@angular/material/chips';
 
 import { HttpClientModule } from '@angular/common/http';
 import {ListingService} from './listing.service';
@@ -28,6 +30,7 @@ import { CategoryOfQuestionsComponent } from './category-of-questions/category-o
     MatToolbarModule,
     MatButtonModule,
     MatInputModule,
+    MatChipsModule,
     HttpClientModule
   ],
   providers: [ListingService, MessageService],

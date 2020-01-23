@@ -7,7 +7,7 @@ import { CategoryOfQuestionsComponent } from './category-of-questions/category-o
 const routes: Routes = [
   { path: '', component: ListOfCategoriesComponent},
   { path: 'list', component: ListOfCategoriesComponent },
-  { path: 'cat', component: CategoryOfQuestionsComponent },
+  { path: 'categories/:category', component: CategoryOfQuestionsComponent },
 ];
 
 @NgModule({

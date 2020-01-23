@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ListingService } from '../listing.service';
 import { Router } from '@angular/router';
-
+ 
 @Component({
   selector: 'app-list-of-categories',
   templateUrl: './list-of-categories.component.html',
@@ -13,6 +13,7 @@ export class ListOfCategoriesComponent implements OnInit {
   errorMessage: any;
   sub: any;
   route: any;
+  public data:any=[]
 
   constructor(private listingService: ListingService, private router: Router) { }
   ngOnInit() {
@@ -26,8 +27,9 @@ export class ListOfCategoriesComponent implements OnInit {
   getResponse() {
     return this.response;
   }
-  onClick() {
-    this.router.navigateByUrl('/cat');
+  onClick(cat: string) {
+    console.log('clicked ' + cat);
+    this.listingService.category = cat;
+    // this.router.navigateByUrl('/cat');
   }
-
 }
