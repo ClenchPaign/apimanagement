@@ -216,18 +216,18 @@ public class DataDao {
         }
        if (searchQuery.getKeyword().size() > 0) {
             for (int i = 0; i < searchQuery.getKeyword().size(); i++) {
-                boolQueryBuilder.must(termQuery("Question.question.keyword", "* " + searchQuery.getKeyword().get(i) + " *"));
+                boolQueryBuilder.must(QueryBuilders.wildcardQuery("Question.question.keyword", "* " + searchQuery.getKeyword().get(i) + " *"));
             }
         }
         if (searchQuery.getKeyword().size() > 0) {
             for (int i = 0; i < searchQuery.getKeyword().size(); i++) {
-                boolQueryBuilder.must(termQuery("Answers.description.keyword", "* " + searchQuery.getKeyword().get(i) + " *"));
+                boolQueryBuilder.must(QueryBuilders.wildcardQuery("Answers.description.keyword", "* " + searchQuery.getKeyword().get(i) + " *"));
             }
         }
 //        boolQueryBuilder.filter(termQuery("tags.keyword", searchQuery.getTags().toString()));
         if (searchQuery.getTags().size() > 0) {
             for (int i = 0; i < searchQuery.getKeyword().size(); i++) {
-                boolQueryBuilder.must(QueryBuilders.wildcardQuery("tags.keyword", "*"+searchQuery.getTags().get(i)+"*"));
+                boolQueryBuilder.must(termQuery("tags.keyword", "*"+searchQuery.getTags().get(i)+"*"));
             }
         }
         searchSourceBuilder.query(boolQueryBuilder);
