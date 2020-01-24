@@ -221,12 +221,12 @@ public class DataDao {
         }
         if (searchQuery.getKeyword().size() > 0) {
             for (int i = 0; i < searchQuery.getKeyword().size(); i++) {
-                boolQueryBuilder.must(QueryBuilders.wildcardQuery("Answers.description.keyword", "* " + searchQuery.getKeyword().get(i) + " *"));
+                boolQueryBuilder.must(QueryBuilders.wildcardQuery("Question.description.keyword", "* " + searchQuery.getKeyword().get(i) + " *"));
             }
         }
 //        boolQueryBuilder.filter(termQuery("tags.keyword", searchQuery.getTags().toString()));
         if (searchQuery.getTags().size() > 0) {
-            for (int i = 0; i < searchQuery.getKeyword().size(); i++) {
+            for (int i = 0; i < searchQuery.getTags().size(); i++) {
                 boolQueryBuilder.must(termQuery("tags.keyword", "*"+searchQuery.getTags().get(i)+"*"));
             }
         }
