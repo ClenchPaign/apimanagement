@@ -73,7 +73,7 @@ public class DataController {
 //        return dataDao.matchQuestion(keyword);
 //    }
 
-    @RequestMapping(value = "/qnas/", method = RequestMethod.GET)
+    @RequestMapping(value = "/qnas/", method = RequestMethod.POST)
     public  List<QAEntry> searchQuestion(@RequestBody SearchQuery searchQuery) throws IOException {
         return dataDao.searchQuery(searchQuery);
     }
