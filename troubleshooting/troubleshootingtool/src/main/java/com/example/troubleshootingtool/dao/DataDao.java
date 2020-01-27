@@ -227,7 +227,7 @@ public class DataDao {
         if (searchQuery.getKeyword().size() > 0) {
             for (int i = 0; i < searchQuery.getKeyword().size(); i++) {
 //                boolQueryBuilder.filter(QueryBuilders.wildcardQuery("*"+"Question.question.keyword"+"*",  searchQuery.getKeyword().get(i)));
-                boolQueryBuilder.filter(queryStringQuery("*"+searchQuery.getKeyword().get(i)+"*"));
+                boolQueryBuilder.filter(QueryBuilders.queryStringQuery("*"+searchQuery.getKeyword().get(i)+"*"));
             }
         }
 //        if (searchQuery.getKeyword().size() > 0) {
