@@ -1,0 +1,31 @@
+<div class="parent">
+  <mat-card class="layout">
+    <div class="question">{{ response.Question.question }}</div>
+    <div class="description">{{ response.Question.description }}</div>
+    <div>
+      <span *ngFor="let tag of response.tags" class="chips"> {{ tag }}</span>
+     
+    </div>
+    <!-- <div>{{Question.creationDate}}</div> -->
+    <div class="qn-details">
+      <div class="answer-count">{{ response.answerCount }} Answers</div>
+      <div class="posted-details">
+        <div class="posted">Posted on</div>
+        <div class="posted-date">{{response.Question.creationDate}}</div> 
+      </div>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="answers" *ngFor="let item of response.Answers">
+      <div class="vote-layout">
+        <mat-icon>arrow_drop_up</mat-icon>
+        <div class="vote">{{ item.voteCount }}</div>
+        <div>Votes</div>
+        <mat-icon>arrow_drop_down</mat-icon>
+      </div>
+      <div class="answer-layout">
+        <div class="answer" *ngIf="item.isApproved">Approved</div>
+        <div class="description">{{ item.description }}</div>
+      </div>
+    </div>
+  </mat-card>
+</div>

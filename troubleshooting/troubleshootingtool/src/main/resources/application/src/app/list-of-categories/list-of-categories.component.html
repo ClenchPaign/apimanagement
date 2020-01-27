@@ -1,6 +1,11 @@
 <h2 class="head">List of Categories</h2>
 <div class="categories">
-  <div class="button" *ngFor="let list of getResponse()" (click) = "onClick(list)" [routerLink]="['/categories', list]">
+  <!-- <mat-card class="button" *ngFor="let list of getResponse() | slice:row*2:row*2+2" (click) = "onClick(list)" [routerLink]="['/categories', list]">
      <p  class="button-text" > {{ list }}</p>
-  </div>
+  </mat-card> -->
+
+  <mat-card class="button" *ngFor="let list of getResponse()" (click) = "onClick(list)" [routerLink]="['/categories', list]" >
+      <p  class="button-text">{{ list }} </p>
+  </mat-card>
+
 </div>

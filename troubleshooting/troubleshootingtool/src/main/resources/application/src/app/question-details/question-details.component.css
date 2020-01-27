@@ -1,0 +1,103 @@
+.parent {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.layout {
+  width: 800px;
+}
+
+.answers {
+  margin-top: 10px;
+  padding: 10px;
+  display: flex;
+  justify-content: left;
+}
+
+.answer-layout {
+  width: max-content;
+  margin-left: 20px;
+  white-space: nowrap;
+  float: left;
+}
+.answer {
+  margin-top: 10px;
+  color: darkgreen;
+  font-size: smaller;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 8px;
+  padding-right: 8px;
+  border-radius: 4px;
+  width: min-content;
+  background-color: rgb(196, 253, 196);
+}
+
+.qn-details{
+  display:flex;
+  justify-content:space-between;
+}
+.posted-details{
+  text-align: center;
+  width:max-content;
+}
+
+.answer-count {
+  float: left;
+  color: darkgreen;
+  font-weight: bolder;
+  font-size: large;
+  margin-top: 16px;
+  margin-bottom: 16px;
+  width: max-content;
+}
+
+.description {
+  margin-top: 5px;
+  margin-bottom: 10px;
+  color: lightslategrey;
+  font-weight: lighter;
+  font-size: smaller;
+}
+
+.chips {
+  font-size: smaller;
+  color: blue;
+  position: relative;
+  background-color: lightblue;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-right: 10px;
+  border-radius: 15px;
+}
+.vote {
+  font-size: large;
+  color: blue;
+}
+.vote-layout {
+  width: min-content;
+  justify-content: center;
+  padding: 5px;
+  text-align: center;
+}
+
+.question {
+  font-size: x-large;
+}
+.mat-icon {
+  font-family: "Material Icons";
+}
+.posted-date{
+  font-size: small;
+  margin-top: 5px;
+}
+.posted{
+  font-size:smaller;
+  font-weight: lighter;
+  color: lightslategrey;
+}

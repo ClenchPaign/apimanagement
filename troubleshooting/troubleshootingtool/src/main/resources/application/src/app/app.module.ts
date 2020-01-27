@@ -15,13 +15,18 @@ import {ListingService} from './listing.service';
 import { MessageService } from './message.service';
 import { ListOfCategoriesComponent } from './list-of-categories/list-of-categories.component';
 import { CategoryOfQuestionsComponent } from './category-of-questions/category-of-questions.component';
-
+import { SearchComponent } from './search/search.component';
+import { QuestionDetailsComponent } from './question-details/question-details.component';
+import {MatDividerModule} from '@angular/material/divider';
+import {MatIconModule} from '@angular/material/icon';
 
 @NgModule({
   declarations: [
     AppComponent,
     ListOfCategoriesComponent,
-    CategoryOfQuestionsComponent
+    CategoryOfQuestionsComponent,
+    SearchComponent,
+    QuestionDetailsComponent
   ],
   imports: [
     BrowserModule,
@@ -31,6 +36,8 @@ import { CategoryOfQuestionsComponent } from './category-of-questions/category-o
     MatButtonModule,
     MatInputModule,
     MatChipsModule,
+    MatDividerModule,
+    MatIconModule,
     HttpClientModule
   ],
   providers: [ListingService, MessageService],

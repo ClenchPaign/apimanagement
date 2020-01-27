@@ -1,9 +1,16 @@
-<mat-toolbar color="primary">
-  <div class="searchbar">
-    <input class="search" placeholder="Search here" />
-    <button class="searchbutton" mat-raised-button>Search</button>
+<div class="parent">
+  <app-search class="app-search"></app-search>
+  <div class="toolbar"></div>
+  <div>
+    <ul class="breadcrumb">
+      <li><span [routerLink]="['']">Home</span></li>
+      <li><span [routerLink]="['/categories']">Categories</span></li>
+      <li>
+        <span [routerLink]="['/categories', category]">{{getCategory()}}</span>
+      </li>
+    </ul>
   </div>
-</mat-toolbar>
-<!-- <app-category-of-questions></app-category-of-questions> -->
-<router-outlet></router-outlet>
-<!-- <app-list-of-categories></app-list-of-categories> -->
+
+  
+  <router-outlet></router-outlet>
+</div>

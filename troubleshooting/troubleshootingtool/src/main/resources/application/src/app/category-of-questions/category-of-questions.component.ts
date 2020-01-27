@@ -30,4 +30,15 @@ export class CategoryOfQuestionsComponent implements OnInit {
   getQuestions(): Array<QAEntry> {
     return this.response;
   }
+
+  getTags( straray: Array<string>): Array<string> {
+    straray =  straray.slice(0, 5);
+    return straray;
+    // return straray.lastIndexOf(2);
+  }
+  onClick(id: string) {
+    console.log('clicked ' + id);
+    this.listingService.id = id;
+    // this.router.navigateByUrl('/cat');
+  }
 }

@@ -1,0 +1,39 @@
+<div class="mat-toolbar">
+  <div class="searchbar">
+    <div class="icon">
+      <mat-icon>devices</mat-icon>
+    </div>
+    <div>
+      <div class="dummy">
+        <input
+          id="searchinput"
+          class="search"
+          placeholder="Search here"
+          (input)="search($event.target.value)"
+        />
+
+        <button class="searchbutton" mat-raised-button>Search</button>
+      </div>
+
+      <div class="row">
+        <div class="row-ele">
+          <mat-card class="question-layout" *ngFor="let list of getQuestions()">
+            <div class="question">{{ list.Question.question }}</div>
+            <span *ngFor="let tag of getTags(list.tags)" class="chips">
+              {{ tag }}</span
+            >
+          </mat-card>
+        </div>
+      </div>
+    </div>
+
+    <!-- <div>
+            <mat-icon>perm-identity</mat-icon>
+            <div>Username</div>
+        </div> -->
+    <div class="dropdown">
+      <mat-icon class="userprofilepic">face</mat-icon>
+      <div class="username">Divyabharathi K</div>
+    </div>
+  </div>
+</div>
