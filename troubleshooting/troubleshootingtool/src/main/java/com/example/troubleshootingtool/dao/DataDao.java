@@ -207,29 +207,34 @@ public class DataDao {
 
     public List<QAEntry> searchQuery(SearchQuery searchQuery) throws IOException {
 
-        ArrayList<QAEntry> list = new ArrayList<>();
+         ArrayList<QAEntry> list = new ArrayList<>();
         SearchRequest searchRequest = new SearchRequest();
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        BoolQueryBuilder boolQueryBuilder = boolQuery();
+        BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
+
         if (!searchQuery.getCategory().equals("")) {
-            boolQueryBuilder.must(termQuery("Question.category.keyword", searchQuery.getCategory()));
+//            TermQueryBuilder queryBuilders = termQuery("Question.category.keyword", searchQuery.getCategory());
+            boolQueryBuilder.filter(termQuery("Question.category.keyword", searchQuery.getCategory()));
         }
-        if (searchQuery.getKeyword().size() > 0) {
-            for (int i = 0; i < searchQuery.getKeyword().size(); i++) {
-                boolQueryBuilder.must(QueryBuilders.wildcardQuery("Question.question.keyword", "* " + searchQuery.getKeyword().get(i) + " *"));
-            }
-        }
-        if (searchQuery.getKeyword().size() > 0) {
-            for (int i = 0; i < searchQuery.getKeyword().size(); i++) {
-                boolQueryBuilder.must(QueryBuilders.wildcardQuery("Answers.description.keyword", "* " + searchQuery.getKeyword().get(i) + " *"));
-            }
-        }
+
 //        boolQueryBuilder.filter(termQuery("tags.keyword", searchQuery.getTags().toString()));
         if (searchQuery.getTags().size() > 0) {
-            for (int i = 0; i < searchQuery.getKeyword().size(); i++) {
-                boolQueryBuilder.must(QueryBuilders.wildcardQuery("tags.keyword", "*"+searchQuery.getTags().get(i)+"*"));
+            for (int i = 0; i < searchQuery.getTags().size(); i++) {
+                boolQueryBuilder.filter(QueryBuilders.wildcardQuery("tags.keyword", "*" + searchQuery.getTags().get(i) + "*"));
+                System.out.println("--------------------------------------------------------------");
             }
         }
+        if (searchQuery.getKeyword().size() > 0) {
+            for (int i = 0; i < searchQuery.getKeyword().size(); i++) {
+//                boolQueryBuilder.filter(QueryBuilders.wildcardQuery("*"+"Question.question.keyword"+"*",  searchQuery.getKeyword().get(i)));
+                boolQueryBuilder.filter(QueryBuilders.queryStringQuery("*"+searchQuery.getKeyword().get(i)+"*"));
+            }
+        }
+//        if (searchQuery.getKeyword().size() > 0) {
+//            for (int i = 0; i < searchQuery.getKeyword().size(); i++) {
+//                boolQueryBuilder.filter(QueryBuilders.wildcardQuery("*"+"Question.description.keyword"+"*", searchQuery.getKeyword().get(i)));
+//            }
+//        }
         searchSourceBuilder.query(boolQueryBuilder);
         searchRequest.source(searchSourceBuilder);
         searchSourceBuilder.size(10000);
@@ -239,9 +244,11 @@ public class DataDao {
             try {
                 QAEntry q_a = new ObjectMapper().readValue(searchHit.getSourceAsString(), QAEntry.class);
                 list.add(q_a);
-            }catch (Exception e){
-                e.printStackTrace();
+            } catch (Exception e) {
             }
+        }
+        if(searchQuery.getCategory().equals("") && searchQuery.getKeyword().size()==0 && searchQuery.getTags().size()==0 ){
+            list.clear();
         }
         return list;
     }
