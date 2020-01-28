@@ -12,19 +12,14 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class QuestionDetailsComponent implements OnInit {
 
-  // constructor(iconRegistry: MatIconRegistry,
-  //   sanitizer: DomSanitizer, private listingService: ListingService, private router: ActivatedRoute) {
-  //   iconRegistry.addSvgIcon(
-  //     'thumbs-up',
-  //     sanitizer.bypassSecurityTrustResourceUrl('assets/img/examples/thumbup-icon.svg'));
-  // }
-
   constructor(private listingService: ListingService, private router: ActivatedRoute) {}
 
   response: any;
+  postedDate: any;
   @Input() id: string;
 
   ngOnInit() {
+    
     this.id = this.listingService.id;
     this.router.paramMap.subscribe(params => {
       this.id = params.get('id');
@@ -33,6 +28,7 @@ export class QuestionDetailsComponent implements OnInit {
       data => {
         console.log('Questions for ' + this.id + ' successful ', data);
         this.response = data;
+        let date = new Date(this.response.Question.creationDate);
       },
       res => { console.log(res); });
   }

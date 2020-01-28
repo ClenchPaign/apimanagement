@@ -28,11 +28,11 @@ public class Question {
     @JsonProperty("attachment")
     private String attachment;
     @JsonProperty("creationDate")
-    private String creationDate;
+    private long creationDate;
     @JsonProperty("ownerId")
     private String ownerId;
     @JsonProperty("lastModifiedDate")
-    private String lastModifiedDate;
+    private long lastModifiedDate;
 
     /**
      * No args constructor for use in serialization
@@ -52,7 +52,7 @@ public class Question {
      * @param creationDate
      * @param ownerId
      */
-    public Question(String id, String category, String question, String description, String attachment, String creationDate, String ownerId, String lastModifiedDate) {
+    public Question(String id, String category, String question, String description, String attachment, long creationDate, String ownerId, long lastModifiedDate) {
         super();
         this.id = id;
         this.category = category;
@@ -115,12 +115,12 @@ public class Question {
     }
 
     @JsonProperty("creationDate")
-    public String getCreationDate() {
+    public long getCreationDate() {
         return creationDate;
     }
 
     @JsonProperty("creationDate")
-    public void setCreationDate(String creationDate) {
+    public void setCreationDate(long creationDate) {
         this.creationDate = creationDate;
     }
 
@@ -135,12 +135,12 @@ public class Question {
     }
 
     @JsonProperty("lastModifiedDate")
-    public String getLastModifiedDate() {
+    public long getLastModifiedDate() {
         return lastModifiedDate;
     }
 
     @JsonProperty("lastModifiedDate")
-    public void setLastModifiedDate(String lastModifiedDate) {
+    public void setLastModifiedDate(long lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
     }
 

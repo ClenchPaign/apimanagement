@@ -11,7 +11,7 @@
       <div class="answer-count">{{ response.answerCount }} Answers</div>
       <div class="posted-details">
         <div class="posted">Posted on</div>
-        <div class="posted-date">{{response.Question.creationDate}}</div> 
+        <div class="posted-date">{{response.Question.creationDate | date :'mediumDate'}}</div> 
       </div>
     </div>
     <mat-divider></mat-divider>

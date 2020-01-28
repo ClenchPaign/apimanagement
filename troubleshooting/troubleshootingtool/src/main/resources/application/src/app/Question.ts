@@ -4,7 +4,7 @@ export class Question {
     public question: string;
     public description: string;
     public attachment: string;
-    public creationDate: string;
+    public creationDate: number;
     public ownerId: string;
-    public lastModifiedDate: string;
+    public lastModifiedDate: number;
 }

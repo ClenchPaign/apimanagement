@@ -22,13 +22,13 @@ public class Answer {
     @JsonProperty("description")
     private String description;
     @JsonProperty("postedDate")
-    private String postedDate;
+    private long postedDate;
     @JsonProperty("ownerUserId")
     private String ownerUserId;
     @JsonProperty("ownerUserName")
     private String ownerUserName;
     @JsonProperty("lastEditedDate")
-    private String lastEditedDate;
+    private long lastEditedDate;
     @JsonProperty("voteCount")
     private Integer voteCount;
     @JsonProperty("isApproved")
@@ -52,7 +52,7 @@ public class Answer {
      * @param isApproved
      * @param postedDate
      */
-    public Answer(String id, String description, String postedDate, String ownerUserId, String ownerUserName, String lastEditedDate, Integer voteCount, Boolean isApproved) {
+    public Answer(String id, String description, long postedDate, String ownerUserId, String ownerUserName, long lastEditedDate, Integer voteCount, Boolean isApproved) {
         super();
         this.id = id;
         this.description = description;
@@ -85,12 +85,12 @@ public class Answer {
     }
 
     @JsonProperty("postedDate")
-    public String getPostedDate() {
+    public long getPostedDate() {
         return postedDate;
     }
 
     @JsonProperty("postedDate")
-    public void setPostedDate(String postedDate) {
+    public void setPostedDate(long postedDate) {
         this.postedDate = postedDate;
     }
 
@@ -115,12 +115,12 @@ public class Answer {
     }
 
     @JsonProperty("lastEditedDate")
-    public String getLastEditedDate() {
+    public long getLastEditedDate() {
         return lastEditedDate;
     }
 
     @JsonProperty("lastEditedDate")
-    public void setLastEditedDate(String lastEditedDate) {
+    public void setLastEditedDate(long lastEditedDate) {
         this.lastEditedDate = lastEditedDate;
     }
 
