@@ -10,32 +10,51 @@
           class="search"
           placeholder="Search here"
           (input)="search($event.target.value)"
-          input (keyup.enter)="onEnter()"
+          input
+          (keyup.enter)="onEnter()"
         />
 
-        <button class="dlt-button" (click)="onEnter()" mat-raised-button>Search</button>
+        <button class="dlt-button" (click)="onEnter()" mat-raised-button>
+          Search
+        </button>
       </div>
 
       <div class="row">
         <div class="row-ele">
-          <mat-card class="question-layout" *ngFor="let list of getQuestions()" [routerLink]="['/qnas', list.Question.id]" (click)= "onClick(list.Question.id)">
-            <div class="question">{{ list.Question.question }}</div>
-            <span *ngFor="let tag of getTags(list.tags)" class="chips">
-              {{ tag }}</span
-            >
-          </mat-card>
+          <div class="question-layout" *ngFor="let list of getQuestions()">
+            <div class="card">
+              <div
+                class="question"
+                [routerLink]="['/qnas', list.Question.id]"
+                (click)="onClick(list.Question.id)"
+              >
+                {{ list.Question.question }}
+              </div>
+              <div class="chip-layout">
+                <span
+                  (click)="onTagClick(tag)"
+                  class="chips"
+                  *ngFor="let tag of getTags(list.tags)"
+                >
+                  {{ tag }}
+                </span>
+              </div>
+            </div>
+            <mat-divider></mat-divider>
+          </div>
         </div>
       </div>
     </div>
     <div class="dropdown">
-      <mat-icon class="userprofilepic">face<i class="fa fa-user" aria-hidden="true"></i></mat-icon>
+      <mat-icon class="userprofilepic"
+        >face<i class="fa fa-user" aria-hidden="true"></i
+      ></mat-icon>
       <div class="dlt-overflow-menu">
         <a href="">Divyabharathi</a>
         <a href="">Logout</a>
-    
       </div>
     </div>
-    
+
     <!-- <div class="dropdown">
       <mat-icon class="userprofilepic">face</mat-icon>
       <div class="username">Divyabharathi K</div>

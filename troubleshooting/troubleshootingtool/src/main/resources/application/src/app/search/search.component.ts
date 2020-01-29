@@ -59,6 +59,14 @@ export class SearchComponent implements OnInit {
     this.search('');
     this.listingService.keyword = val;
     this.router.navigateByUrl('/search/' + val);
-
+  }
+  onTagClick(tag: string) {
+    console.log('clicked ' + tag);
+    this.listingService.keyword = tag;
+    (document.getElementById('searchinput') as HTMLInputElement).value = '';
+    this.search('');
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
+      this.router.navigate(['/search/' + tag]));
+    // this.router.navigateByUrl('/cat');
   }
 }

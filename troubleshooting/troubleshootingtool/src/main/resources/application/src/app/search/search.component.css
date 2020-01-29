@@ -9,8 +9,8 @@
 
 .search {
   border: 0cm;
-  padding-right: 20px;
-  padding-left: 20px;
+  padding-right: 16px;
+  padding-left: 16px;
   padding-top: 8px;
   padding-bottom: 8px;
   color: #000000;
@@ -18,25 +18,24 @@
 }
 
 .dlt-button {
-	color: #1776bf;
-	text-decoration: none;
-	padding: 0 .75rem;
-	font-family: Roboto, Helvetica, Arial, sans-serif;
-	font-size: .875rem;
-	font-weight: 400;
-	line-height: 30px;
-	-moz-transition: .25s ease-in;
-	-o-transition: .25s ease-in;
-	-webkit-transition: .25s ease-in;
-	transition: .25s ease-in;
-	cursor: pointer;
-	border: 1px solid transparent;
-	outline: 1px solid transparent;
-	outline-offset: -2px;
-	margin-left: 10px;
-  display: inline-block
+  color: #1776bf;
+  text-decoration: none;
+  padding: 0 0.75rem;
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 30px;
+  -moz-transition: 0.25s ease-in;
+  -o-transition: 0.25s ease-in;
+  -webkit-transition: 0.25s ease-in;
+  transition: 0.25s ease-in;
+  cursor: pointer;
+  border: 1px solid transparent;
+  outline: 1px solid transparent;
+  outline-offset: -2px;
+  margin-left: 10px;
+  display: inline-block;
 }
-
 
 .searchbar {
   display: flex;
@@ -52,71 +51,57 @@
 .row-ele {
   position: absolute;
 }
-.question-card {
-  margin-bottom: 10px;
-  margin-top: 10px;
-  width: max-content;
-  height: max-content;
-}
 
 .question-layout {
-  float: left;
-  padding: 10px;
-  margin-left: 16px;
   width: 700px;
+  padding-right: 16px;
+  padding-left: 16px;
   white-space: nowrap;
   overflow: hidden;
-  padding: 10px;
+  background-color: rgb(247, 247, 247);
+}
+
+.question-layout:hover {
+  background-color: lightskyblue;
 }
 
 .question {
-  color: darkslategray;
-  font-weight: bold;
+  text-decoration: none;
   font-size: medium;
-  white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+  cursor: pointer;
 }
 
-.description {
-  margin-top: 5px;
-  margin-bottom: 10px;
-  color: lightslategrey;
-  font-weight: lighter;
-  font-size: smaller;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
+.chip-layout {
+  display: block;
+  margin-bottom: 5px;
 }
 
 .chips {
-  font-size: x-small;
+  font-size: small;
+  text-decoration: none;
   color: #fff;
-  position: relative;
-  background-color: #1776bf;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  padding-left: 10px;
-  padding-right: 10px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  margin-right: 10px;
+  padding-left: 8px;
+  padding-right: 8px;
+  padding-top: 4px;
+  padding-bottom: 4px;
   border-radius: 15px;
+  background-color: #1776bf;
+  margin-right: 10px;
   cursor: pointer;
 }
 .chips:hover {
-  font-size: x-small;
+  font-size: small;
+  text-decoration: none;
   color: #fff;
-  position: relative;
-  background-color: #0f4c7b;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  padding-left: 10px;
-  padding-right: 10px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  margin-right: 10px;
+  padding-left: 8px;
+  padding-right: 8px;
+  padding-top: 4px;
+  padding-bottom: 4px;
   border-radius: 15px;
+  background-color: #0f4c7b;
+  margin-right: 10px;
   cursor: pointer;
 }
 
@@ -130,9 +115,13 @@
   position: absolute;
   display: flex;
   color: aliceblue;
-  right: 20px;
-  border-radius: 50px;
-  padding: 10px;
+  margin-right: 20px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  padding: 8px;
   background-color: #0f4c7b;
 }
 .icon {
@@ -140,59 +129,64 @@
   position: absolute;
   color: aliceblue;
   border-radius: 50px;
-  padding: 10px;
+  padding: 8px;
+  margin-left: 20px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  left: 0;
+  bottom: 0;
+  top: 0;
   background-color: #0f4c7b;
-  left: 10px;
 }
 
 .dlt-overflow-menu {
-	position: absolute;
-	display: none;
-	white-space: nowrap;
-	font-family: Roboto, Helvetica, Arial, sans-serif;
-	font-size: .875rem;
-	color: #333;
-	background: #fff;
-	-webkit-box-shadow: 0 .03rem .25rem 0 rgba(0, 0, 0, .5);
-	-moz-box-shadow: 0 .03rem .25rem 0 rgba(0, 0, 0, .5);
-	box-shadow: 0 .03rem .25rem 0 rgba(0, 0, 0, .5);
-	list-style-type: none;
-	z-index: 2;
-	top: 2.125rem;
-	right: -.875rem;
-	background: #fff;
-	-webkit-filter: drop-shadow(0 0 0 rgba(0, 0, 0, .5));
-	-moz-filter: 0 0 0 rgba(0, 0, 0, .5);
-	filter: drop-shadow(0 0 0 rgba(0, 0, 0, .5));
-	padding: .5rem 0
+  position: absolute;
+  display: none;
+  white-space: nowrap;
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+  font-size: 0.875rem;
+  color: #333;
+  background: #fff;
+  -webkit-box-shadow: 0 0.03rem 0.25rem 0 rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0 0.03rem 0.25rem 0 rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0.03rem 0.25rem 0 rgba(0, 0, 0, 0.5);
+  list-style-type: none;
+  z-index: 2;
+  top: 2.125rem;
+  right: -0.875rem;
+  background: #fff;
+  -webkit-filter: drop-shadow(0 0 0 rgba(0, 0, 0, 0.5));
+  -moz-filter: 0 0 0 rgba(0, 0, 0, 0.5);
+  filter: drop-shadow(0 0 0 rgba(0, 0, 0, 0.5));
+  padding: 0.5rem 0;
 }
 
 .dlt-overflow-menu .scroll-wrapper {
-	padding: 1rem .5rem .5rem 1rem;
-	height: 14.25rem;
-	overflow: auto
+  padding: 1rem 0.5rem 0.5rem 1rem;
+  height: 14.25rem;
+  overflow: auto;
 }
 
-.dlt-overflow-menu .scroll-wrapper .mCSB_inside>.mCSB_container {
-	margin-right: 0
+.dlt-overflow-menu .scroll-wrapper .mCSB_inside > .mCSB_container {
+  margin-right: 0;
 }
 
 .dlt-overflow-menu .scroll-wrapper .mCSB_scrollTools {
-	width: .25rem;
-	background: #f2f2f2
+  width: 0.25rem;
+  background: #f2f2f2;
 }
 
 .dlt-overflow-menu .scroll-wrapper .mCSB_draggerContainer {
-	right: 0!important
+  right: 0 !important;
 }
 
 .dlt-overflow-menu .scroll-wrapper .mCSB_dragger_bar {
-	border-radius: 0!important;
-	background-color: #666!important
+  border-radius: 0 !important;
+  background-color: #666 !important;
 }
 
 .dlt-overflow-menu .scroll-wrapper .mCSB_draggerRail {
-	opacity: 0
+  opacity: 0;
 }
 
 .dlt-overflow-menu a {
@@ -205,7 +199,9 @@
   font-family: Roboto, Helvetica, Arial, sans-serif;
 }
 
-.dlt-overflow-menu a:hover {background-color: rgb(30, 169, 255)}
+.dlt-overflow-menu a:hover {
+  background-color: rgb(30, 169, 255);
+}
 
 .dropdown:hover .dlt-overflow-menu {
   display: inline-block;

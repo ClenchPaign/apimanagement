@@ -18,10 +18,8 @@
   margin-bottom: 10px;
 }
 .answer-layout {
-  width: max-content;
   margin-left: 20px;
-  white-space: nowrap;
-  float: left;
+  margin-right: 20px;
 }
 .answer {
   margin-top: 10px;
@@ -33,6 +31,7 @@
   padding-right: 8px;
   border-radius: 4px;
   width: min-content;
+  white-space: nowrap;
   background-color: #eafa8f;
 }
 
@@ -512,23 +511,10 @@
 }
 
 .dlt-button {
-  color: #1776bf;
-  text-decoration: none;
-  padding: 0 0.75rem;
-  font-family: Roboto, Helvetica, Arial, sans-serif;
-  font-size: 0.875rem;
-  font-weight: 400;
-  line-height: 30px;
-  -moz-transition: 0.25s ease-in;
-  -o-transition: 0.25s ease-in;
-  -webkit-transition: 0.25s ease-in;
-  transition: 0.25s ease-in;
+  color: #fff;
+  background-color: #1776bf;
+  margin-top: 10px;
   cursor: pointer;
-  border: 1px solid transparent;
-  outline: 1px solid transparent;
-  outline-offset: -2px;
-  margin: 0;
-  display: inline-block;
 }
 
 .dlt-button-primary {
