@@ -10,14 +10,15 @@
           class="search"
           placeholder="Search here"
           (input)="search($event.target.value)"
+          input (keyup.enter)="onEnter()"
         />
 
-        <button class="searchbutton" mat-raised-button>Search</button>
+        <button class="dlt-button" (click)="onEnter()" mat-raised-button>Search</button>
       </div>
 
       <div class="row">
         <div class="row-ele">
-          <mat-card class="question-layout" *ngFor="let list of getQuestions()">
+          <mat-card class="question-layout" *ngFor="let list of getQuestions()" [routerLink]="['/qnas', list.Question.id]" (click)= "onClick(list.Question.id)">
             <div class="question">{{ list.Question.question }}</div>
             <span *ngFor="let tag of getTags(list.tags)" class="chips">
               {{ tag }}</span
@@ -26,14 +27,18 @@
         </div>
       </div>
     </div>
-
-    <!-- <div>
-            <mat-icon>perm-identity</mat-icon>
-            <div>Username</div>
-        </div> -->
     <div class="dropdown">
+      <mat-icon class="userprofilepic">face<i class="fa fa-user" aria-hidden="true"></i></mat-icon>
+      <div class="dlt-overflow-menu">
+        <a href="">Divyabharathi</a>
+        <a href="">Logout</a>
+    
+      </div>
+    </div>
+    
+    <!-- <div class="dropdown">
       <mat-icon class="userprofilepic">face</mat-icon>
       <div class="username">Divyabharathi K</div>
-    </div>
+    </div> -->
   </div>
 </div>

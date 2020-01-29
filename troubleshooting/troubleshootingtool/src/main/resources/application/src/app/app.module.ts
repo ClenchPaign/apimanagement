@@ -19,6 +19,7 @@ import { SearchComponent } from './search/search.component';
 import { QuestionDetailsComponent } from './question-details/question-details.component';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatIconModule} from '@angular/material/icon';
+import { QuestionsListComponent } from './questions-list/questions-list.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import {MatIconModule} from '@angular/material/icon';
     ListOfCategoriesComponent,
     CategoryOfQuestionsComponent,
     SearchComponent,
-    QuestionDetailsComponent
+    QuestionDetailsComponent,
+    QuestionsListComponent
   ],
   imports: [
     BrowserModule,

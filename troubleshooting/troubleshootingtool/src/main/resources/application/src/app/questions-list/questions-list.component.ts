@@ -1,28 +1,30 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ListingService } from '../listing.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { QAEntry } from '../QAEntry';
+import { SearchQuery } from '../SearchQuery';
 
 @Component({
-  selector: 'app-category-of-questions',
-  templateUrl: './category-of-questions.component.html',
-  styleUrls: ['./category-of-questions.component.css']
+  selector: 'app-questions-list',
+  templateUrl: './questions-list.component.html',
+  styleUrls: ['./questions-list.component.css']
 })
-export class CategoryOfQuestionsComponent implements OnInit {
+export class QuestionsListComponent implements OnInit {
 
   response: any;
-  @Input() category: string;
-  constructor(private listingService: ListingService, private route: ActivatedRoute, private router: Router) { }
+  searchData: any;
+  @Input() keyword: string;
+  constructor(private listingService: ListingService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.category = this.listingService.category;
+    this.keyword = this.listingService.keyword;
     this.route.paramMap.subscribe(params => {
-      this.category = params.get('category');
+      this.keyword = params.get('keyword');
     });
-
-    this.listingService.getQuestionsForCategory(this.category).subscribe(
+    this.searchData = new SearchQuery('', [], [this.keyword]);
+    this.listingService.searchForKeyword(this.searchData).subscribe(
       data => {
-        console.log('Getting questions for ' + this.category + ' successful ', data);
+        console.log('Getting questions for ' + this.searchData + ' successful ', data);
         this.response = data;
       },
       res => { console.log(res); });

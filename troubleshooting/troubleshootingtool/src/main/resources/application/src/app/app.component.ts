@@ -10,7 +10,7 @@ import { Router, ActivatedRoute } from '@angular/router';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  title = 'application';
+  title = 'Troubleshooting tool';
   category: any;
   constructor(private listingService: ListingService, private router: ActivatedRoute) { }
 
@@ -21,6 +21,8 @@ export class AppComponent implements OnInit {
     });
   }
   getCategory(): string {
+    this.category = this.listingService.category;
+    console.log('get cat()' + this.category);
     return this.category;
   }
 }

@@ -12,11 +12,23 @@
     margin-left: 15px;
     margin-top: 15px;
     border-radius: 15px;
-    background-color: lightskyblue;
+    background-color: #1776bf;
+    color: #fff;
     padding: 10px;
-    box-shadow: 1px 1px 1px #4b4b4b54;
     /* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); */
 }
+
+.button:hover{
+    margin-left: 15px;
+    margin-top: 15px;
+    border-radius: 15px;
+    background-color: #0f4c7b;
+    color: #fff;
+    padding: 10px;
+    /* box-shadow: 1px 1px 1px #4b4b4b54; */
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 4px 10px 0 rgba(0, 0, 0, 0.19);
+}
+
 .button-text{
     text-align: center;
     display: table-cell;

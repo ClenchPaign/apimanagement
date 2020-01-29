@@ -20,7 +20,9 @@ export class SearchComponent implements OnInit {
         console.log('Getting questions for ' + this.searchdata + ' successful ', data);
         this.response = data;
       },
-      res => { console.log(res); });
+      res => {
+        console.log(res);
+      });
   }
   getQuestions(): Array<QAEntry> {
     return this.response;
@@ -38,5 +40,25 @@ export class SearchComponent implements OnInit {
     }
     this.ngOnInit();
     this.getQuestions();
+  }
+
+  onClick(id: string) {
+
+    this.listingService.id = id;
+    (document.getElementById('searchinput') as HTMLInputElement).value = '';
+    this.search('');
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
+      this.router.navigate(['/qnas/' + id]));
+
+  }
+
+  onEnter() {
+    console.log('enteredd');
+    const val = (document.getElementById('searchinput') as HTMLInputElement).value;
+    (document.getElementById('searchinput') as HTMLInputElement).value = '';
+    this.search('');
+    this.listingService.keyword = val;
+    this.router.navigateByUrl('/search/' + val);
+
   }
 }

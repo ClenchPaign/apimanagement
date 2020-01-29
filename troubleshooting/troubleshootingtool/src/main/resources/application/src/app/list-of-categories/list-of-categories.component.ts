@@ -18,6 +18,7 @@ export class ListOfCategoriesComponent implements OnInit {
 
   constructor(private listingService: ListingService, private router: Router) { }
   ngOnInit() {
+    this.listingService.category = '';
     this.listingService.getAllCategories().subscribe(
       data => {
         console.log('GET Request is successful ', data);
