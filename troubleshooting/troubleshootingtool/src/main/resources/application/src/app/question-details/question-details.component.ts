@@ -1,9 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ListingService } from '../listing.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { QAEntry } from '../QAEntry';
-import { MatIconRegistry } from '@angular/material/icon';
-import { DomSanitizer } from '@angular/platform-browser';
+import { QAEntry } from '../data-models/QAEntry';
 
 @Component({
   selector: 'app-question-details',
@@ -28,7 +26,6 @@ export class QuestionDetailsComponent implements OnInit {
       data => {
         console.log('Questions for ' + this.id + ' successful ', data);
         this.response = data;
-        let date = new Date(this.response.Question.creationDate);
       },
       res => { console.log(res); });
   }

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ListingService } from '../listing.service';
-import { SearchQuery } from '../SearchQuery';
-import { QAEntry } from '../QAEntry';
+import { SearchQuery } from '../data-models/SearchQuery';
+import { QAEntry } from '../data-models/QAEntry';
 
 @Component({
   selector: 'app-search',

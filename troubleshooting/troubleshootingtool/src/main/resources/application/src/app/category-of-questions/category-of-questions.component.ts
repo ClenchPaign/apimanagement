@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ListingService } from '../listing.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { QAEntry } from '../QAEntry';
+import { QAEntry } from '../data-models/QAEntry';
 
 @Component({
   selector: 'app-category-of-questions',

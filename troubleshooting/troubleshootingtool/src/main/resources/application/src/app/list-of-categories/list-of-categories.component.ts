@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ListingService } from '../listing.service';
 import { Router } from '@angular/router';
-import { ArrayType } from '@angular/compiler';
 
 @Component({
   selector: 'app-list-of-categories',

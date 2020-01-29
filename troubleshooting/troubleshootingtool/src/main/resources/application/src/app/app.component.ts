@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { QAEntry } from './QAEntry';
+import { QAEntry } from './data-models/QAEntry';
 import { ListingService } from './listing.service';
-import { SearchQuery } from './SearchQuery';
+import { SearchQuery } from './data-models/SearchQuery';
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({

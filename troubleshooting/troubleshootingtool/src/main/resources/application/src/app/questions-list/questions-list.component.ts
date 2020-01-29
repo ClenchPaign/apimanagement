@@ -1,8 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ListingService } from '../listing.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { QAEntry } from '../QAEntry';
-import { SearchQuery } from '../SearchQuery';
+import { QAEntry } from '../data-models/QAEntry';
+import { SearchQuery } from '../data-models/SearchQuery';
 
 @Component({
   selector: 'app-questions-list',
