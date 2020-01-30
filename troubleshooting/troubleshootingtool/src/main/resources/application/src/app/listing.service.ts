@@ -53,7 +53,7 @@ export class ListingService {
   post_answer(qa: QAEntry, id: string) {
     console.log(qa);
     console.log(this.baseUrl + '/qnas/' + id);
-    return this.http.put(this.baseUrl + '/qnas/' + id, qa, { headers, responseType: 'text' });
+    return this.http.put(this.baseUrl + '/qnas/' + id, qa, httpOptions);
 
   }
 }
