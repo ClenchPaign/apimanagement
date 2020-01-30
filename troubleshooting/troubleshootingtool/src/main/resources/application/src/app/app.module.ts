@@ -20,6 +20,7 @@ import { QuestionDetailsComponent } from './question-details/question-details.co
 import {MatDividerModule} from '@angular/material/divider';
 import {MatIconModule} from '@angular/material/icon';
 import { QuestionsListComponent } from './questions-list/questions-list.component';
+import {ScrollingModule} from '@angular/cdk/scrolling';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { QuestionsListComponent } from './questions-list/questions-list.componen
     MatChipsModule,
     MatDividerModule,
     MatIconModule,
-    HttpClientModule
+    HttpClientModule,
+    ScrollingModule
   ],
   providers: [ListingService, MessageService],
   bootstrap: [AppComponent]
