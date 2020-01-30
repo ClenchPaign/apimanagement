@@ -58,7 +58,7 @@
   padding-left: 16px;
   white-space: nowrap;
   overflow: hidden;
-  background-color: rgb(247, 247, 247);
+  background-color: #f7f7f7;
 }
 
 .question-layout:hover {

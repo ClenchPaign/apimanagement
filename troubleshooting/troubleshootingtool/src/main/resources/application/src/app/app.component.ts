@@ -22,7 +22,6 @@ export class AppComponent implements OnInit {
   }
   getCategory(): string {
     this.category = this.listingService.category;
-    console.log('get cat()' + this.category);
     return this.category;
   }
 }

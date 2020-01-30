@@ -31,9 +31,10 @@ jar {
 }
 
 processResources {
-    from ('application/dist/') {
+    from('application/dist/') {
         into 'static'
     }
+    exclude 'application/node_modules/'
 }
 
 dependencies {

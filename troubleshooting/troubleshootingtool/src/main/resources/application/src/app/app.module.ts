@@ -19,8 +19,13 @@ import { SearchComponent } from './search/search.component';
 import { QuestionDetailsComponent } from './question-details/question-details.component';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatIconModule} from '@angular/material/icon';
+import {MatDialogModule} from '@angular/material/dialog';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { QuestionsListComponent } from './questions-list/questions-list.component';
-import {ScrollingModule} from '@angular/cdk/scrolling';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+
+import { AddQuestionDialogComponent } from './add-question-dialog/add-question-dialog.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +34,8 @@ import {ScrollingModule} from '@angular/cdk/scrolling';
     CategoryOfQuestionsComponent,
     SearchComponent,
     QuestionDetailsComponent,
-    QuestionsListComponent
+    QuestionsListComponent,
+    AddQuestionDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -41,10 +47,16 @@ import {ScrollingModule} from '@angular/cdk/scrolling';
     MatChipsModule,
     MatDividerModule,
     MatIconModule,
+    MatDialogModule,
+    MatAutocompleteModule,
     HttpClientModule,
-    ScrollingModule
+    BrowserAnimationsModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule
   ],
   providers: [ListingService, MessageService],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [AddQuestionDialogComponent]
 })
 export class AppModule { }

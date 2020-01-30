@@ -1,6 +1,6 @@
 <div class="parent">
   <mat-card class="layout">
-    <div class="question">{{ response.Question.question }}</div>
+    <div class="question">{{ response.Question.question }}</div>    
     <div class="description">{{ response.Question.description }}</div>
     <div>
       <span
@@ -41,7 +41,7 @@
       <button mat-button class="dlt-button" (click)="display()">Add answer</button><br><br><br>
       <div style="display:none" id="display">
         <form><textarea id="answer" style="height:300px;width:800px;" placeholder="Add your answers here" required></textarea>
-        <button mat-button class="dlt-button" type="submit" (click)="post_ans()">Add your answer</button>
+        <button mat-button class="dlt-button-post-answer" type="submit" (click)="post_ans()">Post Answer</button>
         </form>
       </div>
     </div>

@@ -1,6 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { ListingService } from '../listing.service';
 import { Router } from '@angular/router';
+import { Question } from '../data-models/Question';
+import { QAEntry } from '../data-models/QAEntry';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dialog';
+import { AddQuestionDialogComponent } from '../add-question-dialog/add-question-dialog.component';
+
+
+
+export interface Tags {
+  name: string;
+}
+export interface DialogData {
+  animal: string;
+  name: string;
+}
 
 @Component({
   selector: 'app-list-of-categories',
@@ -14,8 +30,25 @@ export class ListOfCategoriesComponent implements OnInit {
   sub: any;
   route: any;
   public data: any;
+  public quesTags: string[];
 
-  constructor(private listingService: ListingService, private router: Router) { }
+  animal: string;
+  name: string;
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(AddQuestionDialogComponent, {
+      width: '600px',
+      data: { name: this.name, animal: this.animal }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      this.animal = result;
+    });
+  }
+
+
+  constructor(private listingService: ListingService, private router: Router, public dialog: MatDialog) { }
   ngOnInit() {
     this.listingService.category = '';
     this.listingService.getAllCategories().subscribe(

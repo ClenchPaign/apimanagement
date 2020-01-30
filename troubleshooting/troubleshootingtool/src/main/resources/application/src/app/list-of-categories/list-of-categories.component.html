@@ -1,11 +1,80 @@
-<h2 class="head">List of Categories</h2>
+<div>
+  <button mat-button class="dlt-button" (click)="openDialog()">
+    Ask a Question
+  </button>
+  <div class="head">List of Categories</div>
+</div>
+
+<div id="mySidenav" class="sidenav">
+  <a class="closebtn" style="cursor:pointer" (click)="closeNav()">&times;</a>
+  <form>
+    <div>
+      <label>Question</label>
+      <input type="text" class="search" id="question" />
+    </div>
+    <div>
+      <label>Description</label>
+      <textarea type="text" class="search" id="description"></textarea>
+    </div>
+    <div>
+      <label>Categories</label>
+      <select class="search" name="categories" id="categories">
+        <option *ngFor="let list of getResponse()">{{ list }}</option>
+      </select>
+    </div>
+    <mat-form-field class="search">
+      <mat-chip-list #chipList>
+        <mat-chip
+          *ngFor="let tag of fruits"
+          [selectable]="selectable"
+          [removable]="removable"
+          (removed)="remove(tag)"
+        >
+          {{ tag.name }}
+          <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+        </mat-chip>
+        <input
+          placeholder="Add tags here..."
+          id="tag"
+          [matChipInputFor]="chipList"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          [matChipInputAddOnBlur]="addOnBlur"
+          (matChipInputTokenEnd)="add($event)"
+        />
+      </mat-chip-list>
+    </mat-form-field>
+
+    <button
+      mat-button
+      class="dlt-button-post"
+      type="submit"
+      (click)="post_ques()"
+    >
+      POST
+    </button>
+
+    <!-- <div class="col-lg-12 loginbttm">
+      <div class="col-lg-6 login-btm login-button">
+
+        <button type="submit" class="dlt-button " (click)="post_ques()">
+          POST
+        </button>
+      </div>
+    </div> -->
+  </form>
+</div>
+
 <div class="categories">
   <!-- <mat-card class="button" *ngFor="let list of getResponse() | slice:row*2:row*2+2" (click) = "onClick(list)" [routerLink]="['/categories', list]">
      <p  class="button-text" > {{ list }}</p>
   </mat-card> -->
 
-  <mat-card class="button" *ngFor="let list of getResponse()" (click) = "onClick(list)" [routerLink]="['/categories', list]" >
-      <p  class="button-text">{{ list }} </p>
+  <mat-card
+    class="button"
+    *ngFor="let list of getResponse()"
+    (click)="onClick(list)"
+    [routerLink]="['/categories', list]"
+  >
+    <p class="button-text">{{ list }}</p>
   </mat-card>
-
 </div>

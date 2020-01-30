@@ -1,16 +1,24 @@
-<div class="parent">
-  <app-search class="app-search"></app-search>
-  <div class="toolbar"></div>
-  <div>
-    <ul class="breadcrumb">
-      <li><span [routerLink]="['']">Home</span></li>
-      <li><span [routerLink]="['/categories']">Categories</span></li>
-      <li>
-        <span [routerLink]="['/categories', category]">{{getCategory()}}</span>
-      </li>
-    </ul>
+<div>
+  <div class="parent">
+    <app-search class="app-search"></app-search>
+    <div class="toolbar"></div>
+    <div class="breadcrumbs">
+      <!-- <ol class="dlt-breadcrumbs" aria-label="breadcrumb">
+      <li><a [routerLink]="['']" class="dlt-links">Home</a></li>
+      <li><a [routerLink]="['/categories']" class="dlt-links">Categories</a></li>
+      <li><a [routerLink]="['/categories', category]" class="dlt-links">{{getCategory()}}</a></li>
+     </ol> -->
+      <ul class="breadcrumb">
+        <li><span [routerLink]="['']">Home</span></li>
+        <li><span [routerLink]="['/categories']">Categories</span></li>
+        <li>
+          <span [routerLink]="['/categories', category]">{{
+            getCategory()
+          }}</span>
+        </li>
+      </ul>
+    </div>
   </div>
 
-  
   <router-outlet></router-outlet>
 </div>

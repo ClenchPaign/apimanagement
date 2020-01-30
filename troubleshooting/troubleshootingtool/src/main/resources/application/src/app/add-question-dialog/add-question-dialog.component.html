@@ -1,0 +1,66 @@
+<form>
+  <mat-form-field class="search">
+    <textarea matInput placeholder="Question" rows="3" type="text"  [formControl]="question"></textarea>
+  </mat-form-field>
+  <mat-form-field class="search">
+    <textarea matInput placeholder="Description" rows="6" type="text"  [formControl]="description"></textarea>
+  </mat-form-field>
+  <div>
+    <mat-form-field class="search">
+      <input
+      [formControl]="categories"
+        type="text"
+        placeholder="Categories"
+        matInput
+        [matAutocomplete]="auto"
+      />
+    </mat-form-field>
+
+    <mat-autocomplete #auto="matAutocomplete">
+      <mat-option *ngFor="let list of getResponse()" [value]="list">{{
+        list
+      }}</mat-option>
+    </mat-autocomplete>
+
+    <!-- <select class="search" name="categories" id="categories">
+      <option *ngFor="let list of getResponse()">{{ list }}</option>
+    </select> -->
+  </div>
+  <mat-form-field class="search">
+    <mat-chip-list #chipList>
+      <mat-chip
+        *ngFor="let tag of fruits"
+        [selectable]="selectable"
+        [removable]="removable"
+        (removed)="remove(tag)"
+      >
+        {{ tag.name }}
+        <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+      </mat-chip>
+      <input
+      class="tag-input"
+        placeholder="Add tags here..."
+        id="tag"
+        [matChipInputFor]="chipList"
+        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+        [matChipInputAddOnBlur]="addOnBlur"
+        (matChipInputTokenEnd)="add($event)"
+      />
+    </mat-chip-list>
+  </mat-form-field>
+
+  <button
+    mat-button
+    class="dlt-button-post"
+    type="submit"
+    (click)="post_ques()"
+  >
+    POST
+  </button>
+</form>
+<!-- <div id="mySidenav" class="sidenav">
+    <a class="closebtn" style="cursor:pointer" (click)="closeNav()">&times;</a>
+   
+  </div> -->
+
+<!-- <h1>Hello</h1> -->
