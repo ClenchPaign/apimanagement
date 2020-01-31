@@ -33,7 +33,12 @@ export class ListOfCategoriesComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('result:' + result);
-      this.cats.push(result);
+      if (this.cats.includes(result) || result === '' || result === undefined) {
+        console.log('category already exist or question not added');
+      }else{
+        this.cats.push(result);
+      }
+
       //   this.router.navigateByUrl('/categories', { skipLocationChange: true })
       //     .then(() => this.router.navigate(['/categories']));
     });
