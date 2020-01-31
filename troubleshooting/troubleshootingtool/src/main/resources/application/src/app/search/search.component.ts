@@ -48,7 +48,7 @@ export class SearchComponent implements OnInit {
     (document.getElementById('searchinput') as HTMLInputElement).value = '';
     this.search('');
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
-      this.router.navigate(['/qnas/' + id]));
+      this.router.navigate(['/qna/' + id]));
 
   }
 
