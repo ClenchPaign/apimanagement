@@ -20,6 +20,8 @@
 .answer-layout {
   margin-left: 20px;
   margin-right: 20px;
+  overflow: scroll;
+  scroll-behavior: smooth;
 }
 
 
@@ -64,6 +66,7 @@
   font-weight: lighter;
   font-size: smaller;
 }
+
 
 .chips {
   font-size: smaller;
