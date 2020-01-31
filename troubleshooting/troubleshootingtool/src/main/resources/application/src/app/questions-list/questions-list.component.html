@@ -8,7 +8,7 @@
             <div class="answer-text">Answers</div>
           </div>
           <div class="question-layout">
-            <a class="question" [routerLink]="['/qnas', list.Question.id]" (click)= "onClick(list.Question.id)">{{ list.Question.question }}</a>
+            <a class="question" [routerLink]="['/qna', list.Question.id]" (click)= "onClick(list.Question.id)">{{ list.Question.question }}</a>
             <div class="description">{{ list.Question.description }}</div>
               <span *ngFor="let tag of getTags(list.tags)" class="chips" (click)="onTagClick(tag)"> {{ tag }}</span>
           </div>

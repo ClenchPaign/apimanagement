@@ -9,9 +9,9 @@ import { QuestionsListComponent } from './questions-list/questions-list.componen
 
 const routes: Routes = [
   { path: '', component: ListOfCategoriesComponent},
-  { path: 'categories', component: ListOfCategoriesComponent },
-  { path: 'categories/:category', component: CategoryOfQuestionsComponent },
-  { path: 'qnas/:id', component: QuestionDetailsComponent},
+  { path: 'category', component: ListOfCategoriesComponent },
+  { path: 'category/:category', component: CategoryOfQuestionsComponent },
+  { path: 'qna/:id', component: QuestionDetailsComponent},
   { path: 'search/:keyword', component: QuestionsListComponent},
   { path: 'search', component: SearchComponent },
 ];
