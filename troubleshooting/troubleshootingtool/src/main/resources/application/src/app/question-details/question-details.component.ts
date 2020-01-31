@@ -63,7 +63,7 @@ export class QuestionDetailsComponent implements OnInit {
     else {
       const d = new Date();
       let qa_entry = this.response;
-      const creationDate = d.getMilliseconds();
+      const creationDate = d.getTime();
       const ques = new Question(this.id, qa_entry.Question.category, qa_entry.Question.question, qa_entry.Question.description,
         qa_entry.Question.attachment, qa_entry.Question.creationDate, qa_entry.Question.ownerId, qa_entry.Question.lastModifiedDate);
       const ans = new Answer('123', answer, creationDate, 'y509476', 'user', creationDate, 0, false);

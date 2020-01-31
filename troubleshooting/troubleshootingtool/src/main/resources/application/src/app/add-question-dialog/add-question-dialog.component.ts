@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { DialogData, Tags } from '../list-of-categories/list-of-categories.component';
+import { Tags } from '../list-of-categories/list-of-categories.component';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ListingService } from '../listing.service';
 import { Question } from '../data-models/Question';
@@ -8,7 +8,6 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { FormControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
 
 export interface Categories {
   category: string;
@@ -30,34 +29,30 @@ export class AddQuestionDialogComponent implements OnInit {
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   fruits: Tags[] = [];
   filteredOptions: Observable<Categories[]>;
-  categoryList: Categories[];
+  categoryList: string[];
   constructor(
     public dialogRef: MatDialogRef<AddQuestionDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData, private listingService: ListingService) { }
+    @Inject(MAT_DIALOG_DATA) public data: any, private listingService: ListingService) {  }
 
   question = new FormControl();
   description = new FormControl();
   categories = new FormControl();
   onNoClick(): void {
-    this.dialogRef.close();
+    this.dialogRef.close(this.categories.value);
   }
 
-  displayFn(user?: Categories): string | undefined {
-    return user ? user.category : undefined;
-  }
-
-  private _filter(name: string): Categories[] {
-    const filterValue = name.toLowerCase();
-    return this.categoryList.filter(option => option.category.toLowerCase().indexOf(filterValue) === 0);
-  }
+  // private _filter(name: string): Categories[] {
+  //   const filterValue = name.toLowerCase();
+  //   return this.categoryList.filter(option => option.category.toLowerCase().indexOf(filterValue) === 0);
+  // }
 
   ngOnInit() {
-    this.filteredOptions = this.categories.valueChanges
-      .pipe(
-        startWith(''),
-        map(value => typeof value === 'string' ? value : value.name),
-        map(name => name ? this._filter(name) : this.categoryList.slice())
-      );
+    // this.filteredOptions = this.categories.valueChanges
+    //   .pipe(
+    //     startWith(''),
+    //     map(value => typeof value === 'string' ? value : value.name),
+    //     map(name => name ? this._filter(name) : this.categoryList.slice())
+    //   );
     this.listingService.category = '';
     this.listingService.getAllCategories().subscribe(
       data => {
@@ -116,8 +111,9 @@ export class AddQuestionDialogComponent implements OnInit {
       this.quesTags.push(tags.name);
     }
     console.log(this.quesTags);
-
-    const ques = new Question('', categories, question, description, '', 0, '', 0);
+    const d = new Date();
+    const creationDate = d.getTime();
+    const ques = new Question('', categories, question, description, '', creationDate, '', creationDate);
     const qa = new QAEntry(ques, [], this.quesTags, false, 0, 0);
     console.log(ques);
     console.log(JSON.stringify(qa));
