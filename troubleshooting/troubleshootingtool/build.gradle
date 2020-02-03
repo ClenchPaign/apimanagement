@@ -34,8 +34,7 @@ processResources {
     from('application/dist/') {
         into 'static'
     }
-//    exclude 'application/node_modules/'
-    
+    exclude 'application/node_modules/'
 }
 
 dependencies {

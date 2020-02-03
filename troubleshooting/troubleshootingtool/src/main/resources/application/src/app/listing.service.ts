@@ -36,7 +36,7 @@ export class ListingService {
     return this.http.get(this.baseUrl + '/categories/' + cat, httpOptions);
   }
   searchForKeyword(searchdata: SearchQuery) {
-    // console.log(searchdata);
+    console.log(searchdata);
     return this.http.post(this.baseUrl + '/search', searchdata, httpOptions);
   }
 
