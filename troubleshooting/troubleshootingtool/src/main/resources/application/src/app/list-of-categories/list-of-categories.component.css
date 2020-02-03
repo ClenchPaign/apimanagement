@@ -8,6 +8,7 @@
   display: flex;
   justify-content: left;
   flex-wrap: wrap;
+  width: 70%;
 }
 .matcard-categories {
   cursor: pointer;
