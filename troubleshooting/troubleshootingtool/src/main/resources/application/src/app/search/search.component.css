@@ -52,7 +52,11 @@
 
 .row-ele {
   position: absolute;
+  overflow-y: auto;
+  height: 400px;
 }
+
+
 
 .question-layout {
   width: 700px;
