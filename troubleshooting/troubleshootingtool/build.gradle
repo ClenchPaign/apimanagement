@@ -30,12 +30,15 @@ jar {
     from(configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }) {}
 }
 
-processResources {
-    from('application/dist/') {
-        into 'static'
-    }
-//    exclude 'application/node_modules/'
+jar {
+    from 'application/dist/application/' into 'static'
 }
+//processResources {
+//    from('application/dist/') {
+//        into 'static'
+//    }
+////    exclude 'application/node_modules/'
+//}
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter:1.5.9.RELEASE'
