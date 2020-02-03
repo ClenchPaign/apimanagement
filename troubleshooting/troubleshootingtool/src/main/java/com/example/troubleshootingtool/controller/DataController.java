@@ -78,5 +78,10 @@ public class DataController {
         return dataDao.searchQuery(searchQuery);
     }
 
+    @RequestMapping(value = "/restore", method = RequestMethod.POST)
+    public  String restoreValues(@RequestBody List<QAEntry> qaEntryList) throws IOException {
+        return dataDao.restore(qaEntryList);
+    }
+
 
 }

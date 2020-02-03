@@ -207,7 +207,7 @@ public class DataDao {
 
     public List<QAEntry> searchQuery(SearchQuery searchQuery) throws IOException {
 
-         ArrayList<QAEntry> list = new ArrayList<>();
+        ArrayList<QAEntry> list = new ArrayList<>();
         SearchRequest searchRequest = new SearchRequest();
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
@@ -227,7 +227,7 @@ public class DataDao {
         if (searchQuery.getKeyword().size() > 0) {
             for (int i = 0; i < searchQuery.getKeyword().size(); i++) {
 //                boolQueryBuilder.filter(QueryBuilders.wildcardQuery("*"+"Question.question.keyword"+"*",  searchQuery.getKeyword().get(i)));
-                boolQueryBuilder.filter(QueryBuilders.queryStringQuery("*"+searchQuery.getKeyword().get(i)+"*"));
+                boolQueryBuilder.filter(QueryBuilders.queryStringQuery("*" + searchQuery.getKeyword().get(i) + "*"));
             }
         }
 //        if (searchQuery.getKeyword().size() > 0) {
@@ -247,10 +247,28 @@ public class DataDao {
             } catch (Exception e) {
             }
         }
-        if(searchQuery.getCategory().equals("") && searchQuery.getKeyword().size()==0 && searchQuery.getTags().size()==0 ){
+        if (searchQuery.getCategory().equals("") && searchQuery.getKeyword().size() == 0 && searchQuery.getTags().size() == 0) {
             list.clear();
         }
         return list;
+    }
+
+    public String restore(List<QAEntry> list) throws IOException {
+        for (QAEntry qaEntry : list) {
+            Map dataMap = objectMapper.convertValue(qaEntry, Map.class);
+            IndexRequest indexRequest = new IndexRequest(INDEX).source(dataMap);
+            try {
+                IndexResponse response = restHighLevelClient.index(indexRequest, RequestOptions.DEFAULT);
+            } catch (ElasticsearchException e) {
+                e.getDetailedMessage();
+                return "elastic search exception " + e.getDetailedMessage();
+            } catch (IOException ex) {
+                ex.getLocalizedMessage();
+                return "IO exception " + ex.getLocalizedMessage() + "  " + Arrays.toString(ex.getStackTrace());
+            }
+        }
+
+        return "Inserted successfully";
     }
 }
 
