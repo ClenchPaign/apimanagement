@@ -20,25 +20,22 @@ ext {
     set('elasticsearch.version', '7.5.1')
 }
 
-jar {
-    manifest {
-        attributes(
-                'Class-Path': configurations.compile.collect { it.getName() }.join(' '),
-                'Main-Class': 'sourcefiles.Application'
-        )
-    }
-    from(configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }) {}
-}
-
-jar {
-    from 'application/dist/application/' into 'static'
-}
-//processResources {
-//    from('application/dist/') {
-//        into 'static'
+//jar {
+//    manifest {
+//        attributes(
+//                'Class-Path': configurations.compile.collect { it.getName() }.join(' '),
+//                'Main-Class': 'sourcefiles.Application'
+//        )
 //    }
-////    exclude 'application/node_modules/'
+//    from(configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }) {}
 //}
+
+processResources {
+    from('application/dist/') {
+        into 'static'
+    }
+    exclude 'application/node_modules/'
+}
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter:1.5.9.RELEASE'
