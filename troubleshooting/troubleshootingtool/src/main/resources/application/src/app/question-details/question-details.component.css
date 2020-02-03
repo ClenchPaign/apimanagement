@@ -20,8 +20,6 @@
 .answer-layout {
   margin-left: 20px;
   margin-right: 20px;
-  overflow: scroll;
-  scroll-behavior: smooth;
 }
 
 
@@ -60,11 +58,12 @@
 }
 
 .description {
-  margin-top: 5px;
+  margin-top: 10px;
   margin-bottom: 10px;
   color: lightslategrey;
   font-weight: lighter;
   font-size: smaller;
+  white-space: pre-wrap;
 }
 
 
