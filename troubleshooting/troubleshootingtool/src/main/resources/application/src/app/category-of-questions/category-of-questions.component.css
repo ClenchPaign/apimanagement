@@ -42,13 +42,15 @@
 }
 
 .question {
-  color: darkslategray;
-  font-weight: bold;
+  color: #1776bf;
+  text-decoration: none;
+  font-weight: bolder;
   font-size: medium;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
 }
+
 
 .description {
   margin-top: 5px;

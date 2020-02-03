@@ -175,7 +175,7 @@ public class DataDao {
         ArrayList<QAEntry> list = new ArrayList<>();
         SearchRequest searchRequest = new SearchRequest();
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(QueryBuilders.matchQuery("Question.category", category));
+        searchSourceBuilder.query(QueryBuilders.termQuery("Question.category", category));
         searchRequest.source(searchSourceBuilder);
         searchSourceBuilder.size(10000);
         SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);

@@ -4,26 +4,27 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-import {MatCardModule} from '@angular/material/card';
-import {MatToolbarModule} from '@angular/material/toolbar';
-import {MatButtonModule } from '@angular/material/button';
-import {MatInputModule} from '@angular/material/input';
-import {MatChipsModule} from '@angular/material/chips';
+import { MatCardModule } from '@angular/material/card';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
+import { MatChipsModule } from '@angular/material/chips';
 
 import { HttpClientModule } from '@angular/common/http';
-import {ListingService} from './listing.service';
+import { ListingService } from './listing.service';
 import { MessageService } from './message.service';
 import { ListOfCategoriesComponent } from './list-of-categories/list-of-categories.component';
 import { CategoryOfQuestionsComponent } from './category-of-questions/category-of-questions.component';
 import { SearchComponent } from './search/search.component';
 import { QuestionDetailsComponent } from './question-details/question-details.component';
-import {MatDividerModule} from '@angular/material/divider';
-import {MatIconModule} from '@angular/material/icon';
-import {MatDialogModule} from '@angular/material/dialog';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDialogModule } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { QuestionsListComponent } from './questions-list/questions-list.component';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { TextFieldModule } from '@angular/cdk/text-field';
 
 import { AddQuestionDialogComponent } from './add-question-dialog/add-question-dialog.component';
 
@@ -52,6 +53,7 @@ import { AddQuestionDialogComponent } from './add-question-dialog/add-question-d
     HttpClientModule,
     BrowserAnimationsModule,
     FormsModule,
+    TextFieldModule,
     ReactiveFormsModule,
     HttpClientModule
   ],
