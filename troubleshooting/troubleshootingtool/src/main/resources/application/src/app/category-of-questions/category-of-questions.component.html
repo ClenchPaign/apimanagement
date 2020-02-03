@@ -13,7 +13,7 @@
             (click)="onClick(list.Question.id)"
             >{{ list.Question.question }}</a
           >
-          <div class="description">{{ list.Question.description }}</div>
+          <div class="description"[routerLink]="['/qna', list.Question.id]"  (click)="onClick(list.Question.id)">{{ list.Question.description }}</div>
           <span
             *ngFor="let tag of getTags(list.tags)"
             class="chips"

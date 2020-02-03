@@ -45,9 +45,18 @@ export class QuestionsListComponent implements OnInit {
   }
   onTagClick(tag: string) {
     console.log('clicked ' + tag);
-    this.listingService.keyword = tag;
-    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
-      this.router.navigate(['/search/' + tag]));
+
+    this.searchData = new SearchQuery('', [tag], []);
+    this.listingService.searchForKeyword(this.searchData).subscribe(
+      data => {
+        console.log('Getting questions successful ', data);
+        this.response = data;
+      },
+      res => { console.log(res); });
+
+
+    // this.listingService.keyword = tag;
+    this.router.navigateByUrl('/search/' + tag);
     // this.router.navigateByUrl('/cat');
   }
 }
