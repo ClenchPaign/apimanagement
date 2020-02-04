@@ -19,7 +19,7 @@ export interface Categories {
   styleUrls: ['./add-qa-entry.component.css']
 })
 export class AddQaEntryComponent implements OnInit {
-  val: any = ''; 
+  val: any = '';
   public quesTags: string[];
   response: any;
   visible = true;
@@ -31,6 +31,16 @@ export class AddQaEntryComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router
   ) { }
+
+  public tools: object = {
+    items: [
+           'Bold', 'Italic', 'Underline', 'StrikeThrough', '|',
+           'FontName', 'FontSize', 'FontColor', '|', 'Undo', 'Redo', '|',
+           'Formats', 'Alignments', '|', 'OrderedList', 'UnorderedList', '|',
+           'Indent', 'Outdent', '|', 'CreateLink',
+           'Image', '|', 'SourceCode']
+   };
+
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   fruits: Tags[] = [];
   filteredOptions: Observable<Categories[]>;
@@ -39,7 +49,6 @@ export class AddQaEntryComponent implements OnInit {
   question = new FormControl();
   description = new FormControl();
   categories = new FormControl();
-  answer=new FormControl();
 
   ngOnInit() {
     this.listingService.category = '';
@@ -76,37 +85,20 @@ export class AddQaEntryComponent implements OnInit {
       this.fruits.splice(index, 1);
     }
   }
-  set() {
-    (document.getElementById('display') as HTMLInputElement).style.display =
-      'block';
-  }
-
-  openNav() {
-    (document.getElementById('mySidenav') as HTMLInputElement).style.width =
-      '460px';
-  }
-  closeNav() {
-    (document.getElementById('mySidenav') as HTMLInputElement).style.width =
-      '0';
-  }
-dis()
-{ 
-  console.log("val",this.val);
-}
   post_qaentry() {
     const question = this.question.value;
     const description = this.description.value;
     const categories = this.categories.value;
     this.quesTags = [];
-    const ans=this.val;
-    for (let tags of this.fruits) {
+    const ans = this.val;
+    for (const tags of this.fruits) {
       this.quesTags.push(tags.name);
     }
     console.log(this.quesTags);
     const d = new Date();
     const creationDate = d.getTime();
     const ques = new Question('', categories, question, description, '', creationDate, '', creationDate);
-    const answer=new Answer("1",ans,creationDate,"123","user",creationDate,0,false);
+    const answer = new Answer('1', ans, creationDate, '123', 'user', creationDate, 0, false);
     const qa = new QAEntry(ques, [answer], this.quesTags, true, 1, 0);
     console.log(ques);
     console.log(JSON.stringify(qa));
@@ -115,7 +107,7 @@ dis()
       console.log('POST Request is successful ', data);
       this.router.navigateByUrl('/category');
     });
-    
+
   }
 
 }

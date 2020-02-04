@@ -14,14 +14,13 @@ import { FormControl } from '@angular/forms';
 export class QuestionDetailsComponent implements OnInit {
 
   constructor(private listingService: ListingService, private router: Router, private route: ActivatedRoute) { }
-
+  val: any = '';
   response: any;
   postedDate: any;
   ans_count: number;
   @Input() id: string;
 
   ngOnInit() {
-
     this.id = this.listingService.id;
     this.route.paramMap.subscribe(params => {
       this.id = params.get('id');
@@ -33,14 +32,6 @@ export class QuestionDetailsComponent implements OnInit {
       },
       res => { console.log(res); });
   }
-
-  display() {
-    (document.getElementById('display') as HTMLInputElement).style.display = 'block';
-    window.scrollTo(0, document.body.scrollHeight);
-  }
-
-
-
 
   getQuestion(): QAEntry {
     return this.response;
@@ -55,9 +46,8 @@ export class QuestionDetailsComponent implements OnInit {
 
 
   post_ans() {
-
-    const answer = (document.getElementById('answer') as HTMLInputElement).value;
-    if (answer == '') {
+    const answer = this.val;
+    if (answer === '') {
       alert('Please add your answer');
     }
     else {
@@ -76,10 +66,9 @@ export class QuestionDetailsComponent implements OnInit {
           console.log('put Request is successful ', data);
           this.response = data;
           (document.getElementById('answercount') as HTMLParagraphElement).innerHTML = answers.length + ' Answers';
+          this.val = '';
         }
       );
-      (document.getElementById('display') as HTMLInputElement).style.display = 'none';
-      (document.getElementById('answer') as HTMLInputElement).value = '';
     }
   }
 }

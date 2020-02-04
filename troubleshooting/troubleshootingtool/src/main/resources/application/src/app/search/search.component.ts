@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, HostListener, ElementRef } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ListingService } from '../listing.service';
 import { SearchQuery } from '../data-models/SearchQuery';
 import { QAEntry } from '../data-models/QAEntry';
@@ -13,16 +13,23 @@ export class SearchComponent implements OnInit {
   response: any;
   category: any;
   searchdata: SearchQuery;
-  constructor(private listingService: ListingService, private router: Router) { }
+  constructor(private listingService: ListingService, private router: Router, private eRef: ElementRef) { }
   ngOnInit() {
     this.listingService.searchForKeyword(this.searchdata).subscribe(
       data => {
-        console.log('Getting questions for ' + this.searchdata + ' successful ', data);
         this.response = data;
       },
       res => {
         console.log(res);
       });
+  }
+
+  @HostListener('document:click', ['$event'])
+  clickout(event) {
+    if(this.eRef.nativeElement.contains(event.target)) {
+    } else {
+      this.response = null;
+    }
   }
   getQuestions(): Array<QAEntry> {
     return this.response;
@@ -32,11 +39,15 @@ export class SearchComponent implements OnInit {
     return straray;
   }
   search(value: any) {
+    let id = this.listingService.category;
+    if (id === undefined || id === '') {
+      id = '';
+    }
     const keyword = (document.getElementById('searchinput') as HTMLInputElement).value;
     if (keyword === '') {
       this.searchdata = new SearchQuery('', [], []);
     } else {
-      this.searchdata = new SearchQuery('', [], [(document.getElementById('searchinput') as HTMLInputElement).value]);
+      this.searchdata = new SearchQuery(id, [], [keyword]);
     }
     this.ngOnInit();
     this.getQuestions();
@@ -46,17 +57,17 @@ export class SearchComponent implements OnInit {
 
     this.listingService.id = id;
     (document.getElementById('searchinput') as HTMLInputElement).value = '';
-    this.search('');
+    this.response = null;
+    // this.search('');
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
       this.router.navigate(['/qna/' + id]));
 
   }
 
   onEnter() {
-    console.log('enteredd');
     const val = (document.getElementById('searchinput') as HTMLInputElement).value;
     (document.getElementById('searchinput') as HTMLInputElement).value = '';
-    this.search('');
+    this.response = null;
     this.listingService.keyword = val;
     this.router.navigateByUrl('/search/' + val);
   }
@@ -67,6 +78,5 @@ export class SearchComponent implements OnInit {
     this.search('');
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
       this.router.navigate(['/search/' + tag]));
-    // this.router.navigateByUrl('/cat');
   }
 }
