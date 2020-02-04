@@ -35,6 +35,12 @@
   border-radius: 15px;
 }
 
+.fab{
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+}
+
 /* ----------------------Added by preethi------------------------------------------------- */
 
 .dlt-button {

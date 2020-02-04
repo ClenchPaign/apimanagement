@@ -1,6 +1,6 @@
 <div>
-  <button mat-button class="dlt-button" (click)="openDialog()">
-    Ask a Question
+  <button mat-button class="dlt-button" (click)="addQAEntry()">
+    Add a troubleshooting step
   </button>
   <div class="head">Categories</div>
 </div>
@@ -19,3 +19,4 @@
     <p class="button-text">{{ list }}</p>
   </mat-card>
 </div>
+<button mat-fab class="fab" (click)="openDialog()"><mat-icon>add</mat-icon></button>

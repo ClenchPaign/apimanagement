@@ -5,6 +5,7 @@ import { CategoryOfQuestionsComponent } from './category-of-questions/category-o
 import { SearchComponent } from './search/search.component';
 import { QuestionDetailsComponent } from './question-details/question-details.component';
 import { QuestionsListComponent } from './questions-list/questions-list.component';
+import { AddQaEntryComponent } from './add-qa-entry/add-qa-entry.component';
 
 
 const routes: Routes = [
@@ -12,6 +13,7 @@ const routes: Routes = [
   { path: 'category', component: ListOfCategoriesComponent },
   { path: 'category/:category', component: CategoryOfQuestionsComponent },
   { path: 'qna/:id', component: QuestionDetailsComponent},
+  { path: 'add_qna', component: AddQaEntryComponent},
   { path: 'search/:keyword', component: QuestionsListComponent},
   { path: 'search', component: SearchComponent },
 ];

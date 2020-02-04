@@ -25,8 +25,10 @@ import { QuestionsListComponent } from './questions-list/questions-list.componen
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { TextFieldModule } from '@angular/cdk/text-field';
+import { RichTextEditorAllModule } from '@syncfusion/ej2-angular-richtexteditor';
 
 import { AddQuestionDialogComponent } from './add-question-dialog/add-question-dialog.component';
+import { AddQaEntryComponent } from './add-qa-entry/add-qa-entry.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +38,8 @@ import { AddQuestionDialogComponent } from './add-question-dialog/add-question-d
     SearchComponent,
     QuestionDetailsComponent,
     QuestionsListComponent,
-    AddQuestionDialogComponent
+    AddQuestionDialogComponent,
+    AddQaEntryComponent
   ],
   imports: [
     BrowserModule,
@@ -55,7 +58,8 @@ import { AddQuestionDialogComponent } from './add-question-dialog/add-question-d
     FormsModule,
     TextFieldModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    RichTextEditorAllModule
   ],
   providers: [ListingService, MessageService],
   bootstrap: [AppComponent],

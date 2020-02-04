@@ -1,0 +1,51 @@
+<mat-card class="parent">
+  <mat-form-field class="textarea">
+    <textarea
+      matInput
+      placeholder="Troubleshooting query"
+      cdkTextareaAutosize
+      #autosize="cdkTextareaAutosize"
+      cdkAutosizeMinRows="2"
+      cdkAutosizeMaxRows="8"
+    ></textarea>
+  </mat-form-field>
+  <mat-form-field class="textarea">
+    <textarea
+      matInput
+      placeholder="Description"
+      cdkTextareaAutosize
+      #autosize="cdkTextareaAutosize"
+      cdkAutosizeMinRows="3"
+      cdkAutosizeMaxRows="8"
+    ></textarea>
+  </mat-form-field>
+  <mat-form-field class="search">
+    <mat-chip-list #chipList>
+      <mat-chip
+        *ngFor="let tag of fruits"
+        [selectable]="selectable"
+        [removable]="removable"
+        (removed)="remove(tag)"
+      >
+        {{ tag.name }}
+        <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+      </mat-chip>
+      <input
+        class="tag-input"
+        placeholder="Add tags here..."
+        id="tag"
+        [matChipInputFor]="chipList"
+        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+        [matChipInputAddOnBlur]="addOnBlur"
+        (matChipInputTokenEnd)="add($event)"
+      />
+    </mat-chip-list>
+  </mat-form-field>
+  <label class="textarea">Solution</label>
+  <br />
+  <ejs-richtexteditor
+    class="richtexteditor"
+    width="90%"
+    height="300px"
+  ></ejs-richtexteditor>
+</mat-card>
