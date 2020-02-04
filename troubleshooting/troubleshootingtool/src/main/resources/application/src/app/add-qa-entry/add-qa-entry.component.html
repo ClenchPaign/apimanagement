@@ -1,3 +1,4 @@
+
 <mat-card class="parent">
   <mat-form-field class="textarea">
     <textarea
@@ -7,10 +8,11 @@
       #autosize="cdkTextareaAutosize"
       cdkAutosizeMinRows="2"
       cdkAutosizeMaxRows="8"
+      [formControl]="question"
     ></textarea>
   </mat-form-field>
   <mat-form-field class="textarea">
-    <textarea
+    <textarea [formControl]="description"
       matInput
       placeholder="Description"
       cdkTextareaAutosize
@@ -19,6 +21,23 @@
       cdkAutosizeMaxRows="8"
     ></textarea>
   </mat-form-field>
+
+
+  <mat-form-field class="search">
+    <input
+    [formControl]="categories"
+      type="text"
+      placeholder="Categories"
+      matInput
+      [matAutocomplete]="auto"
+    />
+  </mat-form-field>
+
+  <mat-autocomplete #auto="matAutocomplete">
+    <mat-option *ngFor="let list of getResponse()" [value]="list">{{
+      list
+    }}</mat-option>
+  </mat-autocomplete>
   <mat-form-field class="search">
     <mat-chip-list #chipList>
       <mat-chip
@@ -43,9 +62,19 @@
   </mat-form-field>
   <label class="textarea">Solution</label>
   <br />
-  <ejs-richtexteditor
+  <ejs-richtexteditor id="answer"  [formControl]="answer"
     class="richtexteditor"
     width="90%"
-    height="300px"
+    height="300px" [(ngModel)]="val"
   ></ejs-richtexteditor>
+
+  <button
+  mat-button  ejs-button
+  class="dlt-button-post"
+  type="submit"
+  (click)="post_qaentry()"
+>
+  POST
+</button>
+
 </mat-card>

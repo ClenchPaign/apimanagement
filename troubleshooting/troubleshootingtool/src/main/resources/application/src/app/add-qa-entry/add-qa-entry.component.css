@@ -1,6 +1,9 @@
 .parent {
   display: flex;
   flex-direction: column;
+  width:50%;
+  margin-left: auto;
+    margin-right: auto;
 }
 
 .textarea {
@@ -13,3 +16,40 @@
   margin-right: 16px;
   margin-left: 16px;
 }
+.search {
+  width: 100%;
+  color: #000000;
+}
+.dlt-button {
+  color: #ffffff;
+  background-color: #1776bf;
+  text-decoration: none;
+  padding: 0 0.75rem;
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 30px;
+  -moz-transition: 0.25s ease-in;
+  -o-transition: 0.25s ease-in;
+  -webkit-transition: 0.25s ease-in;
+  transition: 0.25s ease-in;
+  cursor: pointer;
+  border: 1px solid transparent;
+  outline: 1px solid transparent;
+  outline-offset: -2px;
+  margin-right: 10px;
+  float: right;
+  display: inline-block;
+}
+
+.dlt-button-post {
+  margin-top: 10px;
+  width:50px;
+  margin-left: auto;
+  margin-right: auto;
+   color: #ffffff;
+   background-color: #1776bf;
+   font-family: Roboto, Helvetica, Arial, sans-serif;
+  margin-right: 10px;
+  }
+

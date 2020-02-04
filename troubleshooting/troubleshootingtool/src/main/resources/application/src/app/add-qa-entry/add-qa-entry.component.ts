@@ -7,8 +7,9 @@ import { Question } from '../data-models/Question';
 import { QAEntry } from '../data-models/QAEntry';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
+import { Answer } from '../data-models/Answer';
 export interface Categories {
   category: string;
 }
@@ -18,6 +19,7 @@ export interface Categories {
   styleUrls: ['./add-qa-entry.component.css']
 })
 export class AddQaEntryComponent implements OnInit {
+  val: any = ''; 
   public quesTags: string[];
   response: any;
   visible = true;
@@ -37,6 +39,7 @@ export class AddQaEntryComponent implements OnInit {
   question = new FormControl();
   description = new FormControl();
   categories = new FormControl();
+  answer=new FormControl();
 
   ngOnInit() {
     this.listingService.category = '';
@@ -86,12 +89,16 @@ export class AddQaEntryComponent implements OnInit {
     (document.getElementById('mySidenav') as HTMLInputElement).style.width =
       '0';
   }
-
-  post_ques() {
+dis()
+{ 
+  console.log("val",this.val);
+}
+  post_qaentry() {
     const question = this.question.value;
     const description = this.description.value;
     const categories = this.categories.value;
     this.quesTags = [];
+    const ans=this.val;
     for (let tags of this.fruits) {
       this.quesTags.push(tags.name);
     }
@@ -99,13 +106,16 @@ export class AddQaEntryComponent implements OnInit {
     const d = new Date();
     const creationDate = d.getTime();
     const ques = new Question('', categories, question, description, '', creationDate, '', creationDate);
-    const qa = new QAEntry(ques, [], this.quesTags, false, 0, 0);
+    const answer=new Answer("1",ans,creationDate,"123","user",creationDate,0,false);
+    const qa = new QAEntry(ques, [answer], this.quesTags, true, 1, 0);
     console.log(ques);
     console.log(JSON.stringify(qa));
     console.log(this.fruits);
     this.listingService.post_question(qa).subscribe(data => {
-      console.log('POST Request is successful ', JSON.stringify(qa));
+      console.log('POST Request is successful ', data);
+      this.router.navigateByUrl('/category');
     });
+    
   }
 
 }
