@@ -26,7 +26,7 @@ export class SearchComponent implements OnInit {
 
   @HostListener('document:click', ['$event'])
   clickout(event) {
-    if(this.eRef.nativeElement.contains(event.target)) {
+    if (this.eRef.nativeElement.contains(event.target)) {
     } else {
       this.response = null;
     }
@@ -69,7 +69,11 @@ export class SearchComponent implements OnInit {
     (document.getElementById('searchinput') as HTMLInputElement).value = '';
     this.response = null;
     this.listingService.keyword = val;
-    this.router.navigateByUrl('/search/' + val);
+    const tag = '###';
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
+      this.router.navigate(['/search/' + tag + '/' + val ]));
+    // this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
+    //   this.router.navigate(['/search/ ' + val + '/']));
   }
   onTagClick(tag: string) {
     console.log('clicked ' + tag);
@@ -77,6 +81,6 @@ export class SearchComponent implements OnInit {
     (document.getElementById('searchinput') as HTMLInputElement).value = '';
     this.search('');
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
-      this.router.navigate(['/search/' + tag]));
+      this.router.navigate(['/search/' + tag + '/ ']));
   }
 }

@@ -14,7 +14,7 @@ const routes: Routes = [
   { path: 'category/:category', component: CategoryOfQuestionsComponent },
   { path: 'qna/:id', component: QuestionDetailsComponent},
   { path: 'add_qna', component: AddQaEntryComponent},
-  { path: 'search/:keyword', component: QuestionsListComponent},
+  { path: 'search/:tag/:keyword', component: QuestionsListComponent},
   { path: 'search', component: SearchComponent },
 ];
 

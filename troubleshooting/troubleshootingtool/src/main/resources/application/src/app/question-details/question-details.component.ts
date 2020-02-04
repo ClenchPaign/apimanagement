@@ -5,6 +5,7 @@ import { QAEntry } from '../data-models/QAEntry';
 import { Question } from '../data-models/Question';
 import { Answer } from '../data-models/Answer';
 import { FormControl } from '@angular/forms';
+import { SearchQuery } from '../data-models/SearchQuery';
 
 @Component({
   selector: 'app-question-details',
@@ -37,10 +38,18 @@ export class QuestionDetailsComponent implements OnInit {
     return this.response;
   }
   onTagClick(tag: string) {
-    console.log('clicked ' + tag);
-    this.listingService.keyword = tag;
-    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
-      this.router.navigate(['/search/' + tag]));
+    console.log('on - - - clicked ' + tag);
+    const searchData = new SearchQuery('', [tag], []);
+    this.listingService.searchForKeyword(searchData).subscribe(
+      data => {
+        console.log('Getting questions successful ', data);
+        this.response = data;
+      },
+      res => { console.log(res); });
+    this.router.navigateByUrl('/search/' + tag + '/ ');
+    // this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
+    // this.router.navigate(['/search/' + tag ]));
+    // this.router.navigate(['/search/' + tag + '/']));
     // this.router.navigateByUrl('/cat');
   }
 

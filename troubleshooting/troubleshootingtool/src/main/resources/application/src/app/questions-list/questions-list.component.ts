@@ -13,6 +13,7 @@ export class QuestionsListComponent implements OnInit {
 
   response: any;
   searchData: any;
+  tag: any;
   @Input() keyword: string;
   constructor(private listingService: ListingService, private router: Router, private route: ActivatedRoute) { }
 
@@ -21,7 +22,16 @@ export class QuestionsListComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       this.keyword = params.get('keyword');
     });
-    this.searchData = new SearchQuery('', [], [this.keyword]);
+    this.route.paramMap.subscribe(params => {
+      this.tag = params.get('tag');
+    });
+    if (this.tag === '###' || this.tag === '') {
+      console.log('tag empty');
+      this.searchData = new SearchQuery('', [], [this.keyword]);
+    } else {
+      console.log('keyword empty');
+      this.searchData = new SearchQuery('', [this.tag], []);
+    }
     this.listingService.searchForKeyword(this.searchData).subscribe(
       data => {
         console.log('Getting questions for ' + this.searchData + ' successful ', data);
@@ -56,7 +66,7 @@ export class QuestionsListComponent implements OnInit {
 
 
     // this.listingService.keyword = tag;
-    this.router.navigateByUrl('/search/' + tag);
+    this.router.navigateByUrl('/search/' + tag +'/');
     // this.router.navigateByUrl('/cat');
   }
 }
