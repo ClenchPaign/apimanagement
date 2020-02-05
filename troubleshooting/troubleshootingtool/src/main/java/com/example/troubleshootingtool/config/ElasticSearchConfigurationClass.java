@@ -62,8 +62,8 @@ public class ElasticSearchConfigurationClass extends AbstractFactoryBean<RestHig
 //                            new HttpHost("10.60.37.26", 9201, "http"),
 //                            new HttpHost("10.60.37.12", 9200, "http"),
 //                            new HttpHost("10.60.37.12", 9201, "http"),
-                           new HttpHost("localhost", 9200, "http"),
-                           new HttpHost("localhost", 9201, "http"))
+                           new HttpHost("127.0.0.1", 9200, "http"),
+                           new HttpHost("127.0.0.1", 9201, "http"))
                             .setRequestConfigCallback(
                                     new RestClientBuilder.RequestConfigCallback() {
                                         @Override
