@@ -25,6 +25,10 @@ public class ElasticSearchConfigurationClass extends AbstractFactoryBean<RestHig
     private String clusterNodes;
     @Value("${spring.data.elasticsearch.cluster-name}")
     private String clusterName;
+
+    @Value("${elasticsearch.host}")
+    private String elasticsearchHost;
+
     private RestHighLevelClient restHighLevelClient;
 
 
@@ -57,9 +61,9 @@ public class ElasticSearchConfigurationClass extends AbstractFactoryBean<RestHig
     private RestHighLevelClient buildClient() {
         try {
             restHighLevelClient = new RestHighLevelClient(
-                    RestClient.builder(
-                            new HttpHost("10.60.37.26", 9200, "http"),
-                            new HttpHost("10.60.37.26", 9201, "http"))
+                    RestClient.builder( new HttpHost(elasticsearchHost))
+//                            new HttpHost("10.60.37.26", 9200, "http"),
+//                            new HttpHost("10.60.37.26", 9201, "http"))
 //                            new HttpHost("192.168.99.1", 9200, "http"),
 //                            new HttpHost("192.168.99.1", 9201, "http"))
 //                            new HttpHost("10.60.37.12", 9200, "http"),
