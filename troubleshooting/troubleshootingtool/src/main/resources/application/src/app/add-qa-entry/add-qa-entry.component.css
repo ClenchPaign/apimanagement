@@ -4,6 +4,7 @@
   width: 70%;
   margin-left: auto;
   margin-right: auto;
+  margin-bottom: 24px;
 }
 
 .textarea {
@@ -50,4 +51,15 @@
   background-color: #1776bf;
   font-family: Roboto, Helvetica, Arial, sans-serif;
   margin-right: 10px;
+}
+
+.back{
+  cursor: pointer;
+  font-size: medium;
+  color: #1776bf;
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+  float: right;
+  padding-right: 16px;
+  padding-left: 16px;
+  padding-bottom: 16px;
 }
