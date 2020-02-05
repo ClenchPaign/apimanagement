@@ -28,6 +28,8 @@ public class ElasticSearchConfigurationClass extends AbstractFactoryBean<RestHig
 
     @Value("${elasticsearch.host}")
     private String elasticsearchHost;
+    @Value("${elasticsearch.port}")
+    private int elasticsearchPort;
 
     private RestHighLevelClient restHighLevelClient;
 
@@ -61,7 +63,7 @@ public class ElasticSearchConfigurationClass extends AbstractFactoryBean<RestHig
     private RestHighLevelClient buildClient() {
         try {
             restHighLevelClient = new RestHighLevelClient(
-                    RestClient.builder( new HttpHost(elasticsearchHost))
+                    RestClient.builder( new HttpHost(elasticsearchHost,elasticsearchPort))
 //                            new HttpHost("10.60.37.26", 9200, "http"),
 //                            new HttpHost("10.60.37.26", 9201, "http"))
 //                            new HttpHost("192.168.99.1", 9200, "http"),
