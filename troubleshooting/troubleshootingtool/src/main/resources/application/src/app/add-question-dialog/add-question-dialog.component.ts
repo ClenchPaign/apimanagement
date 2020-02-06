@@ -9,9 +9,6 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { FormControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 
-export interface Categories {
-  category: string;
-}
 @Component({
   selector: 'app-add-question-dialog',
   templateUrl: './add-question-dialog.component.html',
@@ -28,40 +25,50 @@ export class AddQuestionDialogComponent implements OnInit {
 
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   fruits: Tags[] = [];
-  filteredOptions: Observable<Categories[]>;
+  result: string[] = [];
   categoryList: string[];
   constructor(
     public dialogRef: MatDialogRef<AddQuestionDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any, private listingService: ListingService) {  }
+    @Inject(MAT_DIALOG_DATA) public data: any, private listingService: ListingService) { }
 
-  question = new FormControl();
-  description = new FormControl();
+  question = new FormControl('', [
+    Validators.required,
+  ]);
+  description = new FormControl('', [
+    Validators.required,
+  ]);
   categories = new FormControl();
   onNoClick(): void {
     this.dialogRef.close(this.categories.value);
   }
 
-  // private _filter(name: string): Categories[] {
-  //   const filterValue = name.toLowerCase();
-  //   return this.categoryList.filter(option => option.category.toLowerCase().indexOf(filterValue) === 0);
-  // }
-
   ngOnInit() {
-    // this.filteredOptions = this.categories.valueChanges
-    //   .pipe(
-    //     startWith(''),
-    //     map(value => typeof value === 'string' ? value : value.name),
-    //     map(name => name ? this._filter(name) : this.categoryList.slice())
-    //   );
     this.listingService.category = '';
     this.listingService.getAllCategories().subscribe(
       data => {
         console.log('GET Request is successful ', data);
         this.response = data;
-        this.response.forEach((x) => { this.categoryList.push(Object.assign({}, x)); });
-        res => { console.log(res); };
       });
   }
+
+  getFilteredList() {
+    return this.result;
+  }
+
+  filter(value: string): string[] {
+    this.result = [];
+    this.categoryList = this.response;
+    console.log('inside filter ' + value);
+    const filterValue = value.toLowerCase();
+    this.categoryList.forEach((value) => {
+      if (value.toLowerCase().includes(filterValue)) {
+        this.result.push(value);
+      }
+    });
+    console.log('inside filter ' + this.result.toString());
+    return this.result;
+  }
+
 
   getResponse() {
     return this.response;

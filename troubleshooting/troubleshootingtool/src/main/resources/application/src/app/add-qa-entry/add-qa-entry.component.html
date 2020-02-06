@@ -1,4 +1,4 @@
-<div class="back" [routerLink]="['/category']"><mat-icon>close</mat-icon></div>
+<div class="close" [routerLink]="['/category']"><mat-icon>close</mat-icon></div>
 <mat-card class="parent">
   <mat-form-field class="textarea">
     <textarea
@@ -10,6 +10,9 @@
       cdkAutosizeMaxRows="8"
       [formControl]="question"
     ></textarea>
+    <mat-error *ngIf="question.hasError('required')">
+      Troubleshooting query cannot be <strong>empty</strong>
+    </mat-error>
   </mat-form-field>
   <mat-form-field class="textarea">
     <textarea
@@ -21,23 +24,28 @@
       cdkAutosizeMinRows="3"
       cdkAutosizeMaxRows="8"
     ></textarea>
+    <mat-error *ngIf="description.hasError('required')">
+      Description cannot be <strong>empty</strong>
+    </mat-error>
   </mat-form-field>
 
   <mat-form-field class="textarea">
     <input
       [formControl]="categories"
       type="text"
-      placeholder="Categories"
+      placeholder="Select a category"
       matInput
+      (input)="filter($event.target.value)"
       [matAutocomplete]="auto"
     />
+    <mat-autocomplete #auto="matAutocomplete">
+      <mat-option *ngFor="let option of getFilteredList()" [value]="option">
+        {{option}}
+      </mat-option>
+      </mat-autocomplete>
   </mat-form-field>
 
-  <mat-autocomplete #auto="matAutocomplete">
-    <mat-option *ngFor="let list of getResponse()" [value]="list">{{
-      list
-    }}</mat-option>
-  </mat-autocomplete>
+  
   <mat-form-field class="textarea">
     <mat-chip-list #chipList>
       <mat-chip

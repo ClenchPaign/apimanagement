@@ -38,7 +38,6 @@ export class QuestionDetailsComponent implements OnInit {
     return this.response;
   }
   onTagClick(tag: string) {
-    console.log('on - - - clicked ' + tag);
     const searchData = new SearchQuery('', [tag], []);
     this.listingService.searchForKeyword(searchData).subscribe(
       data => {
@@ -47,12 +46,7 @@ export class QuestionDetailsComponent implements OnInit {
       },
       res => { console.log(res); });
     this.router.navigateByUrl('/search/' + tag + '/ ');
-    // this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
-    // this.router.navigate(['/search/' + tag ]));
-    // this.router.navigate(['/search/' + tag + '/']));
-    // this.router.navigateByUrl('/cat');
   }
-
 
   post_ans() {
     const answer = this.val;
@@ -61,15 +55,15 @@ export class QuestionDetailsComponent implements OnInit {
     }
     else {
       const d = new Date();
-      let qa_entry = this.response;
+      const qaEntry = this.response;
       const creationDate = d.getTime();
-      const ques = new Question(this.id, qa_entry.Question.category, qa_entry.Question.question, qa_entry.Question.description,
-        qa_entry.Question.attachment, qa_entry.Question.creationDate, qa_entry.Question.ownerId, qa_entry.Question.lastModifiedDate);
-      const ans = new Answer('123', answer, creationDate, 'y509476', 'user', creationDate, 0, false);
+      const ques = new Question(this.id, qaEntry.Question.category, qaEntry.Question.question, qaEntry.Question.description,
+        qaEntry.Question.attachment, qaEntry.Question.creationDate, qaEntry.Question.ownerId, qaEntry.Question.lastModifiedDate);
+      const ans = new Answer(qaEntry.answerCount, answer, creationDate, 'y509476', 'user', creationDate, 0, false);
       this.response.Answers.push(ans);
       let answers: Array<Answer>;
-      answers = qa_entry.Answers;
-      const qa = new QAEntry(ques, answers, qa_entry.tags, true, answers.length, 0);
+      answers = qaEntry.Answers;
+      const qa = new QAEntry(ques, answers, qaEntry.tags, true, answers.length, 0);
       this.listingService.post_answer(qa, this.id).subscribe(
         data => {
           console.log('put Request is successful ', data);

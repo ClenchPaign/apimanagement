@@ -158,7 +158,22 @@ public class DataDao {
         List<String> list = new ArrayList<>();
         SearchRequest searchRequest = new SearchRequest();
         AggregationBuilder aggregationBuilder = AggregationBuilders.terms("db").field("Question.category.keyword").size(10000);
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.aggregation(aggregationBuilder);
+        searchRequest.source(searchSourceBuilder);
+        SearchResponse response = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        Terms terms = response.getAggregations().get("db");
+        for (Terms.Bucket bucket : terms.getBuckets()) {
+            list.add(bucket.getKeyAsString());
+        }
+        return list;
+    }
 
+    public List<String> getAllTags() throws IOException {
+//        @GetMapping("/categories")
+        List<String> list = new ArrayList<>();
+        SearchRequest searchRequest = new SearchRequest();
+        AggregationBuilder aggregationBuilder = AggregationBuilders.terms("db").field("tags.keyword").size(10000);
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         searchSourceBuilder.aggregation(aggregationBuilder);
         searchRequest.source(searchSourceBuilder);

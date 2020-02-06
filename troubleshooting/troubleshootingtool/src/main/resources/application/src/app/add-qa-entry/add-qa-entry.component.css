@@ -53,8 +53,9 @@
   margin-right: 10px;
 }
 
-.back{
+.close{
   cursor: pointer;
+  outline: none;
   font-size: medium;
   color: #1776bf;
   font-family: Roboto, Helvetica, Arial, sans-serif;

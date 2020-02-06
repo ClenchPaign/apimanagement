@@ -1,26 +1,52 @@
 <form>
   <mat-form-field class="search">
-    <textarea matInput placeholder="Question" rows="3" type="text"  [formControl]="question"></textarea>
+    <textarea
+      matInput
+      placeholder="Question"
+      rows="3"
+      type="text"
+      cdkTextareaAutosize
+      #autosize="cdkTextareaAutosize"
+      cdkAutosizeMinRows="2"
+      cdkAutosizeMaxRows="8"
+      [formControl]="question"
+    ></textarea>
+    <mat-error *ngIf="question.hasError('required')">
+      Question is <strong>required</strong>
+    </mat-error>
   </mat-form-field>
   <mat-form-field class="search">
-    <textarea matInput placeholder="Description" rows="6" type="text"  [formControl]="description"></textarea>
+    <textarea
+      matInput
+      placeholder="Information regarding the question"
+      rows="6"
+      type="text"
+      cdkTextareaAutosize
+      #autosize="cdkTextareaAutosize"
+      cdkAutosizeMinRows="3"
+      cdkAutosizeMaxRows="8"
+      [formControl]="description"
+    ></textarea>
+    <mat-error *ngIf="question.hasError('required')">
+      Describe the problem here.
+    </mat-error>
   </mat-form-field>
   <div>
     <mat-form-field class="search">
       <input
-      [formControl]="categories"
+        [formControl]="categories"
         type="text"
-        placeholder="Categories"
+        placeholder="Select a category"
         matInput
+        (input)="filter($event.target.value)"
         [matAutocomplete]="auto"
       />
+      <mat-autocomplete #auto="matAutocomplete">
+        <mat-option *ngFor="let option of getFilteredList()" [value]="option">
+          {{ option }}
+        </mat-option>
+      </mat-autocomplete>
     </mat-form-field>
-
-    <mat-autocomplete #auto="matAutocomplete">
-      <mat-option *ngFor="let list of getResponse()" [value]="list">{{
-        list
-      }}</mat-option>
-    </mat-autocomplete>
 
     <!-- <select class="search" name="categories" id="categories">
       <option *ngFor="let list of getResponse()">{{ list }}</option>
@@ -38,7 +64,7 @@
         <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
       </mat-chip>
       <input
-      class="tag-input"
+        class="tag-input"
         placeholder="Add tags here..."
         id="tag"
         [matChipInputFor]="chipList"

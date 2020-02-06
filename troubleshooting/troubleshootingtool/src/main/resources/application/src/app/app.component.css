@@ -10,6 +10,10 @@
   height: 52px;
 }
 
+span{
+  outline: none;
+}
+
 ul.breadcrumb {
   padding: 10px 16px;
   cursor: pointer;
@@ -20,6 +24,7 @@ ul.breadcrumb {
 ul.breadcrumb li {
   display: inline;
   font-size: small;
+  outline: none;
   font-family: Roboto, Helvetica, Arial, sans-serif;
   color: #0275d8;
 }

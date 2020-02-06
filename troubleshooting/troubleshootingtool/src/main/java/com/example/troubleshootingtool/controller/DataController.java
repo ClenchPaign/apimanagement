@@ -28,30 +28,31 @@ public class DataController {
         return "Hello world!";
     }
 
-//    @GetMapping("/all")
+    //    @GetMapping("/all")
     @GetMapping("/qnas")
     public List<QAEntry> readAll() throws IOException {
         return dataDao.getAllQAEntry();
     }
-//    @PostMapping("/insertQandA")
+
+    //    @PostMapping("/insertQandA")
     @PostMapping("/qnas")
     public String insertDataModel(@RequestBody QAEntry qandA) throws Exception {
         return dataDao.insertQAEntry(qandA);
     }
 
-//    @RequestMapping(value = "/get_qa/{id}", method = RequestMethod.GET)
+    //    @RequestMapping(value = "/get_qa/{id}", method = RequestMethod.GET)
     @RequestMapping(value = "/qnas/{id}", method = RequestMethod.GET)
     public QAEntry getQandA(@PathVariable("id") String id) throws IOException {
         return dataDao.getQAEntryById(id);
     }
 
-//    @RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
+    //    @RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
     @RequestMapping(value = "/qnas/{id}", method = RequestMethod.PUT)
-    public QAEntry updateQandA(@PathVariable("id") String id,@RequestBody QAEntry qandA) throws IOException {
-        return dataDao.updateQAEntryById(id,qandA);
+    public QAEntry updateQandA(@PathVariable("id") String id, @RequestBody QAEntry qandA) throws IOException {
+        return dataDao.updateQAEntryById(id, qandA);
     }
 
-//    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+    //    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
     @RequestMapping(value = "/qnas/{id}", method = RequestMethod.DELETE)
     public String deleteQandA(@PathVariable("id") String id) throws IOException {
         return dataDao.deleteQAEntryById(id);
@@ -62,7 +63,12 @@ public class DataController {
         return dataDao.getAllCategories();
     }
 
-//    @RequestMapping(value = "/get_qa_cat/{cat}", method = RequestMethod.GET)
+    @GetMapping("/tags")
+    public List<String> getAllTags() throws IOException {
+        return dataDao.getAllTags();
+    }
+
+    //    @RequestMapping(value = "/get_qa_cat/{cat}", method = RequestMethod.GET)
     @RequestMapping(value = "/categories/{cat}", method = RequestMethod.GET)
     public List<QAEntry> getQandAforCategory(@PathVariable("cat") String category) throws IOException {
         return dataDao.getQAEntryforCategory(category);
@@ -74,12 +80,12 @@ public class DataController {
 //    }
 
     @RequestMapping(value = "/search", method = RequestMethod.POST)
-    public  List<QAEntry> searchQuestion(@RequestBody SearchQuery searchQuery) throws IOException {
+    public List<QAEntry> searchQuestion(@RequestBody SearchQuery searchQuery) throws IOException {
         return dataDao.searchQuery(searchQuery);
     }
 
     @RequestMapping(value = "/restore", method = RequestMethod.POST)
-    public  String restoreValues(@RequestBody List<QAEntry> qaEntryList) throws IOException {
+    public String restoreValues(@RequestBody List<QAEntry> qaEntryList) throws IOException {
         return dataDao.restore(qaEntryList);
     }
 
