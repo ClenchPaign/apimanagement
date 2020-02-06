@@ -7,7 +7,6 @@ import { QAEntry } from '../data-models/QAEntry';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { FormControl, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-add-question-dialog',

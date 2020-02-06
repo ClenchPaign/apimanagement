@@ -1,7 +1,7 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ListingService } from '../listing.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { AddQuestionDialogComponent } from '../add-question-dialog/add-question-dialog.component';
 
 

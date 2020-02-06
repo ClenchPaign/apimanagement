@@ -1,5 +1,5 @@
 import { Component, OnInit, HostListener, ElementRef } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { ListingService } from '../listing.service';
 import { SearchQuery } from '../data-models/SearchQuery';
 import { QAEntry } from '../data-models/QAEntry';

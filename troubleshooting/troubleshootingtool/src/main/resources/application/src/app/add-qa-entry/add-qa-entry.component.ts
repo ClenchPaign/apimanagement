@@ -1,14 +1,12 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Tags } from '../list-of-categories/list-of-categories.component';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ListingService } from '../listing.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { Question } from '../data-models/Question';
 import { QAEntry } from '../data-models/QAEntry';
 import { MatChipInputEvent } from '@angular/material/chips';
-import { COMMA, ENTER, P } from '@angular/cdk/keycodes';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { FormControl, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
 import { Answer } from '../data-models/Answer';
 
 @Component({
@@ -23,6 +21,10 @@ export class AddQaEntryComponent implements OnInit {
   result: string[] = [];
   categoryList: string[];
   response: any;
+  visible = true;
+  selectable = true;
+  removable = true;
+  addOnBlur = true;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
 
   question = new FormControl('', [

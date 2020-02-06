@@ -1,8 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { QAEntry } from './data-models/QAEntry';
 import { ListingService } from './listing.service';
-import { SearchQuery } from './data-models/SearchQuery';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-root',

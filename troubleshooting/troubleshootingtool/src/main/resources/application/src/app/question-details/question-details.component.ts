@@ -1,10 +1,9 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ListingService } from '../listing.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { QAEntry } from '../data-models/QAEntry';
 import { Question } from '../data-models/Question';
 import { Answer } from '../data-models/Answer';
-import { FormControl } from '@angular/forms';
 import { SearchQuery } from '../data-models/SearchQuery';
 
 @Component({
