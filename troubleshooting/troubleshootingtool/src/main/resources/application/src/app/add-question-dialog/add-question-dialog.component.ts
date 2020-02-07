@@ -78,7 +78,7 @@ export class AddQuestionDialogComponent implements OnInit {
 
   onSelectionChanged(event: MatAutocompleteSelectedEvent) {
     console.log('on selection :' + event.option.value);
-    const val = (document.getElementById('tag') as HTMLInputElement).value;
+    // const val = (document.getElementById('tag') as HTMLInputElement).value;
     if ((event.option.value || '').trim()) {
       this.fruits.pop();
       this.fruits.push({ name: event.option.value.trim() });

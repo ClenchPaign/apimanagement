@@ -1,6 +1,6 @@
 .span{
     font-family: Roboto, Helvetica, Arial, sans-serif;
-    padding: 16px;
+    padding: 10px;
     outline: none;
     font-size: medium;
     cursor: pointer;
@@ -10,7 +10,10 @@
     margin-right: 16px;
 }
 .text{
-    margin-top: 5px;
-    margin-bottom: 5px;
-    margin-left: 5px;
+    /* align-self: center; */
+}
+.icon{
+    font-size: 20px;
+    align-self: center;
+    color: #0f4c7b;
 }
