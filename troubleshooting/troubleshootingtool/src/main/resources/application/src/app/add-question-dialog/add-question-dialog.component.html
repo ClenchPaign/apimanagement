@@ -70,8 +70,18 @@
         [matChipInputFor]="chipList"
         [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
         [matChipInputAddOnBlur]="addOnBlur"
+        (input)="filterTags($event.target.value)"
         (matChipInputTokenEnd)="add($event)"
+        [matAutocomplete]="autoTag"
       />
+      <mat-autocomplete
+      #autoTag="matAutocomplete"
+      (optionSelected)="onSelectionChanged($event)"
+    >
+      <mat-option *ngFor="let option of getFilteredTags()" [value]="option">
+        {{ option }}
+      </mat-option>
+    </mat-autocomplete>
     </mat-chip-list>
   </mat-form-field>
 

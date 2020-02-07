@@ -14,20 +14,17 @@
       Troubleshooting query cannot be <strong>empty</strong>
     </mat-error>
   </mat-form-field>
-  <mat-form-field class="textarea">
-    <textarea
-      [formControl]="description"
-      matInput
-      placeholder="Description"
-      cdkTextareaAutosize
-      #autosize="cdkTextareaAutosize"
-      cdkAutosizeMinRows="3"
-      cdkAutosizeMaxRows="8"
-    ></textarea>
-    <mat-error *ngIf="description.hasError('required')">
-      Description cannot be <strong>empty</strong>
-    </mat-error>
-  </mat-form-field>
+  <label class="textarea">Description of the problem</label>
+  <br />
+  <ejs-richtexteditor
+    #imageRTE
+    id="imageRTE"
+    class="richtexteditor"
+    width="95%"
+    height="350px"
+    [(ngModel)]="description"
+  >
+  </ejs-richtexteditor>
 
   <mat-form-field class="textarea">
     <input
@@ -40,12 +37,11 @@
     />
     <mat-autocomplete #auto="matAutocomplete">
       <mat-option *ngFor="let option of getFilteredList()" [value]="option">
-        {{option}}
+        {{ option }}
       </mat-option>
-      </mat-autocomplete>
+    </mat-autocomplete>
   </mat-form-field>
 
-  
   <mat-form-field class="textarea">
     <mat-chip-list #chipList>
       <mat-chip
@@ -64,17 +60,30 @@
         [matChipInputFor]="chipList"
         [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
         [matChipInputAddOnBlur]="addOnBlur"
+        (input)="filterTags($event.target.value)"
         (matChipInputTokenEnd)="add($event)"
+        [matAutocomplete]="autoTag"
       />
+      <mat-autocomplete
+        #autoTag="matAutocomplete"
+        (optionSelected)="onSelectionChanged($event)"
+      >
+        <mat-option *ngFor="let option of getFilteredTags()" [value]="option">
+          {{ option }}
+        </mat-option>
+      </mat-autocomplete>
     </mat-chip-list>
   </mat-form-field>
   <label class="textarea">Solution</label>
   <br />
   <ejs-richtexteditor
+    #imageRTE
+    id="imageRTEForAnswer"
     class="richtexteditor"
     width="95%"
     height="350px"
-    [(ngModel)]="val">
+    [(ngModel)]="val"
+  >
   </ejs-richtexteditor>
 
   <button
@@ -87,4 +96,3 @@
     POST
   </button>
 </mat-card>
-

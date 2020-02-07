@@ -29,6 +29,7 @@ import { RichTextEditorAllModule } from '@syncfusion/ej2-angular-richtexteditor'
 
 import { AddQuestionDialogComponent } from './add-question-dialog/add-question-dialog.component';
 import { AddQaEntryComponent } from './add-qa-entry/add-qa-entry.component';
+import { FiltersComponent } from './filters/filters.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { AddQaEntryComponent } from './add-qa-entry/add-qa-entry.component';
     QuestionDetailsComponent,
     QuestionsListComponent,
     AddQuestionDialogComponent,
-    AddQaEntryComponent
+    AddQaEntryComponent,
+    FiltersComponent
   ],
   imports: [
     BrowserModule,

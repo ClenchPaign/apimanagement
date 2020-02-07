@@ -32,6 +32,9 @@ export class ListingService {
   getCategory() {
     return this.category;
   }
+  getAllTags() {
+    return this.http.get(this.baseUrl + '/tags', httpOptions);
+  }
   getQuestionsForCategory(cat: string) {
     return this.http.get(this.baseUrl + '/categories/' + cat, httpOptions);
   }

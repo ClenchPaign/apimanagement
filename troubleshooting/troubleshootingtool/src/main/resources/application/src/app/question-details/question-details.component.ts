@@ -1,10 +1,11 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { ListingService } from '../listing.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { QAEntry } from '../data-models/QAEntry';
 import { Question } from '../data-models/Question';
 import { Answer } from '../data-models/Answer';
 import { SearchQuery } from '../data-models/SearchQuery';
+import { RichTextEditorComponent } from '@syncfusion/ej2-angular-richtexteditor';
 
 @Component({
   selector: 'app-question-details',
@@ -19,6 +20,8 @@ export class QuestionDetailsComponent implements OnInit {
   postedDate: any;
   ans_count: number;
   @Input() id: string;
+  @ViewChild('imageRTE', { static: true })
+  private rteObj: RichTextEditorComponent;
 
   ngOnInit() {
     this.id = this.listingService.id;
@@ -31,6 +34,9 @@ export class QuestionDetailsComponent implements OnInit {
         this.response = data;
       },
       res => { console.log(res); });
+    this.rteObj.toolbarSettings.items = ['Bold', 'Italic', 'Underline', '|',
+      'Formats', 'OrderedList', 'UnorderedList', '|', 'CreateLink', 'Image', '|', 'Undo', 'Redo', '|', 'SourceCode'];
+    this.rteObj.insertImageSettings.saveFormat = 'Base64';
   }
 
   getQuestion(): QAEntry {

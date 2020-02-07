@@ -14,6 +14,15 @@ span{
   outline: none;
 }
 
+.main-layout{
+  margin-top: 16px;
+  display: flex;
+}
+.router{
+  width: 100%;
+  margin-left: 24px;
+}
+
 ul.breadcrumb {
   padding: 10px 16px;
   cursor: pointer;

@@ -7,6 +7,7 @@ import { QAEntry } from '../data-models/QAEntry';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { FormControl, Validators } from '@angular/forms';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 @Component({
   selector: 'app-add-question-dialog',
@@ -21,10 +22,12 @@ export class AddQuestionDialogComponent implements OnInit {
   selectable = true;
   removable = true;
   addOnBlur = true;
-
+  tagList: string[];
+  tagsResponse: any;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   fruits: Tags[] = [];
   result: string[] = [];
+  resultTags: string[] = [];
   categoryList: string[];
   constructor(
     public dialogRef: MatDialogRef<AddQuestionDialogComponent>,
@@ -48,6 +51,11 @@ export class AddQuestionDialogComponent implements OnInit {
         console.log('GET Request is successful ', data);
         this.response = data;
       });
+    this.listingService.getAllTags().subscribe(
+      data => {
+        console.log('GET Request for all tags is successful ', data);
+        this.tagsResponse = data;
+      });
   }
 
   getFilteredList() {
@@ -68,7 +76,34 @@ export class AddQuestionDialogComponent implements OnInit {
     return this.result;
   }
 
+  onSelectionChanged(event: MatAutocompleteSelectedEvent) {
+    console.log('on selection :' + event.option.value);
+    const val = (document.getElementById('tag') as HTMLInputElement).value;
+    if ((event.option.value || '').trim()) {
+      this.fruits.pop();
+      this.fruits.push({ name: event.option.value.trim() });
+    }
 
+  }
+
+  // filter for tags
+  getFilteredTags() {
+    return this.resultTags;
+  }
+
+  filterTags(value: string): string[] {
+    this.resultTags = [];
+    this.tagList = this.tagsResponse;
+    // console.log('inside filter ' + value);
+    const filterValue = value.toLowerCase();
+    this.tagList.forEach((value) => {
+      if (value.toLowerCase().includes(filterValue)) {
+        this.resultTags.push(value);
+      }
+    });
+    // console.log('list: ' + this.resultTags.toString());
+    return this.resultTags;
+  }
   getResponse() {
     return this.response;
   }

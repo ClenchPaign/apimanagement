@@ -1,11 +1,11 @@
 .parent {
   display: flex;
-  justify-content: center;
   margin-top: 20px;
 }
 
 .layout {
-  width: 800px;
+  width: 90%;
+  justify-content: center;
 }
 
 .answers {

@@ -55,7 +55,7 @@ export class CategoryOfQuestionsComponent implements OnInit {
     this.listingService.keyword = tag;
     this.router
       .navigateByUrl('/', { skipLocationChange: true })
-      .then(() => this.router.navigate(['/search/' + tag]));
+      .then(() => this.router.navigate(['/search/' + tag + '/ ']));
     // this.router.navigateByUrl('/cat');
   }
 }
