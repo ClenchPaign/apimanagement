@@ -129,6 +129,10 @@
     font-weight: 400;
     display: block;
   }
+
+  .richtexteditor {
+    align-self: center;
+  }
   
   .profile-img {
     width: 96px;

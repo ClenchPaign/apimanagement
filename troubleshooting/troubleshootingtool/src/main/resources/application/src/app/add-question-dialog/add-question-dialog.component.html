@@ -15,22 +15,15 @@
       Question is <strong>required</strong>
     </mat-error>
   </mat-form-field>
-  <mat-form-field class="search">
-    <textarea
-      matInput
-      placeholder="Information regarding the question"
-      rows="6"
-      type="text"
-      cdkTextareaAutosize
-      #autosize="cdkTextareaAutosize"
-      cdkAutosizeMinRows="3"
-      cdkAutosizeMaxRows="8"
-      [formControl]="description"
-    ></textarea>
-    <mat-error *ngIf="question.hasError('required')">
-      Describe the problem here.
-    </mat-error>
-  </mat-form-field>
+  <ejs-richtexteditor
+    #imageRTE
+    id="imageRTE"
+    class="richtexteditor"
+    width="100%"
+    height="300px"
+    [(ngModel)]="description"
+  >
+  </ejs-richtexteditor>
   <div>
     <mat-form-field class="search">
       <input

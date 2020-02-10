@@ -39,7 +39,7 @@ export class ListingService {
     return this.http.get(this.baseUrl + '/categories/' + cat, httpOptions);
   }
   searchForKeyword(searchdata: SearchQuery) {
-    console.log(searchdata);
+    // console.log(searchdata);
     return this.http.post(this.baseUrl + '/search', searchdata, httpOptions);
   }
 
@@ -55,7 +55,7 @@ export class ListingService {
   }
   post_answer(qa: QAEntry, id: string) {
     console.log(qa);
-    console.log(this.baseUrl + '/qnas/' + id);
+    // console.log(this.baseUrl + '/qnas/' + id);
     return this.http.put(this.baseUrl + '/qnas/' + id, qa, httpOptions);
 
   }

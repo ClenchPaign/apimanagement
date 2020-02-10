@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { Tags } from '../list-of-categories/list-of-categories.component';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ListingService } from '../listing.service';
@@ -8,6 +8,7 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { FormControl, Validators } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { RichTextEditorComponent } from '@syncfusion/ej2-angular-richtexteditor';
 
 @Component({
   selector: 'app-add-question-dialog',
@@ -29,14 +30,14 @@ export class AddQuestionDialogComponent implements OnInit {
   result: string[] = [];
   resultTags: string[] = [];
   categoryList: string[];
+  description: any = '';
+  @ViewChild('imageRTE', { static: true })
+  private rteObj: RichTextEditorComponent;
   constructor(
     public dialogRef: MatDialogRef<AddQuestionDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any, private listingService: ListingService) { }
 
   question = new FormControl('', [
-    Validators.required,
-  ]);
-  description = new FormControl('', [
     Validators.required,
   ]);
   categories = new FormControl();
@@ -56,6 +57,9 @@ export class AddQuestionDialogComponent implements OnInit {
         console.log('GET Request for all tags is successful ', data);
         this.tagsResponse = data;
       });
+    this.rteObj.toolbarSettings.items = ['Bold', 'Italic', 'Underline', '|',
+      'Formats', 'OrderedList', 'UnorderedList', '|', 'CreateLink', 'Image', '|', 'Undo', 'Redo', '|', 'SourceCode'];
+    this.rteObj.insertImageSettings.saveFormat = 'Base64';
   }
 
   getFilteredList() {
@@ -145,7 +149,7 @@ export class AddQuestionDialogComponent implements OnInit {
 
   post_ques() {
     const question = this.question.value;
-    const description = this.description.value;
+    const description = this.rteObj.getHtml();
     const categories = this.categories.value;
     this.quesTags = [];
     for (let tags of this.fruits) {
