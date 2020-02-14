@@ -1,0 +1,40 @@
+
+<div class="parent">
+        <h2>Welcome</h2>
+        <h1>PLEASE LOG IN</h1>
+
+        <mat-card id="log" >
+            
+                    <div class="dlt-input-group lg-input">
+                        
+                        <span class="dlt-input-addon">
+                            <mat-icon id="icon">person</mat-icon>
+                        </span>
+                        <div class="dlt-form-item">
+                            <div class="dlt-form-group">
+                                <input id="username" type="text" required class="dlt-text-input" placeholder="Username" required>       
+                            </div>
+                        </div>  
+                    </div>
+                    <div class="dlt-input-group lg-input">
+                        
+                        <span class="dlt-input-addon lock">
+                            <mat-icon id="icon">lock</mat-icon>
+                        </span>
+                        <div class="dlt-form-item">
+                            <div class="dlt-form-group">
+                                <input id="password" type="password" required class="dlt-text-input" placeholder="Password" required>
+                            
+                            </div>
+                        </div>
+                        
+                    </div>
+
+                    <button class="dlt-button dlt-button-primary lg-button" (click)="login()">Log In</button> 
+                   
+                    <mat-error *ngIf="response == true">
+                        Invalid Credentials !!
+                    </mat-error>
+                
+        </mat-card>
+</div>

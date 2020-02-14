@@ -32,6 +32,7 @@ import {MatMenuModule} from '@angular/material/menu';
 import { AddQuestionDialogComponent } from './add-question-dialog/add-question-dialog.component';
 import { AddQaEntryComponent } from './add-qa-entry/add-qa-entry.component';
 import { FiltersComponent } from './filters/filters.component';
+import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { MainComponent } from './main/main.component';
 
@@ -45,6 +46,8 @@ import { MainComponent } from './main/main.component';
     QuestionsListComponent,
     AddQuestionDialogComponent,
     AddQaEntryComponent,
+    FiltersComponent,
+    LoginComponent
     FiltersComponent,
     DashboardComponent,
     MainComponent

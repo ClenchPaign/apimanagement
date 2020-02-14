@@ -4,6 +4,7 @@ import { SearchQuery } from './data-models/SearchQuery';
 import { QAEntry } from './data-models/QAEntry';
 import { Question } from './data-models/Question';
 import { Answer } from './data-models/Answer';
+import { User } from './data-models/User';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' })
@@ -67,4 +68,10 @@ export class ListingService {
     // console.log('In listing service' + JSON.stringify(file));
     return this.http.get(this.baseUrl + '/files/' + id, httpOptions);
   }
+
+  getAuthstatus(user:User)
+{
+  return this.http.post(this.baseUrl + '/auth/', user, { headers, responseType: 'text' });
+
+}
 }
