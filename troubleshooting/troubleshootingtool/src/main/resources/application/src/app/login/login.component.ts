@@ -10,7 +10,7 @@ import { User } from '../data-models/User';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  response: boolean;
+  response: string;
 
   constructor(private listingService: ListingService, private router: Router, private route: ActivatedRoute) { }
 
@@ -21,18 +21,23 @@ export class LoginComponent implements OnInit {
   login() {
     const username = (document.getElementById('username') as HTMLInputElement).value;
     const password = (document.getElementById('password') as HTMLInputElement).value;
-    const user = new User(username, password, "");
-    if (username == "" && password == "") { alert("Please enter username and password"); }
-    else {
+    const user = new User(username, password, '');
+    // const user = new User('y509476', 'Divya@14101997', '');
+    if (username === '' && password === '') {
+      alert('Please enter username and password');
+    } else {
       this.listingService.getAuthstatus(user).subscribe(
         data => {
-
           console.log('LDAP user auth is successful ', data);
-          this.response = false;
-          this.router.navigateByUrl("");
+          this.response = data;
+          if(this.response === 'true'){
+            this.router.navigateByUrl('/main/category');
+          }else{
+            this.response = 'true';
+          }
         },
         err => {
-          this.response = true
+          this.response = 'true';
           console.log('error -- ', err);
         }
       );

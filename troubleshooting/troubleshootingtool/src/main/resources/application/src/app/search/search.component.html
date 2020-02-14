@@ -1,7 +1,7 @@
 <div class="mat-toolbar">
   <div class="searchbar">
     <div class="icon">
-      <mat-icon>devices</mat-icon>
+      <mat-icon  [routerLink]="['/main/category']">devices</mat-icon>
     </div>
     <div>
       <div class="dummy">
@@ -25,7 +25,7 @@
             <div class="card">
               <div
                 class="question"
-                [routerLink]="['/qna', list.Question.id]"
+                [routerLink]="['main/qna', list.Question.id]"
                 (click)="onClick(list.Question.id)"
               >
                 {{ list.Question.question }}
@@ -53,12 +53,12 @@
         >person</mat-icon
       >
       <mat-menu #menu="matMenu">
-        <button mat-menu-item [routerLink]="['/']">
+        <button mat-menu-item [routerLink]="['/main/category']">
           <mat-icon style="color: #0f4c7b;">person</mat-icon>
           <a class="menu-items">Divyabharathi K</a>
         </button>
         <mat-divider></mat-divider>
-        <button mat-menu-item [routerLink]="['/dashboard']">
+        <button mat-menu-item [routerLink]="['/main/dashboard']">
           <mat-icon>dashboard</mat-icon>
           <a class="menu-items">Dashboard</a>
         </button>

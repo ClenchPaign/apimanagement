@@ -66,7 +66,7 @@ export class QuestionsListComponent implements OnInit {
 
 
     // this.listingService.keyword = tag;
-    this.router.navigateByUrl('/search/' + tag +'/');
+    this.router.navigateByUrl('/main/search/' + tag +'/');
     // this.router.navigateByUrl('/cat');
   }
 }

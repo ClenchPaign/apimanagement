@@ -47,7 +47,7 @@ import { MainComponent } from './main/main.component';
     AddQuestionDialogComponent,
     AddQaEntryComponent,
     FiltersComponent,
-    LoginComponent
+    LoginComponent,
     FiltersComponent,
     DashboardComponent,
     MainComponent

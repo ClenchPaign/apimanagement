@@ -53,7 +53,7 @@ export class CategoryOfQuestionsComponent implements OnInit {
     // return straray.lastIndexOf(2);
   }
   onClick(id: string) {
-    console.log('clicked ' + id);
+    console.log('clicked here --' + id);
     this.listingService.id = id;
     // this.router.navigateByUrl('/cat');
   }
@@ -62,7 +62,7 @@ export class CategoryOfQuestionsComponent implements OnInit {
     this.listingService.keyword = tag;
     this.router
       .navigateByUrl('/', { skipLocationChange: true })
-      .then(() => this.router.navigate(['/search/' + tag + '/ ']));
+      .then(() => this.router.navigate(['/main/search/' + tag + '/ ']));
     // this.router.navigateByUrl('/cat');
   }
 }

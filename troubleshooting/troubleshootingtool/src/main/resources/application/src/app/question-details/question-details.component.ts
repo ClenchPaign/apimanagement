@@ -100,7 +100,7 @@ export class QuestionDetailsComponent implements OnInit {
         this.response = data;
       },
       res => { console.log(res); });
-    this.router.navigateByUrl('/search/' + tag + '/ ');
+    this.router.navigateByUrl('/main/search/' + tag + '/ ');
   }
 
   post_ans() {

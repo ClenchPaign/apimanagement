@@ -60,7 +60,7 @@ export class SearchComponent implements OnInit {
     this.response = null;
     // this.search('');
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
-      this.router.navigate(['/qna/' + id]));
+      this.router.navigate(['main/qna/' + id]));
 
   }
 
@@ -71,7 +71,7 @@ export class SearchComponent implements OnInit {
     this.listingService.keyword = val;
     const tag = '###';
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
-      this.router.navigate(['/search/' + tag + '/' + val ]));
+      this.router.navigate(['/main/search/' + tag + '/' + val ]));
     // this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
     //   this.router.navigate(['/search/ ' + val + '/']));
   }
@@ -81,6 +81,6 @@ export class SearchComponent implements OnInit {
     (document.getElementById('searchinput') as HTMLInputElement).value = '';
     this.search('');
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
-      this.router.navigate(['/search/' + tag + '/ ']));
+      this.router.navigate(['/main/search/' + tag + '/ ']));
   }
 }

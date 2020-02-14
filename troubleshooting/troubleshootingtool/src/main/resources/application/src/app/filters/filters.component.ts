@@ -42,7 +42,7 @@ export class FiltersComponent implements OnInit {
     // }
     console.log('category =>' + this.getCategory());
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
-      this.router.navigate(['/category/' + item]));
+      this.router.navigate(['/main/category/' + item]));
   }
   getCategory(): string {
     console.log('get cat:'+this.route.snapshot.paramMap.get('category'));

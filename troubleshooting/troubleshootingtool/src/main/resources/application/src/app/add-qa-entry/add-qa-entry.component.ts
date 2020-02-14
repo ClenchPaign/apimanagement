@@ -203,7 +203,7 @@ export class AddQaEntryComponent implements OnInit {
     } else {
       this.listingService.post_question(qa).subscribe(data => {
         console.log('POST Request is successful ', data);
-        this.router.navigateByUrl('/category');
+        this.router.navigateByUrl('/main/category');
       });
     }
   }

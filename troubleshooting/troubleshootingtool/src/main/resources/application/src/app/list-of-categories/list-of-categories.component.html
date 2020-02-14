@@ -14,7 +14,7 @@
     class="matcard-categories"
     *ngFor="let list of getResponse()"
     (click)="onClick(list)"
-    [routerLink]="['/category', list]"
+    [routerLink]="['/main/category', list]"
   >
     <p class="button-text">{{ list }}</p>
   </mat-card>
