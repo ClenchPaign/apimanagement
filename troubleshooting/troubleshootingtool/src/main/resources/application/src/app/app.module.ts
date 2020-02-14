@@ -33,6 +33,7 @@ import { AddQuestionDialogComponent } from './add-question-dialog/add-question-d
 import { AddQaEntryComponent } from './add-qa-entry/add-qa-entry.component';
 import { FiltersComponent } from './filters/filters.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { MainComponent } from './main/main.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     AddQuestionDialogComponent,
     AddQaEntryComponent,
     FiltersComponent,
-    DashboardComponent
+    DashboardComponent,
+    MainComponent
   ],
   imports: [
     BrowserModule,
