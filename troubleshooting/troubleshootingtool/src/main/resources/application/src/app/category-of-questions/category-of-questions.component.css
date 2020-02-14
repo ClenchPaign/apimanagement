@@ -1,17 +1,16 @@
 .list-of-questions {
   display: flex;
-  justify-content: center;
 }
 .question-card {
   margin-bottom: 10px;
   margin-top: 10px;
-  width: max-content;
+  width: 900px;
   height: max-content;
 }
 .question-item {
   display: flex;
   justify-content: left;
-  width: 800px;
+  
 }
 .answer-layout {
   width: max-content;

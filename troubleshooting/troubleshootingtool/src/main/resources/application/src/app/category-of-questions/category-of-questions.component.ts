@@ -10,6 +10,8 @@ import { QAEntry } from '../data-models/QAEntry';
 })
 export class CategoryOfQuestionsComponent implements OnInit {
   response: any;
+  description = '';
+  hello:any;
   @Input() category: string;
   constructor(
     private listingService: ListingService,
@@ -37,6 +39,11 @@ export class CategoryOfQuestionsComponent implements OnInit {
     );
   }
   getQuestions(): Array<QAEntry> {
+    for (const i of this.response) {
+      i.Question.description = i.Question.description.replace(/<[^>]*>/g, '');
+      i.Question.description = i.Question.description.replace('&nbsp;', '');
+    }
+
     return this.response;
   }
 

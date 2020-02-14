@@ -11,8 +11,9 @@
           placeholder="Search here"
           (input)="search($event.target.value)"
           input
-          (keyup.enter)="onEnter()"/>
-       
+          (keyup.enter)="onEnter()"
+        />
+
         <button class="dlt-button" (click)="onEnter()" mat-raised-button>
           Search
         </button>
@@ -45,13 +46,31 @@
       </div>
     </div>
     <div class="dropdown">
-      <mat-icon class="userprofilepic"
-        >face<i class="fa fa-user" aria-hidden="true"></i
-      ></mat-icon>
-      <div class="dlt-overflow-menu">
+      <mat-icon
+        style="cursor: pointer;"
+        [matMenuTriggerFor]="menu"
+        class="userprofilepic"
+        >person</mat-icon
+      >
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item [routerLink]="['/']">
+          <mat-icon style="color: #0f4c7b;">person</mat-icon>
+          <a class="menu-items">Divyabharathi K</a>
+        </button>
+        <mat-divider></mat-divider>
+        <button mat-menu-item [routerLink]="['/dashboard']">
+          <mat-icon>dashboard</mat-icon>
+          <a class="menu-items">Dashboard</a>
+        </button>
+        <button mat-menu-item [routerLink]="['/']">
+          <mat-icon>logout</mat-icon>
+          <a class="menu-items">Logout</a>
+        </button>
+      </mat-menu>
+      <!-- <div class="dlt-overflow-menu">
         <a href="">Divyabharathi</a>
         <a href="">Logout</a>
-      </div>
+      </div> -->
     </div>
 
     <!-- <div class="dropdown">

@@ -1,4 +1,4 @@
-<form>
+<form class="parent">
   <mat-form-field class="search">
     <textarea
       matInput
@@ -20,10 +20,40 @@
     id="imageRTE"
     class="richtexteditor"
     width="100%"
-    height="300px"
+    height="200px"
     [(ngModel)]="description"
   >
   </ejs-richtexteditor>
+
+  <ngx-file-drop
+    class="filedrop"
+    dropZoneLabel="Drop files here"
+    (onFileDrop)="dropped($event)"
+    (onFileOver)="fileOver($event)"
+    (onFileLeave)="fileLeave($event)"
+  >
+    <ng-template
+      ngx-file-drop-content-tmp
+      let-openFileSelector="openFileSelector"
+    >
+      Drop files here
+      <button
+        mat-button style="background-color: #1776bf; color: white;margin-left: 10px;"
+        type="button"
+        (click)="openFileSelector()"
+      >
+        Browse Files
+      </button>
+    </ng-template>
+  </ngx-file-drop>
+  <div class="upload-table">
+    <div class="fileitem" *ngFor="let item of files; let i = index">
+      <div class="item">
+        {{ item.relativePath }}<mat-icon (click)=removeFiles(item)>close</mat-icon>
+      </div>
+    </div>
+  </div>
+
   <div>
     <mat-form-field class="search">
       <input

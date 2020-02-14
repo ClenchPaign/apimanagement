@@ -37,6 +37,11 @@
 }
 .richtexteditor {
   margin-top: 16px;
+  min-width: 100%;
+  max-width: 100%;
+  z-index: 1;
+  min-height: 350px;
+  max-height: 700px;
 }
 
 .qn-details {
@@ -109,8 +114,18 @@
 .question {
   font-size: x-large;
 }
-.mat-icon {
+mat-icon {
   font-family: "Material Icons";
+  rotate: 60 deg;
+}
+
+.attachment-items{
+  cursor: pointer;
+  width: max-content;
+  padding: 4px;
+  background-color: lightgrey;
+  margin: 2px;
+  border-radius: 4px;
 }
 .posted-date {
   font-size: small;

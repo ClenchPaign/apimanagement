@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ListingService } from '../listing.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-filters',
@@ -10,17 +10,47 @@ import { ActivatedRoute } from '@angular/router';
 export class FiltersComponent implements OnInit {
 
   category: any;
-  constructor(private listingService: ListingService, private router: ActivatedRoute) { }
+  response: any;
+  color: boolean;
+  constructor(private listingService: ListingService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
+    this.color = false;
     this.category = this.listingService.category;
-    this.router.paramMap.subscribe(params => {
-      this.category = params.get('category');
-    });
-  }
-  getCategory(): string {
-    this.category = this.listingService.category;
-    return this.category;
+    // this.route.paramMap.subscribe(params => {
+    //   this.category = params.get('category');
+    // });
+    
+    
+    this.listingService.getAllCategories().subscribe(
+      data => {
+        console.log('GET Request is successful ', data);
+        this.response = data;
+      },
+      res => { console.log(res); });
+
   }
 
+  onSelectingCategory(item: string) {
+    // let div = document.getElementById('list-of-categories') as HTMLDivElement;
+    // div.style.backgroundColor = 'lightgray';
+
+    // if (this.category === item) {
+    //   this.color = true;
+    // } else {
+    //   this.color = false;
+    // }
+    console.log('category =>' + this.getCategory());
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
+      this.router.navigate(['/category/' + item]));
+  }
+  getCategory(): string {
+    console.log('get cat:'+this.route.snapshot.paramMap.get('category'));
+    return 'easy';
+    // return this.listingService.category;
+  }
+
+  getResponse() {
+    return this.response;
+  }
 }

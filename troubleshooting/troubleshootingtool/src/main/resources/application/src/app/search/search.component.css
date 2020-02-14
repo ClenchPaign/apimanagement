@@ -1,5 +1,5 @@
 .mat-toolbar {
-/*   background-color: #000000; */
+  /*   background-color: #000000; */
   background-color: #1776bf;
   /* background-color: #bf4717; */
   position: fixed;
@@ -55,8 +55,6 @@
   overflow-y: auto;
   height: 400px;
 }
-
-
 
 .question-layout {
   width: 700px;
@@ -120,7 +118,6 @@
 .dropdown {
   position: absolute;
   display: flex;
-  color: aliceblue;
   margin-right: 20px;
   margin-top: 8px;
   margin-bottom: 8px;
@@ -128,7 +125,12 @@
   bottom: 0;
   top: 0;
   padding: 8px;
-  background-color: #0f4c7b;
+}
+
+.menu-items {
+  text-decoration: none;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #0f4c7b;
 }
 .icon {
   display: flex;
@@ -143,6 +145,9 @@
   bottom: 0;
   top: 0;
   background-color: #0f4c7b;
+}
+.userprofilepic{
+  color: white;
 }
 
 .dlt-overflow-menu {

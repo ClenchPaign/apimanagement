@@ -27,7 +27,7 @@ export class ListOfCategoriesComponent implements OnInit {
 
   openDialog(): void {
     const dialogRef = this.dialog.open(AddQuestionDialogComponent, {
-      width: '700px',
+      width: '900px',
       data: { category: this.cats }
     });
 

@@ -10,6 +10,8 @@ import { FormControl, Validators } from '@angular/forms';
 import { Answer } from '../data-models/Answer';
 import { RichTextEditorComponent } from '@syncfusion/ej2-angular-richtexteditor';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { FileSystemFileEntry, NgxFileDropEntry } from 'ngx-file-drop';
+import { ImageModel } from '../data-models/ImageModel';
 
 @Component({
   selector: 'app-add-qa-entry',
@@ -26,13 +28,19 @@ export class AddQaEntryComponent implements OnInit {
   resultTags: string[] = [];
   categoryList: string[];
   tagList: string[];
-
+  base64String: any;
+  uploadedFiles: string[] = [];
   tagsResponse: any;
   response: any;
   visible = true;
   selectable = true;
   removable = true;
   addOnBlur = true;
+  imageUrlPREVIEW: any;
+
+  public files: NgxFileDropEntry[] = [];
+  public allFiles: NgxFileDropEntry[] = [];
+
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   @ViewChild('imageRTE', { static: true })
   private rteObj: RichTextEditorComponent;
@@ -48,11 +56,6 @@ export class AddQaEntryComponent implements OnInit {
     private listingService: ListingService,
     private router: Router
   ) { }
-
-  // tools: object = {
-  //   items: ['Bold', 'Italic', 'Underline', '|', 'FontSize', 'FontColor', '|', 'Formats', 'OrderedList', 'UnorderedList',
-  //     '|', 'CreateLink', 'Image', '|', 'Undo', 'Redo', '|', 'SourceCode']
-  // };
 
   // filters for categories
   getFilteredList() {
@@ -104,11 +107,13 @@ export class AddQaEntryComponent implements OnInit {
         this.tagsResponse = data;
       });
     this.rteObj.toolbarSettings.items = ['Bold', 'Italic', 'Underline', '|',
-      'Formats', 'OrderedList', 'UnorderedList', '|', 'CreateLink', 'Image', '|', 'Undo', 'Redo', '|', 'SourceCode'];
-    this.rteObj.insertImageSettings.saveFormat = 'Base64';
+      'Formats', 'OrderedList', 'UnorderedList', '|', 'CreateLink', '|', 'Undo', 'Redo', '|', 'SourceCode'];
+    // this.rteObj.insertImageSettings.saveFormat = 'Base64';
+    this.rteObj.enableResize = true;
     this.rteObjAnswer.toolbarSettings.items = ['Bold', 'Italic', 'Underline', '|',
-      'Formats', 'OrderedList', 'UnorderedList', '|', 'CreateLink', 'Image', '|', 'Undo', 'Redo', '|', 'SourceCode'];
-    this.rteObjAnswer.insertImageSettings.saveFormat = 'Base64';
+      'Formats', 'OrderedList', 'UnorderedList', '|', 'CreateLink', '|', 'Undo', 'Redo', '|', 'SourceCode'];
+    // this.rteObjAnswer.insertImageSettings.saveFormat = 'Base64';
+    this.rteObjAnswer.enableResize = true;
   }
 
   onSelectionChanged(event: MatAutocompleteSelectedEvent) {
@@ -143,6 +148,39 @@ export class AddQaEntryComponent implements OnInit {
     }
   }
 
+
+
+  public removeFiles(file: NgxFileDropEntry) {
+    this.files = this.files.filter(item => item !== file);
+    console.log('remove file:' + file.relativePath);
+  }
+  public dropped(files: NgxFileDropEntry[]) {
+    for (const droppedFile of files) {
+      this.files.push(droppedFile);
+      const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
+      fileEntry.file((file: File) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = (e) => {
+          const imageModel: ImageModel = new ImageModel('', file.name, reader.result as string);
+          this.listingService.upload_files(imageModel).subscribe(data => {
+            console.log('Upload', data);
+            this.uploadedFiles.push(data);
+          });
+        };
+      });
+
+    }
+  }
+
+  public fileOver(event) {
+    console.log(event);
+  }
+
+  public fileLeave(event) {
+    console.log(event);
+  }
+
   post_qaentry() {
     const question = this.question.value;
     const description = this.description;
@@ -155,14 +193,7 @@ export class AddQaEntryComponent implements OnInit {
     console.log(this.quesTags);
     const d = new Date();
     const creationDate = d.getTime();
-    // const source = (document.getElementsByClassName('e-rte-image e-imginline'));
-    // let code: HTMLCollection = source;
-    // let attachments: string[];
-    // for (let i = 0; i < code.length; i++) {
-    //   attachments.push(code[i].getAttribute('src'));
-    //   // console.log('source = ' + code[i].getAttribute('src'));
-    // }
-    const ques = new Question('', categories, question, description, '', creationDate, '', creationDate);
+    const ques = new Question('', categories, question, description, this.uploadedFiles.toString(), creationDate, '', creationDate);
     const answer = new Answer('0', ans, creationDate, '123', 'user', creationDate, 0, false);
     const qa = new QAEntry(ques, [answer], this.quesTags, true, 1, 0);
     // console.log(qa);

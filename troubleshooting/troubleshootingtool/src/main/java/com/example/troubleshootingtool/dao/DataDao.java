@@ -1,13 +1,12 @@
 package com.example.troubleshootingtool.dao;
 
-import com.example.troubleshootingtool.bean.Answer;
-import com.example.troubleshootingtool.bean.QAEntry;
-import com.example.troubleshootingtool.bean.Question;
-import com.example.troubleshootingtool.bean.SearchQuery;
+import com.example.troubleshootingtool.bean.*;
 import com.example.troubleshootingtool.config.ElasticSearchConfigurationClass;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.lucene.search.BooleanQuery;
 import org.elasticsearch.ElasticsearchException;
+import org.elasticsearch.action.bulk.BulkRequest;
+import org.elasticsearch.action.bulk.BulkRequestBuilder;
 import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.index.IndexRequest;
@@ -18,6 +17,7 @@ import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.TermQueryBuilder;
@@ -31,10 +31,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 
+import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
 @Repository
@@ -284,6 +289,40 @@ public class DataDao {
         }
 
         return "Inserted successfully";
+    }
+
+    public String uploadFiles(ImageModel file) throws IOException {
+        String uniqueID = UUID.randomUUID().toString();
+        file.setId(uniqueID);
+        Map dataMap = objectMapper.convertValue(file, Map.class);
+        IndexRequest indexRequest = new IndexRequest("others").source(dataMap);
+        try {
+            IndexResponse response = restHighLevelClient.index(indexRequest, RequestOptions.DEFAULT);
+            return response.getId();
+        } catch (ElasticsearchException e) {
+            e.getDetailedMessage();
+            return "elastic search exception " + e.getDetailedMessage();
+        } catch (IOException ex) {
+            ex.getLocalizedMessage();
+            return "IO exception " + ex.getLocalizedMessage() + "  " + Arrays.toString(ex.getStackTrace());
+        }
+    }
+
+    public ImageModel getFilesById(String id) throws IOException {
+//        @RequestMapping(value = "/get_qa/{id}", method = RequestMethod.GET)
+        ImageModel obj = null;
+        SearchRequest searchRequest = new SearchRequest();
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(QueryBuilders.matchQuery("_id", id));
+        searchRequest.source(searchSourceBuilder);
+        searchSourceBuilder.size(1000);
+        SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        SearchHit[] searchHits = searchResponse.getHits().getHits();
+
+        for (SearchHit searchHit : searchHits) {
+            obj = new ObjectMapper().readValue(searchHit.getSourceAsString(), ImageModel.class);
+        }
+        return obj;
     }
 }
 

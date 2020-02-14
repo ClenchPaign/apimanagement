@@ -6,11 +6,13 @@ import { SearchComponent } from './search/search.component';
 import { QuestionDetailsComponent } from './question-details/question-details.component';
 import { QuestionsListComponent } from './questions-list/questions-list.component';
 import { AddQaEntryComponent } from './add-qa-entry/add-qa-entry.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 
 const routes: Routes = [
   { path: '', component: ListOfCategoriesComponent},
   { path: 'category', component: ListOfCategoriesComponent },
+  { path: 'dashboard', component: DashboardComponent },
   { path: 'category/:category', component: CategoryOfQuestionsComponent },
   { path: 'qna/:id', component: QuestionDetailsComponent},
   { path: 'add_qna', component: AddQaEntryComponent},

@@ -6,6 +6,7 @@ import { Question } from '../data-models/Question';
 import { Answer } from '../data-models/Answer';
 import { SearchQuery } from '../data-models/SearchQuery';
 import { RichTextEditorComponent } from '@syncfusion/ej2-angular-richtexteditor';
+import { ImageModel } from '../data-models/ImageModel';
 
 @Component({
   selector: 'app-question-details',
@@ -19,6 +20,11 @@ export class QuestionDetailsComponent implements OnInit {
   response: any;
   postedDate: any;
   ans_count: number;
+
+  attachment: string[] = [];
+  returnAttachment: string[] = [];
+  returnAttachmentFileName: string[] = [];
+  attachmentList: any = [];
   @Input() id: string;
   @ViewChild('imageRTE', { static: true })
   private rteObj: RichTextEditorComponent;
@@ -30,13 +36,57 @@ export class QuestionDetailsComponent implements OnInit {
     });
     this.listingService.getQuestionForID(this.id).subscribe(
       data => {
-        console.log('Questions for ' + this.id + ' successful ', data);
         this.response = data;
+        const temp: string = this.response.Question.attachment;
+        this.attachment = temp.split(',');
+        for (const val of this.attachment) {
+          let img: any;
+          this.listingService.get_files(val).subscribe(data => {
+            img = data;
+            this.attachmentList.push(data);
+            // console.log(img.base64Image);
+            this.returnAttachment.push(img.base64Image);
+            this.returnAttachmentFileName.push(img.fileName);
+          },
+            res => { });
+        }
       },
-      res => { console.log(res); });
+      res => {
+        // console.log('Response =>' + res);
+      });
     this.rteObj.toolbarSettings.items = ['Bold', 'Italic', 'Underline', '|',
-      'Formats', 'OrderedList', 'UnorderedList', '|', 'CreateLink', 'Image', '|', 'Undo', 'Redo', '|', 'SourceCode'];
+      'Formats', 'OrderedList', 'UnorderedList', '|', 'CreateLink', '|', 'Undo', 'Redo', '|', 'SourceCode'];
     this.rteObj.insertImageSettings.saveFormat = 'Base64';
+    this.rteObj.enableResize = true;
+
+  }
+
+  onAttachmentClick(itemName: string) {
+    for (const item of this.attachmentList) {
+      if (itemName === item.fileName) {
+        if (item.base64Image.includes('/png') || item.base64Image.includes('/jpeg')) {
+          const image = new Image();
+          image.src = item.base64Image;
+          const w = window.open(item.fileName);
+          w.document.write(image.outerHTML);
+        } else {
+          this.showPdf(item.base64Image, item.fileName);
+        }
+      }
+    }
+  }
+  showPdf(src: string, fileName: string) {
+    const downloadLink = document.createElement("a");
+    downloadLink.href = src;
+    downloadLink.download = fileName;
+    downloadLink.click();
+  }
+  getAttachments(): string[] {
+    return this.returnAttachment;
+  }
+
+  getAttachmentFileNames(): string[] {
+    return this.returnAttachmentFileName;
   }
 
   getQuestion(): QAEntry {

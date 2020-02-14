@@ -1,8 +1,35 @@
 <div class="breadcrumbs">
-  <div class="span" [routerLink]="['']" ><mat-icon class="icon">home</mat-icon><div class="text">Home</div></div>
-  <div class="span" [routerLink]="['/category']" ><mat-icon class="icon">category</mat-icon><div class="text">Categories</div></div>
-  <div class="span" [routerLink]="['/search/###/ ']" ><mat-icon class="icon">label</mat-icon><div class="text">Tags</div></div>
+  <!-- <div class="span" [routerLink]="['']" ><mat-icon class="icon">home</mat-icon><div class="text">Home</div></div> -->
+  <!-- <div class="span" [routerLink]="['/dashboard']" ><mat-icon class="icon">dashboard</mat-icon><div class="text">Dashboard</div></div> -->
+  <div class="span" [routerLink]="['/category']">
+    <mat-icon class="icon">category</mat-icon>
+    <div class="text">Categories</div>
+  </div>
+  <div style="display: block; " *ngFor="let item of getResponse()">
+    <div id="list-of-categories" class="list-of-categories" (click)="onSelectingCategory(item)">
+      <mat-icon class="cat-icon">keyboard_arrow_right</mat-icon>
+      <div class="category" >
+        {{ item }}
+      </div>
+     
+    </div>
+    <!-- <hr class="divider"> -->
+    <!-- <mat-divider style="margin-left: 24px;"></mat-divider> -->
+  </div>
+  <!-- [ngStyle]="{'background-color': color? 'lightgray' : 'white'}"> -->
+  <!-- <div class="span" [routerLink]="['/search/###/ ']" ><mat-icon class="icon">label</mat-icon><div class="text">Tags</div></div> -->
   <!-- <div class="span" [routerLink]="['/category']">Categories</div> -->
   <!-- <div class="span" [routerLink]="['/category', category]">{{ getCategory() }}</div> -->
   <!-- <div class="span" [routerLink]="['/search/###/ ']">Tags</div> -->
 </div>
+<!-- <div class="dlt-dropdown">
+  <button class="dlt-button dlt-button-icon button-icon-md"><mat-icon>more_vert</mat-icon></button>
+  <div class="dlt-overflow-menu">
+    <legend class="dlt-overlay-menu-group-label">Administrator</legend>
+    <div class="solid-line"></div>
+    <a>My profile</a>
+    <a>Help</a>
+    <a>About</a>
+    <a>Logout</a>
+  </div>
+</div> -->

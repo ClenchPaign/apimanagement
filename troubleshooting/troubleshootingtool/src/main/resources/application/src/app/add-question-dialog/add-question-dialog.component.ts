@@ -9,6 +9,8 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { FormControl, Validators } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { RichTextEditorComponent } from '@syncfusion/ej2-angular-richtexteditor';
+import { NgxFileDropEntry, FileSystemFileEntry } from 'ngx-file-drop';
+import { ImageModel } from '../data-models/ImageModel';
 
 @Component({
   selector: 'app-add-question-dialog',
@@ -25,6 +27,12 @@ export class AddQuestionDialogComponent implements OnInit {
   addOnBlur = true;
   tagList: string[];
   tagsResponse: any;
+
+  base64String: any;
+  uploadedFiles: string[] = [];
+  imageUrlPREVIEW: any;
+  public files: NgxFileDropEntry[] = [];
+  public allFiles: NgxFileDropEntry[] = [];
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   fruits: Tags[] = [];
   result: string[] = [];
@@ -58,7 +66,7 @@ export class AddQuestionDialogComponent implements OnInit {
         this.tagsResponse = data;
       });
     this.rteObj.toolbarSettings.items = ['Bold', 'Italic', 'Underline', '|',
-      'Formats', 'OrderedList', 'UnorderedList', '|', 'CreateLink', 'Image', '|', 'Undo', 'Redo', '|', 'SourceCode'];
+      'Formats', 'OrderedList', 'UnorderedList', '|', 'CreateLink', '|', 'Undo', 'Redo', '|', 'SourceCode'];
     this.rteObj.insertImageSettings.saveFormat = 'Base64';
   }
 
@@ -133,18 +141,35 @@ export class AddQuestionDialogComponent implements OnInit {
       this.fruits.splice(index, 1);
     }
   }
-  set() {
-    (document.getElementById('display') as HTMLInputElement).style.display =
-      'block';
+  public removeFiles(file: NgxFileDropEntry) {
+    this.files = this.files.filter(item => item !== file);
+    console.log('remove file:' + file.relativePath);
+  }
+  public dropped(files: NgxFileDropEntry[]) {
+    for (const droppedFile of files) {
+      this.files.push(droppedFile);
+      const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
+      fileEntry.file((file: File) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = (e) => {
+          const imageModel: ImageModel = new ImageModel('', file.name, reader.result as string);
+          this.listingService.upload_files(imageModel).subscribe(data => {
+            console.log('Upload', data);
+            this.uploadedFiles.push(data);
+          });
+        };
+      });
+
+    }
   }
 
-  openNav() {
-    (document.getElementById('mySidenav') as HTMLInputElement).style.width =
-      '460px';
+  public fileOver(event) {
+    console.log(event);
   }
-  closeNav() {
-    (document.getElementById('mySidenav') as HTMLInputElement).style.width =
-      '0';
+
+  public fileLeave(event) {
+    console.log(event);
   }
 
   post_ques() {
@@ -158,7 +183,7 @@ export class AddQuestionDialogComponent implements OnInit {
     console.log(this.quesTags);
     const d = new Date();
     const creationDate = d.getTime();
-    const ques = new Question('', categories, question, description, '', creationDate, '', creationDate);
+    const ques = new Question('', categories, question, description, this.uploadedFiles.toString(), creationDate, '', creationDate);
     const qa = new QAEntry(ques, [], this.quesTags, false, 0, 0);
     console.log(ques);
     console.log(JSON.stringify(qa));

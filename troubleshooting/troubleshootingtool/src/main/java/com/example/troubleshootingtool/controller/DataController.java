@@ -1,15 +1,19 @@
 package com.example.troubleshootingtool.controller;
 
-import com.example.troubleshootingtool.bean.Answer;
-import com.example.troubleshootingtool.bean.QAEntry;
-import com.example.troubleshootingtool.bean.Question;
-import com.example.troubleshootingtool.bean.SearchQuery;
+import com.example.troubleshootingtool.bean.*;
 import com.example.troubleshootingtool.dao.DataDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.crypto.SealedObject;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Base64;
 import java.util.List;
 
 @RestController
@@ -18,6 +22,8 @@ public class DataController {
 
     @Autowired
     private DataDao dataDao;
+    private static String UPLOADED_FOLDER = "F://temp//";
+
 
     public DataController(DataDao dataDao) {
         this.dataDao = dataDao;
@@ -89,5 +95,14 @@ public class DataController {
         return dataDao.restore(qaEntryList);
     }
 
+    @RequestMapping(value = "/upload", method = RequestMethod.POST)
+    public String upload(@RequestBody ImageModel file) throws IOException {
+        System.out.println("File :"+file);
+        return dataDao.uploadFiles(file);
+    }
 
+    @RequestMapping(value = "/files/{id}", method = RequestMethod.GET)
+    public ImageModel getFiles(@PathVariable("id") String id) throws IOException {
+        return dataDao.getFilesById(id);
+    }
 }

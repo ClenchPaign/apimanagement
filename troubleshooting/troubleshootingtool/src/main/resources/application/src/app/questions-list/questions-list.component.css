@@ -1,6 +1,5 @@
 .list-of-questions {
     display: flex;
-    justify-content: center;
     width: 100%;
   }
   .question-card {
@@ -11,7 +10,7 @@
   .question-item {
     display: flex;
     justify-content: left;
-    width: 800px;
+    width: 900px;
   }
   .answer-layout {
     width: max-content;

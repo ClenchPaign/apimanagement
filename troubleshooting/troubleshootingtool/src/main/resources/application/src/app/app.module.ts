@@ -26,10 +26,13 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { RichTextEditorAllModule } from '@syncfusion/ej2-angular-richtexteditor';
+import { NgxFileDropModule } from 'ngx-file-drop';
+import {MatMenuModule} from '@angular/material/menu';
 
 import { AddQuestionDialogComponent } from './add-question-dialog/add-question-dialog.component';
 import { AddQaEntryComponent } from './add-qa-entry/add-qa-entry.component';
 import { FiltersComponent } from './filters/filters.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +44,8 @@ import { FiltersComponent } from './filters/filters.component';
     QuestionsListComponent,
     AddQuestionDialogComponent,
     AddQaEntryComponent,
-    FiltersComponent
+    FiltersComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
@@ -61,7 +65,9 @@ import { FiltersComponent } from './filters/filters.component';
     TextFieldModule,
     ReactiveFormsModule,
     HttpClientModule,
-    RichTextEditorAllModule
+    RichTextEditorAllModule,
+    NgxFileDropModule,
+    MatMenuModule
   ],
   providers: [ListingService, MessageService],
   bootstrap: [AppComponent],

@@ -57,6 +57,14 @@ export class ListingService {
     console.log(qa);
     // console.log(this.baseUrl + '/qnas/' + id);
     return this.http.put(this.baseUrl + '/qnas/' + id, qa, httpOptions);
+  }
+  upload_files(file: any) {
+    // console.log('In listing service' + JSON.stringify(file));
+    return this.http.post(this.baseUrl + '/upload', JSON.stringify(file), { headers, responseType: 'text' });
+  }
 
+  get_files(id: string) {
+    // console.log('In listing service' + JSON.stringify(file));
+    return this.http.get(this.baseUrl + '/files/' + id, httpOptions);
   }
 }

@@ -25,7 +25,36 @@
     [(ngModel)]="description"
   >
   </ejs-richtexteditor>
-
+  <label class="textarea" style="margin-top: 16px;">Attachments</label>
+  <br />
+    <ngx-file-drop
+    class="filedrop"
+    dropZoneLabel="Drop files here"
+    (onFileDrop)="dropped($event)"
+    (onFileOver)="fileOver($event)"
+    (onFileLeave)="fileLeave($event)">
+    <ng-template
+      ngx-file-drop-content-tmp
+      let-openFileSelector="openFileSelector">
+      Drop files here
+      <button
+        mat-button
+        class="button"
+        type="button"
+        (click)="openFileSelector()"
+      >
+        Browse Files
+      </button>
+    </ng-template>
+  </ngx-file-drop>
+  
+  <div class="upload-table">
+    <div class="fileitem" *ngFor="let item of files; let i = index">
+      <div class="item">
+        {{ item.relativePath }}<mat-icon (click)=removeFiles(item)>close</mat-icon>
+      </div>
+    </div>
+  </div>
   <mat-form-field class="textarea">
     <input
       [formControl]="categories"
@@ -35,6 +64,7 @@
       (input)="filter($event.target.value)"
       [matAutocomplete]="auto"
     />
+    
     <mat-autocomplete #auto="matAutocomplete">
       <mat-option *ngFor="let option of getFilteredList()" [value]="option">
         {{ option }}
@@ -74,10 +104,11 @@
       </mat-autocomplete>
     </mat-chip-list>
   </mat-form-field>
-  <label class="textarea">Solution</label>
+
+  <label class="textarea" style="margin-top: 16px;">Solution</label>
   <br />
   <ejs-richtexteditor
-    #imageRTE
+    #imageRTEForAnswer
     id="imageRTEForAnswer"
     class="richtexteditor"
     width="95%"
@@ -93,6 +124,6 @@
     type="submit"
     (click)="post_qaentry()"
   >
-    POST
+    SUBMIT TROUBLESHOOTING STEP
   </button>
 </mat-card>

@@ -11,6 +11,17 @@
         {{ tag }}</span
       >
     </div>
+    <div>
+      <div style="display: flex;">
+        <p>Attachments</p>
+        <mat-icon style="align-self: center; margin-left: 5px;">attachment</mat-icon>
+      </div>
+      <div *ngFor="let item of getAttachmentFileNames()">
+        <div class="attachment-items" (click)="onAttachmentClick(item)">{{ item }}</div>
+        <!-- <div *ngIf="item.includes('/png')"><img style="max-width: 70px; max-height: 50px;" src="{{ item }}" /></div> -->
+        <!-- <div *ngIf="item.includes('/pdf')"><iframe src="{{ item }}"></iframe></div> -->
+      </div>
+    </div>
     <div class="qn-details">
       <div>
         <p class="answer-count" id="answercount">
