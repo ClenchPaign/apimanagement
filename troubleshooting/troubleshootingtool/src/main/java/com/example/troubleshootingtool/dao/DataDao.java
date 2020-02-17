@@ -27,12 +27,17 @@ import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.naming.Context;
+import javax.naming.NamingEnumeration;
+import javax.naming.NamingException;
+import javax.naming.directory.Attributes;
+import javax.naming.directory.SearchControls;
+import javax.naming.directory.SearchResult;
+import javax.naming.ldap.InitialLdapContext;
+import javax.naming.ldap.LdapContext;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -323,6 +328,86 @@ public class DataDao {
             obj = new ObjectMapper().readValue(searchHit.getSourceAsString(), ImageModel.class);
         }
         return obj;
+    }
+
+    public Boolean authenticate(User user) throws NullPointerException {
+        LdapContext ctx = null;
+        boolean result = false;
+        System.out.println("ctx   :" + ctx);
+
+        String username = user.getUsername();
+        String passwd = user.getPassword();
+        try {
+
+            ctx = context(username, passwd);
+            System.out.println("ctx   :" + ctx);
+            SearchControls searchCtls = new SearchControls();
+            String[] returnedAtts = {"sn", "mail", "cn", "givenName", "telephoneNumber"};
+            searchCtls.setReturningAttributes(returnedAtts);
+            searchCtls.setSearchScope(SearchControls.SUBTREE_SCOPE);
+            String searchFilter = "(&(objectClass=user)(mail=*))";
+            String searchBase = "OU=India,DC=eur,DC=ad,DC=sag";
+            NamingEnumeration<?> answer = ctx.search(searchBase, searchFilter, searchCtls);
+            System.out.println("answer   :" + answer);
+
+            while (answer.hasMoreElements()) {
+                SearchResult sr = (SearchResult) answer.next();
+                System.out.println("sr  :" + sr);
+                // Print some of the attributes, catch the exception if the
+                // attributes have no values
+                Attributes attrs = sr.getAttributes();
+                if (attrs != null) {
+                    String cn = attrs.get("cn").get().toString();
+
+                    if (cn.endsWith(username.toLowerCase())
+                            || cn.endsWith(username.toUpperCase())) {
+                        result = true;
+                        break;
+                    } else
+                        result = false;
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Provide valid username or password");
+        } finally {
+            try {
+                if (ctx.equals(null))
+                    System.out.println("\"There is no such user");
+
+                ctx.close();
+            } catch (NamingException e) {
+                System.out.println("Provide valid username or password");
+            }
+        }
+        System.out.println("RESULT:" + result);
+
+        return result;
+    }
+
+    public LdapContext context(String user, String passwd) throws NamingException {
+
+        Hashtable<String, String> env = new Hashtable<String, String>();
+        String adminName = "CN=" + user
+                + ",OU=User,OU=India,DC=eur,DC=ad,DC=sag";
+        System.out.println("name :" + adminName);
+        String adminPassword = passwd;
+        String ldapURL = "ldap://hqdc.eur.ad.sag:3268";
+        env.put(Context.INITIAL_CONTEXT_FACTORY,
+                "com.sun.jndi.ldap.LdapCtxFactory");
+
+        // connect to my domain controller
+        env.put(Context.PROVIDER_URL, ldapURL);
+        // set security credentials
+        env.put(Context.SECURITY_AUTHENTICATION, "simple");
+        env.put(Context.SECURITY_PRINCIPAL, adminName);
+        env.put(Context.SECURITY_CREDENTIALS, adminPassword);
+
+        // Create the initial directory context
+//		DirContext ctx = new InitialLdapContext(env, null);
+
+        LdapContext ctx = new InitialLdapContext(env, null);
+        System.out.println("ctx   :" + ctx.getEnvironment().values());
+        return ctx;
     }
 }
 
