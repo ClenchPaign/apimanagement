@@ -65,6 +65,6 @@ export class ListOfCategoriesComponent implements OnInit {
     // this.router.navigateByUrl('/cat');
   }
   addQAEntry(){
-    this.router.navigateByUrl('/add_qna');
+    this.router.navigateByUrl('/main/add_qna');
   }
 }
