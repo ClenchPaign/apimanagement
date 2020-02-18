@@ -15,6 +15,7 @@ const headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Access-Co
 @Injectable()
 export class ListingService {
   public category: string;
+  public tags: string[];
   public keyword: string;
   public id: string;
   constructor(private http: HttpClient) {
@@ -33,6 +34,12 @@ export class ListingService {
   getCategory() {
     return this.category;
   }
+  setTags(tagsFromSearch: string[]) {
+    this.tags = tagsFromSearch;
+  }
+  getTagsFromSearch(): string[] {
+    return this.tags;
+  }
   getAllTags() {
     return this.http.get(this.baseUrl + '/tags', httpOptions);
   }
@@ -40,7 +47,7 @@ export class ListingService {
     return this.http.get(this.baseUrl + '/categories/' + cat, httpOptions);
   }
   searchForKeyword(searchdata: SearchQuery) {
-    // console.log(searchdata);
+    console.log(searchdata);
     return this.http.post(this.baseUrl + '/search', searchdata, httpOptions);
   }
 
@@ -69,9 +76,8 @@ export class ListingService {
     return this.http.get(this.baseUrl + '/files/' + id, httpOptions);
   }
 
-  getAuthstatus(user:User)
-{
-  return this.http.post(this.baseUrl + '/auth/', user, { headers, responseType: 'text' });
+  getAuthstatus(user: User) {
+    return this.http.post(this.baseUrl + '/auth/', user, { headers, responseType: 'text' });
 
-}
+  }
 }

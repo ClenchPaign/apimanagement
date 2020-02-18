@@ -3,12 +3,12 @@ import { Answer } from './Answer';
 
 
 export class QAEntry {
-    private Question: Question;
-    private Answers: Array<Answer>;
-    private tags: Array<string>;
-    private isAnswered: boolean;
-    private answerCount: number;
-    private score: number;
+    public Question: Question;
+    public Answers: Array<Answer>;
+    public tags: Array<string>;
+    public isAnswered: boolean;
+    public answerCount: number;
+    public score: number;
 
     // tslint:disable-next-line: max-line-length
     constructor($Question: Question, $Answers: Array<Answer>, $tags: Array<string>, $isAnswered: boolean, $answerCount: number, $score: number) {

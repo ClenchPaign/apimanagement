@@ -1,19 +1,51 @@
 <div class="breadcrumbs">
   <!-- <div class="span" [routerLink]="['']" ><mat-icon class="icon">home</mat-icon><div class="text">Home</div></div> -->
   <!-- <div class="span" [routerLink]="['/dashboard']" ><mat-icon class="icon">dashboard</mat-icon><div class="text">Dashboard</div></div> -->
-  <div class="span" [routerLink]="['/main/category']">
-    <mat-icon class="icon">category</mat-icon>
-    <div class="text">Categories</div>
+  <div class="header">
+    <mat-icon class="product-icon" [routerLink]="['/main/category']"
+      >devices</mat-icon
+    >
+    <div class="product">
+      <div class="product-name">TROUBLESHOOTING</div>
+      <div class="product-name-secondary">TOOL</div>
+    </div>
   </div>
-  <div style="display: block; " *ngFor="let item of getResponse()">
-    <div id="list-of-categories" class="list-of-categories" (click)="onSelectingCategory(item)">
-      <mat-icon class="cat-icon">keyboard_arrow_right</mat-icon>
-      <div class="category" >
+  <div class="span">
+    <mat-icon id="category_icon" class="icon" (click)="onCategoriesClick()"
+      >keyboard_arrow_down</mat-icon
+    >
+    <div class="category" [routerLink]="['/main/category']">Categories</div>
+  </div>
+  <div id="list" style="display: none;visibility: hidden;">
+    <div style="display: block;" *ngFor="let item of getResponse()">
+      <div
+        id="list-of-categories"
+        class="list-of-categories"
+        (click)="onSelectingCategory(item)"
+      >
+        <mat-icon class="icon">keyboard_arrow_right</mat-icon>
+        <div class="category">
+          {{ item }}
+        </div>
+      </div>
+      <!-- <hr class="divider"> -->
+      <!-- <mat-divider style="margin-left: 24px;"></mat-divider> -->
+    </div>
+  </div>
+
+  <div class="span" (click)="onTag()">
+    <mat-icon class="icon">keyboard_arrow_down</mat-icon>
+    <div class="category">Tags</div>
+  </div>
+  <div id="tag-list">
+    <div
+      style="display: inline-block;zoom: 1; *display: inline;margin-left: 5px;"
+      *ngFor="let item of tags"
+    >
+      <div class="chips">
         {{ item }}
       </div>
     </div>
-    <!-- <hr class="divider"> -->
-    <!-- <mat-divider style="margin-left: 24px;"></mat-divider> -->
   </div>
   <!-- [ngStyle]="{'background-color': color? 'lightgray' : 'white'}"> -->
   <!-- <div class="span" [routerLink]="['/search/###/ ']" ><mat-icon class="icon">label</mat-icon><div class="text">Tags</div></div> -->
@@ -21,6 +53,9 @@
   <!-- <div class="span" [routerLink]="['/category', category]">{{ getCategory() }}</div> -->
   <!-- <div class="span" [routerLink]="['/search/###/ ']">Tags</div> -->
 </div>
+<!-- <div class="shrink">
+  <mat-icon>double_arrow</mat-icon>
+</div> -->
 <!-- <div class="dlt-dropdown">
   <button class="dlt-button dlt-button-icon button-icon-md"><mat-icon>more_vert</mat-icon></button>
   <div class="dlt-overflow-menu">

@@ -1,6 +1,7 @@
 .list-of-questions {
     display: flex;
-    width: 100%;
+    width: 84%;
+    margin-left: 16%;
   }
   .question-card {
     margin-bottom: 10px;

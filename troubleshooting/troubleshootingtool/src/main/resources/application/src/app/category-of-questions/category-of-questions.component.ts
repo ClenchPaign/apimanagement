@@ -39,12 +39,18 @@ export class CategoryOfQuestionsComponent implements OnInit {
     );
   }
   getQuestions(): Array<QAEntry> {
-    for (const i of this.response) {
-      i.Question.description = i.Question.description.replace(/<[^>]*>/g, '');
-      i.Question.description = i.Question.description.replace('&nbsp;', '');
+    const tagList: string[] = [];
+    const editedResponse: Array<QAEntry> = this.response;
+    for (let i = 0; i < editedResponse.length; i++) {
+      let temp: string = this.response[i].Question.description.replace(/<[^>]*>/g, '');
+      temp = temp.replace('&nbsp;', '');
+      editedResponse[i].Question.description = temp;
+      for (const j of editedResponse[i].tags) {
+        tagList.push(j);
+      }
     }
-
-    return this.response;
+    this.listingService.setTags(tagList);
+    return editedResponse;
   }
 
   getTags(straray: Array<string>): Array<string> {

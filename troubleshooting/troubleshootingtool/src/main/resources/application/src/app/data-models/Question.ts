@@ -1,12 +1,12 @@
 export class Question {
-    private id: string;
-    private category: string;
-    private question: string;
-    private description: string;
-    private attachment: string;
-    private creationDate: number;
-    private ownerId: string;
-    private lastModifiedDate: number;
+    public id: string;
+    public category: string;
+    public question: string;
+    public description: string;
+    public attachment: string;
+    public creationDate: number;
+    public ownerId: string;
+    public lastModifiedDate: number;
 
 
     // tslint:disable-next-line: max-line-length

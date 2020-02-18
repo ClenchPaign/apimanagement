@@ -40,7 +40,18 @@ export class QuestionsListComponent implements OnInit {
       res => { console.log(res); });
   }
   getQuestions(): Array<QAEntry> {
-    return this.response;
+    const tagList: string[] = [];
+    const editedResponse: Array<QAEntry> = this.response;
+    for (let i = 0; i < editedResponse.length; i++) {
+      let temp: string = this.response[i].Question.description.replace(/<[^>]*>/g, '');
+      temp = temp.replace('&nbsp;', '');
+      editedResponse[i].Question.description = temp;
+      for (const j of editedResponse[i].tags) {
+        tagList.push(j);
+      }
+    }
+    this.listingService.setTags(tagList);
+    return editedResponse;
   }
 
   getTags(straray: Array<string>): Array<string> {
@@ -66,7 +77,7 @@ export class QuestionsListComponent implements OnInit {
 
 
     // this.listingService.keyword = tag;
-    this.router.navigateByUrl('/main/search/' + tag +'/');
+    this.router.navigateByUrl('/main/search/' + tag + '/');
     // this.router.navigateByUrl('/cat');
   }
 }

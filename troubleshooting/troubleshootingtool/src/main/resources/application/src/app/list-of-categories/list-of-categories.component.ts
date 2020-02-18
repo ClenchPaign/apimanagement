@@ -33,15 +33,27 @@ export class ListOfCategoriesComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('result:' + result);
+      this.openOptions();
       if (this.cats.includes(result) || result === '' || result === undefined) {
         console.log('category already exist or question not added');
-      }else{
+      } else {
         this.cats.push(result);
       }
 
       //   this.router.navigateByUrl('/categories', { skipLocationChange: true })
       //     .then(() => this.router.navigate(['/categories']));
     });
+  }
+  openOptions() {
+    console.log('hello from options');
+    const options = document.getElementById('options');
+    if (options.style.visibility === 'visible') {
+      options.style.visibility = 'collapse';
+      options.style.display = 'none';
+    } else {
+      options.style.visibility = 'visible';
+      options.style.display = 'flex';
+    }
   }
 
 
@@ -64,7 +76,7 @@ export class ListOfCategoriesComponent implements OnInit {
     this.listingService.category = cat;
     // this.router.navigateByUrl('/cat');
   }
-  addQAEntry(){
+  addQAEntry() {
     this.router.navigateByUrl('/main/add_qna');
   }
 }

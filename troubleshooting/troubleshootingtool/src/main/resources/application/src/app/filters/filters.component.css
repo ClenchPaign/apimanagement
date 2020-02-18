@@ -5,16 +5,31 @@
   font-size: medium;
   cursor: pointer;
   display: flex;
+  background-color: #ffffff;
 }
 .breadcrumbs {
   margin-right: 16px;
+  background-color: #eeeeee;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 16% !important;
+  box-shadow: 0px 0px 1px black;
 }
-
+.header {
+  display: flex;
+  height: 54px;
+  background-color: #1776bf;
+  justify-content: flex-start;
+  align-items: center;
+  /* box-shadow: 1px 0px 10px black; */
+}
 .category {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   margin-left: 5px;
   outline: none;
-  vertical-align: middle;
+  align-self: center;
 }
 .list-of-categories {
   display: flex;
@@ -22,6 +37,8 @@
   margin-top: 2px;
   cursor: pointer;
   padding: 2px;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 .list-of-categories:active {
@@ -33,17 +50,76 @@
   background-color: lightgray;
 }
 
-.divider{
-    color: lightslategray;
-    width: 100px;
-    height: 2px;
+.divider {
+  color: lightslategray;
+  width: 100px;
+  height: 2px;
 }
-.cat-icon {
-  vertical-align: middle;
-  color: #0f4c7b;
+.shrink {
+  color: #ffffff;
+  transform: rotate(180deg);
+  border-radius: 200px;
+  padding: 8px;
+  width: fit-content;
+  height: fit-content;
+  cursor: pointer;
+  outline: none;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background-color: #1776bf;
 }
 .icon {
-  font-size: 20px;
-  align-self: center;
   color: #0f4c7b;
+  padding: 4px;
+}
+.product-icon {
+  color: #ffffff;
+  border-radius: 200px;
+  margin-left: 10px;
+  padding: 8px;
+  width: fit-content;
+  height: fit-content;
+  cursor: pointer;
+  outline: none;
+  background-color: #0f4c7b;
+}
+.product-name {
+  font-family: "Segoe UI", Tahoma, Verdana, sans-serif;
+  font-size: small;
+  font-weight: 500;
+  margin: 0;
+  /* font-weight: bolder; */
+}
+.product-name-secondary {
+  font-family: "Segoe UI", Tahoma, Verdana, sans-serif;
+  font-size: 12px;
+  margin: 0;
+}
+
+.product {
+  margin-left: 10px;
+  display: flex;
+  color: #ffffff;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+.chips {
+  font-size: small;
+  text-decoration: none;
+  color: #fff;
+  padding-left: 8px;
+  padding-right: 8px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-radius: 15px;
+  background-color: #1776bf;
+  margin-right: 10px;
+  margin-top: 10px;
+  cursor: pointer;
+  width: fit-content;
+  font-family: 'Segoe UI', Tahoma, Verdana, sans-serif;
+}
+.chips:hover {
+  background-color: #0f4c7b;
 }
