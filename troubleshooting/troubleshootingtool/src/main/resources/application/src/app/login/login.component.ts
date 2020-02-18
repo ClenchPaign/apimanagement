@@ -3,6 +3,7 @@ import { nullSafeIsEquivalent } from '@angular/compiler/src/output/output_ast';
 import { ListingService } from '../listing.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { User } from '../data-models/User';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-login',
@@ -11,13 +12,26 @@ import { User } from '../data-models/User';
 })
 export class LoginComponent implements OnInit {
   response: string;
-
+  showPassword: boolean;
   constructor(private listingService: ListingService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
-
+    this.showPassword = false;
   }
 
+  show() {
+    const element = document.getElementById('showPassword');
+    const password = document.getElementById('password') as HTMLInputElement;
+    if (password.type === 'password') {
+      this.showPassword = true;
+      element.style.color = '#000';
+      password.type = 'text';
+    } else {
+      this.showPassword = false;
+      password.type = 'password';
+      element.style.color = '#d6d6d6';
+    }
+  }
   login() {
     const username = (document.getElementById('username') as HTMLInputElement).value;
     const password = (document.getElementById('password') as HTMLInputElement).value;
@@ -30,9 +44,9 @@ export class LoginComponent implements OnInit {
         data => {
           console.log('LDAP user auth is successful ', data);
           this.response = data;
-          if(this.response === 'true'){
+          if (this.response === 'true') {
             this.router.navigateByUrl('/main/category');
-          }else{
+          } else {
             this.response = 'true';
           }
         },

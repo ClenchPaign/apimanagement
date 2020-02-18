@@ -20,6 +20,7 @@ export class FiltersComponent implements OnInit {
   ngOnInit() {
     this.color = false;
     this.category = this.listingService.category;
+
     // this.route.paramMap.subscribe(params => {
     //   this.category = params.get('category');
     // });
@@ -31,7 +32,7 @@ export class FiltersComponent implements OnInit {
         this.response = data;
       },
       res => { console.log(res); });
-   
+
   }
 
   onTag() {
@@ -40,24 +41,23 @@ export class FiltersComponent implements OnInit {
     // console.log('tags list:' + this.tags);
   }
 
+  onCategoryHeadClick() {
+    this.router.navigateByUrl('/main/category');
+    this.tags = null;
+    this.ngOnInit();
+  }
+  onRemoveTag(tag: string, index: number) {
+    // this.tags = this.tags.filter(item => item !== tag);
+    const chip = document.getElementsByClassName('chips');
+    console.log('number' + index);
+    const gg = chip[index] as HTMLDivElement;
+    gg.style.backgroundColor = 'lightgrey';
+    gg.style.color = '#000';
+  }
 
   onSelectingCategory(item: string) {
-    // let div = document.getElementById('list-of-categories') as HTMLDivElement;
-    // div.style.backgroundColor = 'lightgray';
-
-    // if (this.category === item) {
-    //   this.color = true;
-    // } else {
-    //   this.color = false;
-    // }
-    console.log('category =>' + this.getCategory());
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
       this.router.navigate(['/main/category/' + item]));
-  }
-  getCategory(): string {
-    console.log('get cat:' + this.route.snapshot.paramMap.get('category'));
-    return 'easy';
-    // return this.listingService.category;
   }
 
   onCategoriesClick() {

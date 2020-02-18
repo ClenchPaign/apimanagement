@@ -1,4 +1,4 @@
-<div class="parent">
+<div class="parent" (keydown.enter)="login()">
   <mat-card class="block">
     <div>
       <div class="headers">
@@ -11,7 +11,6 @@
           class="input-div"
           id="username"
           type="text"
-          required
           placeholder="Username"
           required
         />
@@ -21,11 +20,11 @@
         <input
           id="password"
           type="password"
-          required
           class="input-div"
           placeholder="Password"
           required
         />
+        <mat-icon class="password-icon" id="showPassword" (click)="show()">visibility</mat-icon>
       </div>
       <mat-error
         style="margin-left: 16px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;font-size: small;"

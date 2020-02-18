@@ -25,41 +25,10 @@ export class ListOfCategoriesComponent implements OnInit {
 
   cats: string[];
 
-  openDialog(): void {
-    const dialogRef = this.dialog.open(AddQuestionDialogComponent, {
-      width: '900px',
-      data: { category: this.cats }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('result:' + result);
-      this.openOptions();
-      if (this.cats.includes(result) || result === '' || result === undefined) {
-        console.log('category already exist or question not added');
-      } else {
-        this.cats.push(result);
-      }
-
-      //   this.router.navigateByUrl('/categories', { skipLocationChange: true })
-      //     .then(() => this.router.navigate(['/categories']));
-    });
-  }
-  openOptions() {
-    console.log('hello from options');
-    const options = document.getElementById('options');
-    if (options.style.visibility === 'visible') {
-      options.style.visibility = 'collapse';
-      options.style.display = 'none';
-    } else {
-      options.style.visibility = 'visible';
-      options.style.display = 'flex';
-    }
-  }
-
-
-  constructor(private listingService: ListingService, private router: Router, private route: ActivatedRoute, public dialog: MatDialog) { }
+  constructor(private listingService: ListingService, private router: Router, private route: ActivatedRoute) { }
   ngOnInit() {
     this.listingService.category = '';
+    this.listingService.setTags(null);
     this.listingService.getAllCategories().subscribe(
       data => {
         console.log('GET Request is successful ', data);
@@ -76,7 +45,5 @@ export class ListOfCategoriesComponent implements OnInit {
     this.listingService.category = cat;
     // this.router.navigateByUrl('/cat');
   }
-  addQAEntry() {
-    this.router.navigateByUrl('/main/add_qna');
-  }
+ 
 }

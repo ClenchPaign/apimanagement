@@ -22,6 +22,28 @@ span {
   margin-left: 24px;
 }
 
+.fab {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+}
+
+.options {
+  position: fixed;
+  bottom: 80px;
+  right: 24px;
+  color: #fff;
+  display: none;
+  align-items: flex-end;
+  flex-direction: column;
+  width: max-content;
+}
+.options-button {
+  background-color: #1776bf;
+  border-radius: 20px;
+  margin-bottom: 10px;
+  width: min-content;
+}
 ul.breadcrumb {
   padding: 10px 16px;
   cursor: pointer;

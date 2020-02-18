@@ -14,7 +14,7 @@
     <mat-icon id="category_icon" class="icon" (click)="onCategoriesClick()"
       >keyboard_arrow_down</mat-icon
     >
-    <div class="category" [routerLink]="['/main/category']">Categories</div>
+    <div class="category" (click)="onCategoryHeadClick()">Categories</div>
   </div>
   <div id="list" style="display: none;visibility: hidden;">
     <div style="display: block;" *ngFor="let item of getResponse()">
@@ -39,12 +39,13 @@
   </div>
   <div id="tag-list">
     <div
-      style="display: inline-block;zoom: 1; *display: inline;margin-left: 5px;"
-      *ngFor="let item of tags"
+      style="display: inline-block;zoom: 1; *display: inline;margin-left: 10px;"
+      *ngFor="let item of tags;index as i"
     >
       <div class="chips">
-        {{ item }}
+        {{ item }} <mat-icon (click)="onRemoveTag(item,i)" style="font-size: 10px;width: 10px;height: 10px;">close</mat-icon>
       </div>
+     
     </div>
   </div>
   <!-- [ngStyle]="{'background-color': color? 'lightgray' : 'white'}"> -->
