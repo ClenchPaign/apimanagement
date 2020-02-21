@@ -38,6 +38,9 @@ import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 import javax.naming.ldap.InitialLdapContext;
 import javax.naming.ldap.LdapContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -54,6 +57,8 @@ public class DataDao {
 
     private RestHighLevelClient restHighLevelClient;
     String INDEX = "qa";
+    HttpServletRequest httpServletRequest;
+    HttpSession httpSession;
 
     private ObjectMapper objectMapper;
 
@@ -330,7 +335,7 @@ public class DataDao {
         return obj;
     }
 
-    public Boolean authenticate(User user) throws NullPointerException {
+    public Boolean authenticate(User user, HttpServletRequest request, HttpServletResponse response) throws NullPointerException {
         LdapContext ctx = null;
         boolean result = false;
         System.out.println("ctx   :" + ctx);
@@ -348,11 +353,9 @@ public class DataDao {
             String searchFilter = "(&(objectClass=user)(mail=*))";
             String searchBase = "OU=India,DC=eur,DC=ad,DC=sag";
             NamingEnumeration<?> answer = ctx.search(searchBase, searchFilter, searchCtls);
-            System.out.println("answer   :" + answer);
 
             while (answer.hasMoreElements()) {
                 SearchResult sr = (SearchResult) answer.next();
-                System.out.println("sr  :" + sr);
                 // Print some of the attributes, catch the exception if the
                 // attributes have no values
                 Attributes attrs = sr.getAttributes();
@@ -362,6 +365,12 @@ public class DataDao {
                     if (cn.endsWith(username.toLowerCase())
                             || cn.endsWith(username.toUpperCase())) {
                         result = true;
+                        HttpSession session = request.getSession();
+                      session.setAttribute("userName",username );
+                        session.setAttribute("password",passwd );
+                        httpServletRequest = request;
+                        httpSession = request.getSession();
+                        System.out.println("session   :"+session.getAttribute("userName"));
                         break;
                     } else
                         result = false;
@@ -408,6 +417,28 @@ public class DataDao {
         LdapContext ctx = new InitialLdapContext(env, null);
         System.out.println("ctx   :" + ctx.getEnvironment().values());
         return ctx;
+    }
+
+
+    public Boolean logout() {
+
+        boolean result = false;
+        try {
+//            HttpSession session = httpServletRequest.getSession(true);
+            System.out.println("session in logout  :" + httpSession);
+
+            if (httpSession != null) {
+                httpSession.invalidate();
+                result = true;
+            } else {
+                result = false;
+            }
+        }
+        catch (Exception e){
+            return result;
+        }
+//        System.out.println("session   :"+session.getAttribute("userName"));
+        return result;
     }
 }
 

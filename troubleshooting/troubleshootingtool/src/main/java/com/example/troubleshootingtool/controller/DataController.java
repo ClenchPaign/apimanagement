@@ -18,6 +18,10 @@ import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 import javax.naming.ldap.InitialLdapContext;
 import javax.naming.ldap.LdapContext;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -115,8 +119,16 @@ public class DataController {
     public ImageModel getFiles(@PathVariable("id") String id) throws IOException {
         return dataDao.getFilesById(id);
     }
+
+//
+
     @RequestMapping(value="/auth",method = RequestMethod.POST)
-    public Boolean authenticate(@RequestBody User user) throws NullPointerException {
-        return dataDao.authenticate(user);
+    public Boolean authenticate(@RequestBody User user,HttpServletRequest request, HttpServletResponse response) throws NullPointerException,ServletException, IOException {
+        return dataDao.authenticate(user,request,response);
+    }
+
+    @RequestMapping(value = "/logout", method = RequestMethod.POST)
+    public Boolean logout()throws NullPointerException,ServletException, IOException {
+        return dataDao.logout();
     }
 }

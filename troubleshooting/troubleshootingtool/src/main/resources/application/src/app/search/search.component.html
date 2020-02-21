@@ -53,16 +53,16 @@
       <mat-menu #menu="matMenu">
         <button mat-menu-item [routerLink]="['/main/category']">
           <mat-icon style="color: #0f4c7b;">person</mat-icon>
-          <a class="menu-items">Divyabharathi K</a>
+          <a class="menu-items" >{{username}}</a>
         </button>
         <mat-divider></mat-divider>
         <button mat-menu-item [routerLink]="['/main/dashboard']">
           <mat-icon>dashboard</mat-icon>
           <a class="menu-items">Dashboard</a>
         </button>
-        <button mat-menu-item [routerLink]="['/']">
+        <button mat-menu-item  (click)="logout()">
           <mat-icon>logout</mat-icon>
-          <a class="menu-items">Logout</a>
+          <a class="menu-items" >Logout</a>
         </button>
       </mat-menu>
       <!-- <div class="dlt-overflow-menu">
@@ -77,3 +77,5 @@
     </div> -->
   </div>
 </div>
+
+

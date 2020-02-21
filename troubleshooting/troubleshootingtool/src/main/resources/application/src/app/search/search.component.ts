@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ListingService } from '../listing.service';
 import { SearchQuery } from '../data-models/SearchQuery';
 import { QAEntry } from '../data-models/QAEntry';
+import { User } from '../data-models/User';
 
 @Component({
   selector: 'app-search',
@@ -13,6 +14,9 @@ export class SearchComponent implements OnInit {
   response: any;
   category: any;
   searchdata: SearchQuery;
+  username:string;
+  password:string;
+  
   constructor(private listingService: ListingService, private router: Router, private eRef: ElementRef) { }
   ngOnInit() {
     this.listingService.searchForKeyword(this.searchdata).subscribe(
@@ -22,6 +26,8 @@ export class SearchComponent implements OnInit {
       res => {
         console.log(res);
       });
+
+    this.username= this.listingService.getUsername(); 
   }
 
   @HostListener('document:click', ['$event'])
@@ -82,5 +88,18 @@ export class SearchComponent implements OnInit {
     this.search('');
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
       this.router.navigate(['/main/search/' + tag + '/ ']));
+  }
+
+  logout(){
+    const user=new User(this.username,this.password,"");
+    this.listingService.logout().subscribe(
+      data => {
+        console.log(data);
+        if(data === 'true'){
+          this.router.navigateByUrl('/');
+        }
+      },
+     );
+
   }
 }

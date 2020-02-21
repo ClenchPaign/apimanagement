@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { nullSafeIsEquivalent } from '@angular/compiler/src/output/output_ast';
 import { ListingService } from '../listing.service';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -32,19 +32,22 @@ export class LoginComponent implements OnInit {
       element.style.color = '#d6d6d6';
     }
   }
+
   login() {
     const username = (document.getElementById('username') as HTMLInputElement).value;
     const password = (document.getElementById('password') as HTMLInputElement).value;
-    const user = new User(username, password, '');
-    // const user = new User('y509476', 'Divya@14101997', '');
-    if (username === '' && password === '') {
-      alert('Please enter username and password');
-    } else {
+    // const user = new User('y509476', 'Divya@14101997', "");
+    const user = new User(username, password, "");
+     this.listingService.setUser(username);
+
+
+    if (username == "" && password == "") { alert("Please enter username and password"); }
+    else {
       this.listingService.getAuthstatus(user).subscribe(
         data => {
           console.log('LDAP user auth is successful ', data);
           this.response = data;
-          if (this.response === 'true') {
+          if(this.response === 'true'){
             this.router.navigateByUrl('/main/category');
           } else {
             this.response = 'true';

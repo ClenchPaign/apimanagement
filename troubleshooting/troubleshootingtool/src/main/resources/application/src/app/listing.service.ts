@@ -18,13 +18,15 @@ export class ListingService {
   public tags: string[];
   public keyword: string;
   public id: string;
+  public username:string;
+  
   constructor(private http: HttpClient) {
     this.getAllCategories();
     this.getQuestionsForCategory(this.category);
     this.getQuestionForID(this.id);
   }
 
-  baseUrl = 'http://localhost:4343';
+  baseUrl = 'http://localhost:4040';
   getAllCategories() {
     return this.http.get(this.baseUrl + '/categories', httpOptions);
   }
@@ -78,6 +80,17 @@ export class ListingService {
 
   getAuthstatus(user: User) {
     return this.http.post(this.baseUrl + '/auth/', user, { headers, responseType: 'text' });
-
   }
+
+setUser(username:string){
+ this.username = username;
+}
+getUsername(){
+  return this.username;
+}
+
+ logout(){
+  return this.http.post(this.baseUrl + '/logout',"",{ headers, responseType: 'text' } );
+
+ }
 }
