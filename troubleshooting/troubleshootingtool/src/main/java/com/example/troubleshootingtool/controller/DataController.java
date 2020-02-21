@@ -119,9 +119,6 @@ public class DataController {
     public ImageModel getFiles(@PathVariable("id") String id) throws IOException {
         return dataDao.getFilesById(id);
     }
-
-//
-
     @RequestMapping(value="/auth",method = RequestMethod.POST)
     public Boolean authenticate(@RequestBody User user,HttpServletRequest request, HttpServletResponse response) throws NullPointerException,ServletException, IOException {
         return dataDao.authenticate(user,request,response);

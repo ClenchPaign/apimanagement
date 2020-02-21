@@ -26,7 +26,7 @@ export class ListingService {
     this.getQuestionForID(this.id);
   }
 
-  baseUrl = 'http://localhost:4040';
+  baseUrl = 'http://localhost:4343';
   getAllCategories() {
     return this.http.get(this.baseUrl + '/categories', httpOptions);
   }
