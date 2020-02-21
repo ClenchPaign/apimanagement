@@ -3,10 +3,7 @@ package com.example.troubleshootingtool.dao;
 import com.example.troubleshootingtool.bean.*;
 import com.example.troubleshootingtool.config.ElasticSearchConfigurationClass;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.lucene.search.BooleanQuery;
 import org.elasticsearch.ElasticsearchException;
-import org.elasticsearch.action.bulk.BulkRequest;
-import org.elasticsearch.action.bulk.BulkRequestBuilder;
 import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.index.IndexRequest;
@@ -17,19 +14,14 @@ import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
-import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.index.query.TermQueryBuilder;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
 import javax.naming.Context;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
@@ -41,13 +33,9 @@ import javax.naming.ldap.LdapContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.*;
 
-import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
 @Repository
@@ -283,7 +271,7 @@ public class DataDao {
         return list;
     }
 
-    public String restore(List<QAEntry> list) throws IOException {
+    public String restore(List<QAEntry> list) {
         for (QAEntry qaEntry : list) {
             Map dataMap = objectMapper.convertValue(qaEntry, Map.class);
             IndexRequest indexRequest = new IndexRequest(INDEX).source(dataMap);
@@ -301,7 +289,7 @@ public class DataDao {
         return "Inserted successfully";
     }
 
-    public String uploadFiles(ImageModel file) throws IOException {
+    public String uploadFiles(ImageModel file) {
         String uniqueID = UUID.randomUUID().toString();
         file.setId(uniqueID);
         Map dataMap = objectMapper.convertValue(file, Map.class);
