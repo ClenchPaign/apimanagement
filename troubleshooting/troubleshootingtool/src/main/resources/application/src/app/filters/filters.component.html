@@ -40,12 +40,17 @@
   <div id="tag-list">
     <div
       style="display: inline-block;zoom: 1; *display: inline;margin-left: 10px;"
-      *ngFor="let item of tags;index as i"
+      *ngFor="let item of tags; index as i"
     >
       <div class="chips">
-        {{ item }} <mat-icon (click)="onRemoveTag(item,i)" style="font-size: 10px;width: 10px;height: 10px;">close</mat-icon>
+        <span (click)="onSelectTag(item, i)">{{ item }}</span>
+        <mat-icon
+          class="close_icon"
+          (click)="onRemoveTag(item, i)"
+          style="display: none; font-size: 10px;width: 10px;height: 10px; margin-left: 4px;"
+          >close</mat-icon
+        >
       </div>
-     
     </div>
   </div>
   <!-- [ngStyle]="{'background-color': color? 'lightgray' : 'white'}"> -->

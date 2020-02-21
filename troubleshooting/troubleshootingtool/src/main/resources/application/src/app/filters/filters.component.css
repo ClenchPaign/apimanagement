@@ -113,7 +113,8 @@
   padding-top: 4px;
   padding-bottom: 4px;
   border-radius: 15px;
-  background-color: #1776bf;
+  background-color: lightgray;
+  color: #000000;
   margin-right: 10px;
   margin-top: 10px;
   cursor: pointer;
@@ -121,5 +122,5 @@
   font-family: 'Segoe UI', Tahoma, Verdana, sans-serif;
 }
 .chips:hover {
-  background-color: #0f4c7b;
+  background-color: darkgray;
 }

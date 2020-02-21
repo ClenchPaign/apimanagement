@@ -35,6 +35,7 @@ import { FiltersComponent } from './filters/filters.component';
 import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { MainComponent } from './main/main.component';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -72,7 +73,8 @@ import { MainComponent } from './main/main.component';
     HttpClientModule,
     RichTextEditorAllModule,
     NgxFileDropModule,
-    MatMenuModule
+    MatMenuModule,
+    MatProgressSpinnerModule
   ],
   providers: [ListingService, MessageService],
   bootstrap: [AppComponent],
