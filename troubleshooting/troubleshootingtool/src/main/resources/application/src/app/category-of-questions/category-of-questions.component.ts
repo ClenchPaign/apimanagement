@@ -11,7 +11,7 @@ import { QAEntry } from '../data-models/QAEntry';
 export class CategoryOfQuestionsComponent implements OnInit {
   response: any;
   description = '';
-  hello:any;
+  hello: any;
   @Input() category: string;
   constructor(
     private listingService: ListingService,

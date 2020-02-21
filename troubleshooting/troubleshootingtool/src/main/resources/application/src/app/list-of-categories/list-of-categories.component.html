@@ -11,7 +11,7 @@
     class="matcard-categories"
     *ngFor="let list of getResponse()"
     (click)="onClick(list)"
-    matRipple [matRippleColor]="myColor"
+    matRipple 
     [routerLink]="['/main/category', list]"
   >
     <p class="button-text">{{ list }}</p>

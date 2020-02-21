@@ -1,6 +1,6 @@
 <div class="list-of-questions">
   <ul>
-    <mat-card class="question-card" matRipple [matRippleColor]="myColor" *ngFor="let list of getQuestions()">
+    <mat-card class="question-card" matRipple *ngFor="let list of getQuestions()">
       <div class="question-item">
         <div class="answer-layout">
           <div class="no-of-answers">{{ list.answerCount }}</div>
