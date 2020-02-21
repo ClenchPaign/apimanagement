@@ -1,6 +1,6 @@
 <div class="list-of-questions">
   <ul>
-    <mat-card class="question-card" *ngFor="let list of getQuestions()">
+    <mat-card class="question-card" matRipple [matRippleColor]="myColor" *ngFor="let list of getQuestions()">
       <div class="question-item">
         <div class="answer-layout">
           <div class="no-of-answers">{{ list.answerCount }}</div>
@@ -9,6 +9,7 @@
         <div class="question-layout">
           <a
             class="question"
+
             [routerLink]="['/main/qna', list.Question.id]"
             (click)="onClick(list.Question.id)"
             >{{ list.Question.question }}</a

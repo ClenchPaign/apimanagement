@@ -2,7 +2,7 @@
   <div class="head">Categories</div>
 </div>
 
-<div class="categories">
+<div class="categories" >
   <!-- <mat-card class="button" *ngFor="let list of getResponse() | slice:row*2:row*2+2" (click) = "onClick(list)" [routerLink]="['/categories', list]">
      <p  class="button-text" > {{ list }}</p>
   </mat-card> -->
@@ -11,6 +11,7 @@
     class="matcard-categories"
     *ngFor="let list of getResponse()"
     (click)="onClick(list)"
+    matRipple [matRippleColor]="myColor"
     [routerLink]="['/main/category', list]"
   >
     <p class="button-text">{{ list }}</p>

@@ -43,7 +43,7 @@ export class CategoryOfQuestionsComponent implements OnInit {
     const editedResponse: Array<QAEntry> = this.response;
     for (let i = 0; i < editedResponse.length; i++) {
       let temp: string = this.response[i].Question.description.replace(/<[^>]*>/g, '');
-      temp = temp.replace('&nbsp;', '');
+      temp = temp.replace(/&nbsp;/g, '');
       editedResponse[i].Question.description = temp;
       for (const j of editedResponse[i].tags) {
         tagList.push(j);
