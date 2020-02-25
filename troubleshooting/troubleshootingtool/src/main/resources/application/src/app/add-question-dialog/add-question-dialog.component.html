@@ -1,125 +1,130 @@
-<form class="parent">
-  <mat-form-field class="search">
-    <textarea
-      matInput
-      placeholder="Question"
-      rows="3"
-      type="text"
-      cdkTextareaAutosize
-      #autosize="cdkTextareaAutosize"
-      cdkAutosizeMinRows="2"
-      cdkAutosizeMaxRows="8"
-      [formControl]="question"
-    ></textarea>
-    <mat-error *ngIf="question.hasError('required')">
-      Question is <strong>required</strong>
-    </mat-error>
-  </mat-form-field>
-  <ejs-richtexteditor
-    #imageRTE
-    id="imageRTE"
-    class="richtexteditor"
-    width="100%"
-    height="200px"
-    [(ngModel)]="description"
-  >
-  </ejs-richtexteditor>
-
-  <ngx-file-drop
-    class="filedrop"
-    dropZoneLabel="Drop files here"
-    (onFileDrop)="dropped($event)"
-    (onFileOver)="fileOver($event)"
-    (onFileLeave)="fileLeave($event)"
-  >
-    <ng-template
-      ngx-file-drop-content-tmp
-      let-openFileSelector="openFileSelector"
-    >
-      Drop files here
-      <button
-        mat-button style="background-color: #1776bf; color: white;margin-left: 10px;"
-        type="button"
-        (click)="openFileSelector()"
-      >
-        Browse Files
-      </button>
-    </ng-template>
-  </ngx-file-drop>
-  <div class="upload-table">
-    <div class="fileitem" *ngFor="let item of files; let i = index">
-      <div class="item">
-        {{ item.relativePath }}<mat-icon (click)=removeFiles(item)>close</mat-icon>
-      </div>
-    </div>
-  </div>
-
+<div>
+  <div class="head">POST A QUESTION</div>
   <div>
-    <mat-form-field class="search">
-      <input
-        [formControl]="categories"
-        type="text"
-        placeholder="Select a category"
-        matInput
-        (input)="filter($event.target.value)"
-        [matAutocomplete]="auto"
-      />
-      <mat-autocomplete #auto="matAutocomplete">
-        <mat-option *ngFor="let option of getFilteredList()" [value]="option">
-          {{ option }}
-        </mat-option>
-      </mat-autocomplete>
-    </mat-form-field>
-
-    <!-- <select class="search" name="categories" id="categories">
-      <option *ngFor="let list of getResponse()">{{ list }}</option>
-    </select> -->
-  </div>
-  <mat-form-field class="search">
-    <mat-chip-list #chipList>
-      <mat-chip
-        *ngFor="let tag of fruits"
-        [selectable]="selectable"
-        [removable]="removable"
-        (removed)="remove(tag)"
+    <div class="close" [routerLink]="['/main/category']">
+      <mat-icon>close</mat-icon>
+    </div>
+    <mat-card class="parent">
+      <mat-form-field class="textarea">
+        <textarea
+          matInput
+          placeholder="Troubleshooting query"
+          cdkTextareaAutosize
+          #autosize="cdkTextareaAutosize"
+          cdkAutosizeMinRows="2"
+          cdkAutosizeMaxRows="8"
+          [formControl]="question"
+        ></textarea>
+        <mat-error *ngIf="question.hasError('required')">
+          Troubleshooting query cannot be <strong>empty</strong>
+        </mat-error>
+      </mat-form-field>
+      <label class="textarea">Description of the problem</label>
+      <br />
+      <ejs-richtexteditor
+        #imageRTE
+        id="imageRTE"
+        class="richtexteditor"
+        width="95%"
+        height="350px"
+        [(ngModel)]="description"
       >
-        {{ tag.name }}
-        <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
-      </mat-chip>
-      <input
-        class="tag-input"
-        placeholder="Add tags here..."
-        id="tag"
-        [matChipInputFor]="chipList"
-        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-        [matChipInputAddOnBlur]="addOnBlur"
-        (input)="filterTags($event.target.value)"
-        (matChipInputTokenEnd)="add($event)"
-        [matAutocomplete]="autoTag"
-      />
-      <mat-autocomplete
-      #autoTag="matAutocomplete"
-      (optionSelected)="onSelectionChanged($event)"
-    >
-      <mat-option *ngFor="let option of getFilteredTags()" [value]="option">
-        {{ option }}
-      </mat-option>
-    </mat-autocomplete>
-    </mat-chip-list>
-  </mat-form-field>
+      </ejs-richtexteditor>
+      <label class="textarea" style="margin-top: 16px;">Attachments</label>
+      <br />
 
-  <button
-    mat-button
-    class="dlt-button-post"
-    type="submit"
-    (click)="post_ques()"
-  >
-    POST
-  </button>
-</form>
-<!-- <div id="mySidenav" class="sidenav">
-    <a class="closebtn" style="cursor:pointer" (click)="closeNav()">&times;</a>
-   
-  </div> -->
+      <div
+        class="uploadfilecontainer"
+        appDragDrop
+        (onFileDropped)="uploadFile($event)"
+      >
+        <input
+          hidden
+          type="file"
+          #fileInput
+          multiple
+          (change)="uploadFile($event.target.files)"
+        />
+        <div>Drag & Drop files here</div>
+        <div style="margin-left: 10px;margin-right: 10px;">or</div>
+        <button
+          mat-button
+          class="button"
+          type="button"
+          (click)="fileInput.click()"
+        >
+          Browse Files
+        </button>
+      </div>
 
-<!-- <h1>Hello</h1> -->
+      <div class="upload-table">
+        <div class="fileitem" *ngFor="let item of files; let i = index">
+          <div class="item">
+            {{ item }}<mat-icon (click)="removeFiles(item)">close</mat-icon>
+          </div>
+        </div>
+      </div>
+      <mat-form-field class="textarea">
+        <input
+          [formControl]="categories"
+          type="text"
+          placeholder="Select a category"
+          matInput
+          (input)="filter($event.target.value)"
+          [matAutocomplete]="auto"
+        />
+
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let option of getFilteredList()" [value]="option">
+            {{ option }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+
+      <mat-form-field class="textarea">
+        <mat-chip-list #chipList>
+          <mat-chip
+            *ngFor="let tag of fruits"
+            [selectable]="selectable"
+            [removable]="removable"
+            (removed)="remove(tag)"
+          >
+            {{ tag.name }}
+            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+          </mat-chip>
+          <input
+            class="tag-input"
+            placeholder="Add tags here..."
+            id="tag"
+            [matChipInputFor]="chipList"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            [matChipInputAddOnBlur]="addOnBlur"
+            (input)="filterTags($event.target.value)"
+            (matChipInputTokenEnd)="add($event)"
+            [matAutocomplete]="autoTag"
+          />
+          <mat-autocomplete
+            #autoTag="matAutocomplete"
+            (optionSelected)="onSelectionChanged($event)"
+          >
+            <mat-option
+              *ngFor="let option of getFilteredTags()"
+              [value]="option"
+            >
+              {{ option }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-chip-list>
+      </mat-form-field>
+      <button
+        mat-button
+        ejs-button
+        class="dlt-button-post"
+        type="submit"
+        (click)="post_qaentry()"
+      >
+        POST QUESTION
+      </button>
+    </mat-card>
+  </div>
+</div>

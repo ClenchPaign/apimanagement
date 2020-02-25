@@ -18,8 +18,8 @@ export class ListingService {
   public tags: string[];
   public keyword: string;
   public id: string;
-  public username:string;
-  
+  public username: string;
+
   constructor(private http: HttpClient) {
     this.getAllCategories();
     this.getQuestionsForCategory(this.category);
@@ -82,15 +82,26 @@ export class ListingService {
     return this.http.post(this.baseUrl + '/auth/', user, { headers, responseType: 'text' });
   }
 
-setUser(username:string){
- this.username = username;
-}
-getUsername(){
-  return this.username;
-}
+  setUser(username: string) {
+    this.username = username;
+  }
+  getUsername() {
+    return this.username;
+  }
 
- logout(){
-  return this.http.post(this.baseUrl + '/logout',"",{ headers, responseType: 'text' } );
+  logout() {
+    return this.http.post(this.baseUrl + '/logout', '', { headers, responseType: 'text' });
+  }
 
- }
+  getAllReviewQuestions() {
+    return this.http.get(this.baseUrl + '/review', httpOptions);
+  }
+
+  approve_question(qa: QAEntry, id: string) {
+    return this.http.post(this.baseUrl + '/approve/' + id, qa, { headers, responseType: 'text' });
+  }
+
+  getReviewQuestionForID(id: string) {
+    return this.http.get(this.baseUrl + '/review/' + id, httpOptions);
+  }
 }

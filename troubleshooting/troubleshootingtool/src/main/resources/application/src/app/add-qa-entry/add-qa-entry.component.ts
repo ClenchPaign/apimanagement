@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
 import { Tags } from '../list-of-categories/list-of-categories.component';
 import { ListingService } from '../listing.service';
 import { Router } from '@angular/router';
@@ -10,7 +10,6 @@ import { FormControl, Validators } from '@angular/forms';
 import { Answer } from '../data-models/Answer';
 import { RichTextEditorComponent } from '@syncfusion/ej2-angular-richtexteditor';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { FileSystemFileEntry, NgxFileDropEntry } from 'ngx-file-drop';
 import { ImageModel } from '../data-models/ImageModel';
 
 @Component({
@@ -38,8 +37,7 @@ export class AddQaEntryComponent implements OnInit {
   addOnBlur = true;
   imageUrlPREVIEW: any;
 
-  public files: NgxFileDropEntry[] = [];
-  public allFiles: NgxFileDropEntry[] = [];
+  public files: string[] = [];
 
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   @ViewChild('imageRTE', { static: true })
@@ -150,36 +148,44 @@ export class AddQaEntryComponent implements OnInit {
 
 
 
-  public removeFiles(file: NgxFileDropEntry) {
+  public removeFiles(file: string) {
     this.files = this.files.filter(item => item !== file);
-    console.log('remove file:' + file.relativePath);
+    console.log('remove file:' + file);
   }
-  public dropped(files: NgxFileDropEntry[]) {
-    for (const droppedFile of files) {
-      this.files.push(droppedFile);
-      const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
-      fileEntry.file((file: File) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = (e) => {
-          const imageModel: ImageModel = new ImageModel('', file.name, reader.result as string);
-          this.listingService.upload_files(imageModel).subscribe(data => {
-            console.log('Upload', data);
-            this.uploadedFiles.push(data);
-          });
-        };
-      });
+  // public dropped(files: NgxFileDropEntry[]) {
+  //   for (const droppedFile of files) {
+  //     this.files.push(droppedFile);
+  //     const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
+  //     fileEntry.file((file: File) => {
+  //       const reader = new FileReader();
+  //       reader.readAsDataURL(file);
+  //       reader.onload = (e) => {
+  //         const imageModel: ImageModel = new ImageModel('', file.name, reader.result as string);
+  //         this.listingService.upload_files(imageModel).subscribe(data => {
+  //           console.log('Upload', data);
+  //           this.uploadedFiles.push(data);
+  //         });
+  //       };
+  //     });
 
+  //   }
+  // }
+  uploadFile(event) {
+    for (const droppedFile of event) {
+      this.files.push(droppedFile.name);
+      const reader = new FileReader();
+      console.log('Name ', droppedFile.name);
+      reader.readAsDataURL(droppedFile);
+      reader.onload = (e) => {
+        const imageModel: ImageModel = new ImageModel('', droppedFile.name, reader.result as string);
+        this.listingService.upload_files(imageModel).subscribe(data => {
+          console.log('Upload', data);
+          this.uploadedFiles.push(data);
+        });
+      };
     }
   }
 
-  public fileOver(event) {
-    console.log(event);
-  }
-
-  public fileLeave(event) {
-    console.log(event);
-  }
 
   post_qaentry() {
     const question = this.question.value;
@@ -190,13 +196,13 @@ export class AddQaEntryComponent implements OnInit {
     for (const tags of this.fruits) {
       this.quesTags.push(tags.name);
     }
-    console.log(this.quesTags);
+    // console.log(this.quesTags);
     const d = new Date();
     const creationDate = d.getTime();
     const ques = new Question('', categories, question, description, this.uploadedFiles.toString(), creationDate, '', creationDate);
     const answer = new Answer('0', ans, creationDate, '123', 'user', creationDate, 0, false);
     const qa = new QAEntry(ques, [answer], this.quesTags, true, 1, 0);
-    // console.log(qa);
+    console.log(qa);
 
     if (this.question.value === '' || this.description.value === '') {
       // validate form

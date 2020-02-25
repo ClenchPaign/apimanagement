@@ -43,8 +43,8 @@ export class QuestionDetailsComponent implements OnInit {
           let img: any;
           this.listingService.get_files(val).subscribe(data => {
             img = data;
+            console.log('Get files from attachment '+data);
             this.attachmentList.push(data);
-            // console.log(img.base64Image);
             this.returnAttachment.push(img.base64Image);
             this.returnAttachmentFileName.push(img.fileName);
           },

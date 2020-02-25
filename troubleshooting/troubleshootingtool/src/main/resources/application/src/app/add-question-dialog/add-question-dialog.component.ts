@@ -9,7 +9,6 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { FormControl, Validators } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { RichTextEditorComponent } from '@syncfusion/ej2-angular-richtexteditor';
-import { NgxFileDropEntry, FileSystemFileEntry } from 'ngx-file-drop';
 import { ImageModel } from '../data-models/ImageModel';
 
 @Component({
@@ -31,8 +30,7 @@ export class AddQuestionDialogComponent implements OnInit {
   base64String: any;
   uploadedFiles: string[] = [];
   imageUrlPREVIEW: any;
-  public files: NgxFileDropEntry[] = [];
-  public allFiles: NgxFileDropEntry[] = [];
+  public files: string[] = [];
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   fruits: Tags[] = [];
   result: string[] = [];
@@ -41,17 +39,12 @@ export class AddQuestionDialogComponent implements OnInit {
   description: any = '';
   @ViewChild('imageRTE', { static: true })
   private rteObj: RichTextEditorComponent;
-  constructor(
-    public dialogRef: MatDialogRef<AddQuestionDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any, private listingService: ListingService) { }
+  constructor(private listingService: ListingService) { }
 
   question = new FormControl('', [
     Validators.required,
   ]);
   categories = new FormControl();
-  onNoClick(): void {
-    this.dialogRef.close(this.categories.value);
-  }
 
   ngOnInit() {
     this.listingService.category = '';
@@ -141,37 +134,26 @@ export class AddQuestionDialogComponent implements OnInit {
       this.fruits.splice(index, 1);
     }
   }
-  public removeFiles(file: NgxFileDropEntry) {
-    this.files = this.files.filter(item => item !== file);
-    console.log('remove file:' + file.relativePath);
-  }
-  public dropped(files: NgxFileDropEntry[]) {
-    for (const droppedFile of files) {
-      this.files.push(droppedFile);
-      const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
-      fileEntry.file((file: File) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = (e) => {
-          const imageModel: ImageModel = new ImageModel('', file.name, reader.result as string);
-          this.listingService.upload_files(imageModel).subscribe(data => {
-            console.log('Upload', data);
-            this.uploadedFiles.push(data);
-          });
-        };
-      });
 
+  uploadFile(event) {
+    for (const droppedFile of event) {
+      this.files.push(droppedFile.name);
+      const reader = new FileReader();
+      console.log('Name ', droppedFile.name);
+      reader.readAsDataURL(droppedFile);
+      reader.onload = (e) => {
+        const imageModel: ImageModel = new ImageModel('', droppedFile.name, reader.result as string);
+        this.listingService.upload_files(imageModel).subscribe(data => {
+          console.log('Upload', data);
+          this.uploadedFiles.push(data);
+        });
+      };
     }
   }
-
-  public fileOver(event) {
-    console.log(event);
+  public removeFiles(file: string) {
+    this.files = this.files.filter(item => item !== file);
+    console.log('remove file:' + file);
   }
-
-  public fileLeave(event) {
-    console.log(event);
-  }
-
   post_ques() {
     const question = this.question.value;
     const description = this.rteObj.getHtml();
@@ -190,7 +172,6 @@ export class AddQuestionDialogComponent implements OnInit {
     console.log(this.fruits);
     this.listingService.post_question(qa).subscribe(data => {
       console.log('POST Request is successful ', JSON.stringify(qa));
-      this.onNoClick();
     });
   }
 }

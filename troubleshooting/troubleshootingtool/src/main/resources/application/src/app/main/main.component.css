@@ -26,6 +26,7 @@ span {
   position: fixed;
   bottom: 24px;
   right: 24px;
+  z-index: 3;
 }
 
 .options {
@@ -34,6 +35,7 @@ span {
   right: 24px;
   color: #fff;
   display: none;
+  z-index: 3;
   align-items: flex-end;
   flex-direction: column;
   width: max-content;

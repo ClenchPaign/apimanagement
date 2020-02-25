@@ -1,0 +1,16 @@
+<div class="list-of-questions">
+      <mat-card class="question-card" *ngFor="let list of getQuestions()" matRipple >
+        <div class="question-item">
+          <div class="answer-layout">
+            <div class="no-of-answers">{{ list.answerCount }}</div>
+            <div class="answer-text">Answers</div>
+          </div>
+          <div class="question-layout">
+            <a class="question" [routerLink]="['/main/approval', list.Question.id]" (click)= "onClick(list.Question.id)">{{ list.Question.question }}</a>
+            <div class="description" [routerLink]="['/main/approval', list.Question.id]" (click)= "onClick(list.Question.id)" >{{ list.Question.description }}</div>
+              <span *ngFor="let tag of list.tags" class="chips" (click)="onTagClick(tag)"> {{ tag }}</span>
+          </div>
+        </div>
+      </mat-card>
+  </div>
+  

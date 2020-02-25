@@ -37,6 +37,10 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { MainComponent } from './main/main.component';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatRippleModule} from '@angular/material/core';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { DragDropDirective } from './DragDropDirective';
+import { ReviewQuestionsComponent } from './review-questions/review-questions.component';
+import { ApprovalStageComponent } from './approval-stage/approval-stage.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +56,10 @@ import {MatRippleModule} from '@angular/material/core';
     LoginComponent,
     FiltersComponent,
     DashboardComponent,
-    MainComponent
+    MainComponent,
+    DragDropDirective,
+    ReviewQuestionsComponent,
+    ApprovalStageComponent
   ],
   imports: [
     BrowserModule,
@@ -66,6 +73,7 @@ import {MatRippleModule} from '@angular/material/core';
     MatIconModule,
     MatDialogModule,
     MatAutocompleteModule,
+    MatSnackBarModule,
     HttpClientModule,
     BrowserAnimationsModule,
     FormsModule,

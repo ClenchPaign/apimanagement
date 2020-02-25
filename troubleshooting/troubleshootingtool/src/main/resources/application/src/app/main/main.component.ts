@@ -25,25 +25,29 @@ export class MainComponent implements OnInit {
     this.openOptions();
     this.router.navigateByUrl('/main/add_qna');
   }
-  openDialog(): void {
-    const dialogRef = this.dialog.open(AddQuestionDialogComponent, {
-      width: '900px',
-      data: { category: this.cats }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('result:' + result);
-      this.openOptions();
-      if (this.cats.includes(result) || result === '' || result === undefined) {
-        console.log('category already exist or question not added');
-      } else {
-        this.cats.push(result);
-      }
-
-      //   this.route.navigateByUrl('/categories', { skipLocationChange: true })
-      //     .then(() => this.route.navigate(['/categories']));
-    });
+  addQuestion(){
+    this.openOptions();
+    this.router.navigateByUrl('/main/add_q');
   }
+  // openDialog(): void {
+  //   const dialogRef = this.dialog.open(AddQuestionDialogComponent, {
+  //     width: '900px',
+  //     data: { category: this.cats }
+  //   });
+
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     console.log('result:' + result);
+  //     this.openOptions();
+  //     if (this.cats.includes(result) || result === '' || result === undefined) {
+  //       console.log('category already exist or question not added');
+  //     } else {
+  //       this.cats.push(result);
+  //     }
+
+  //     //   this.route.navigateByUrl('/categories', { skipLocationChange: true })
+  //     //     .then(() => this.route.navigate(['/categories']));
+  //   });
+  // }
 
   openOptions() {
     console.log('hello from options');

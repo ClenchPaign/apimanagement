@@ -1,13 +1,12 @@
 <div>
-  <div  class="head">
-    <div class="close" [routerLink]="['/main/category']">
+  <div class="head">
+    <div class="close" [routerLink]="['/main/dashboard/review']">
       <mat-icon>close</mat-icon>
     </div>
-    <div>ADD A TROUBLESHOOTING STEP</div>
+    <div>APPROVAL PROCESS</div>
   </div>
- 
+
   <div>
-    
     <mat-card class="parent">
       <mat-form-field class="textarea">
         <textarea
@@ -17,11 +16,9 @@
           #autosize="cdkTextareaAutosize"
           cdkAutosizeMinRows="2"
           cdkAutosizeMaxRows="8"
+          
           [formControl]="question"
         ></textarea>
-        <mat-error *ngIf="question.hasError('required')">
-          Troubleshooting query cannot be <strong>empty</strong>
-        </mat-error>
       </mat-form-field>
       <label class="textarea">Description of the problem</label>
       <br />
@@ -33,11 +30,19 @@
         height="350px"
         [(ngModel)]="description"
       >
+        <ng-template #valueTemplate> </ng-template>
       </ejs-richtexteditor>
-      <label class="textarea" style="margin-top: 16px;">Attachments</label>
-      <br />
+      <div style="margin-left: 16px; margin-bottom:16px">
+        <div style="display: flex; ">
+          <p>Attachments</p>
+          <mat-icon style="align-self: center; margin-left: 5px;">attachment</mat-icon>
+        </div>
+        <div *ngFor="let item of getAttachmentFileNames()">
+          <div class="attachment-items" (click)="onAttachmentClick(item)">{{ item }}</div>
+        </div>
+      </div>
 
-      <div
+      <!-- <div
         class="uploadfilecontainer"
         appDragDrop
         (onFileDropped)="uploadFile($event)"
@@ -67,7 +72,7 @@
             {{ item }}<mat-icon (click)="removeFiles(item)">close</mat-icon>
           </div>
         </div>
-      </div>
+      </div> -->
       <mat-form-field class="textarea">
         <input
           [formControl]="categories"
@@ -132,7 +137,9 @@
         [(ngModel)]="val"
       >
       </ejs-richtexteditor>
-
+      <div style="margin-left: 16px; margin-top: 16px;">
+          <input id="approveAnswer" type="checkbox"/>Check here to approve Solution above
+      </div>
       <button
         mat-button
         ejs-button
@@ -140,8 +147,16 @@
         type="submit"
         (click)="post_qaentry()"
       >
-        SUBMIT TROUBLESHOOTING STEP
+        APPROVE
       </button>
+      <button
+      mat-button
+      ejs-button
+      class="dlt-button-post"
+      style="background-color: #E0000E;"
+    >
+      DELETE
+    </button>
     </mat-card>
   </div>
 </div>

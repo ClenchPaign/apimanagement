@@ -44,7 +44,8 @@ public class DataDao {
     private ElasticSearchConfigurationClass elasticSearchConfigurationClass;
 
     private RestHighLevelClient restHighLevelClient;
-    String INDEX = "qa";
+    String INDEX = "approved";
+    String TEMP_INDEX = "review";
     HttpServletRequest httpServletRequest;
     HttpSession httpSession;
 
@@ -61,7 +62,7 @@ public class DataDao {
         String uniqueID = UUID.randomUUID().toString();
         data.getQuestion().setId(uniqueID);
         Map dataMap = objectMapper.convertValue(data, Map.class);
-        IndexRequest indexRequest = new IndexRequest(INDEX).source(dataMap);
+        IndexRequest indexRequest = new IndexRequest(TEMP_INDEX).source(dataMap);
         try {
             IndexResponse response = restHighLevelClient.index(indexRequest, RequestOptions.DEFAULT);
             return uniqueID + " Inserted successfully";
@@ -74,12 +75,12 @@ public class DataDao {
         }
     }
 
-    public List<QAEntry> getAllQAEntry() {
+    public List<QAEntry> getAllQAEntry(String index) {
 //        @GetMapping("/all")
         ArrayList<QAEntry> list = new ArrayList<>();
         SearchRequest searchRequest = new SearchRequest();
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(QueryBuilders.matchQuery("_index", INDEX));
+        searchSourceBuilder.query(QueryBuilders.matchQuery("_index", index));
         searchRequest.source(searchSourceBuilder);
         searchSourceBuilder.size(10000);
         try {
@@ -88,21 +89,20 @@ public class DataDao {
 
             for (SearchHit searchHit : searchHits) {
                 QAEntry q_a = new ObjectMapper().readValue(searchHit.getSourceAsString(), QAEntry.class);
-                System.out.println("---   :" + q_a.getQuestion().getId());
                 list.add(q_a);
             }
-            System.out.println("List size: --- " + list.size());
             return list;
         } catch (Exception e) {
             return list;
         }
     }
 
-    public QAEntry getQAEntryById(String id) throws IOException {
+    public QAEntry getQAEntryById(String id,String index) throws IOException {
 //        @RequestMapping(value = "/get_qa/{id}", method = RequestMethod.GET)
         QAEntry obj = null;
         SearchRequest searchRequest = new SearchRequest();
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(QueryBuilders.matchQuery("_index", index));
         searchSourceBuilder.query(QueryBuilders.matchQuery("Question.id.keyword", id));
         searchRequest.source(searchSourceBuilder);
         searchSourceBuilder.size(100);
@@ -121,6 +121,7 @@ public class DataDao {
         String obj = null;
         SearchRequest searchRequest = new SearchRequest();
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(QueryBuilders.matchQuery("_index", INDEX));
         searchSourceBuilder.query(QueryBuilders.matchQuery("Question.id.keyword", id));
         searchRequest.source(searchSourceBuilder);
         searchSourceBuilder.size(100);
@@ -162,6 +163,7 @@ public class DataDao {
         SearchRequest searchRequest = new SearchRequest();
         AggregationBuilder aggregationBuilder = AggregationBuilders.terms("db").field("Question.category.keyword").size(10000);
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(QueryBuilders.matchQuery("_index", INDEX));
         searchSourceBuilder.aggregation(aggregationBuilder);
         searchRequest.source(searchSourceBuilder);
         SearchResponse response = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
@@ -193,14 +195,16 @@ public class DataDao {
         ArrayList<QAEntry> list = new ArrayList<>();
         SearchRequest searchRequest = new SearchRequest();
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(QueryBuilders.termQuery("Question.category.keyword", category));
-        searchRequest.source(searchSourceBuilder);
+        BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
+        boolQueryBuilder.filter(QueryBuilders.termQuery("_index", INDEX));
+        boolQueryBuilder.filter(QueryBuilders.termQuery("Question.category.keyword", category));
+        searchSourceBuilder.query(boolQueryBuilder);
         searchSourceBuilder.size(10000);
+        searchRequest.source(searchSourceBuilder);
         SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
         SearchHit[] searchHits = searchResponse.getHits().getHits();
         for (SearchHit searchHit : searchHits) {
             QAEntry q_a = new ObjectMapper().readValue(searchHit.getSourceAsString(), QAEntry.class);
-            System.out.println(q_a.getQuestion().getCategory());
             list.add(q_a);
         }
         return list;
@@ -211,9 +215,12 @@ public class DataDao {
         ArrayList<QAEntry> list = new ArrayList<>();
         SearchRequest searchRequest = new SearchRequest();
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(QueryBuilders.wildcardQuery("Question.question.keyword", "*" + keyword + "*"));
-        searchRequest.source(searchSourceBuilder);
+        BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
+        boolQueryBuilder.filter(QueryBuilders.termQuery("_index", INDEX));
+        boolQueryBuilder.filter(QueryBuilders.wildcardQuery("Question.question.keyword", "*" + keyword + "*"));
+        searchSourceBuilder.query(boolQueryBuilder);
         searchSourceBuilder.size(10000);
+        searchRequest.source(searchSourceBuilder);
         SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
         SearchHit[] searchHits = searchResponse.getHits().getHits();
         for (SearchHit searchHit : searchHits) {
@@ -229,7 +236,8 @@ public class DataDao {
         SearchRequest searchRequest = new SearchRequest();
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
-
+        searchSourceBuilder.query(QueryBuilders.matchQuery("_index", INDEX));
+        boolQueryBuilder.filter(termQuery("_index",INDEX));
         if (!searchQuery.getCategory().equals("")) {
 //            TermQueryBuilder queryBuilders = termQuery("Question.category.keyword", searchQuery.getCategory());
             boolQueryBuilder.filter(termQuery("Question.category.keyword", searchQuery.getCategory()));
@@ -254,8 +262,8 @@ public class DataDao {
 //            }
 //        }
         searchSourceBuilder.query(boolQueryBuilder);
-        searchRequest.source(searchSourceBuilder);
         searchSourceBuilder.size(10000);
+        searchRequest.source(searchSourceBuilder);
         SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
         SearchHit[] searchHits = searchResponse.getHits().getHits();
         for (SearchHit searchHit : searchHits) {
@@ -311,9 +319,12 @@ public class DataDao {
         ImageModel obj = null;
         SearchRequest searchRequest = new SearchRequest();
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(QueryBuilders.matchQuery("_id", id));
+        BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
+        boolQueryBuilder.filter(QueryBuilders.termQuery("_index", "others"));
+        boolQueryBuilder.filter(QueryBuilders.matchQuery("_id", id));
+        searchSourceBuilder.query(boolQueryBuilder);
+        searchSourceBuilder.size(10000);
         searchRequest.source(searchSourceBuilder);
-        searchSourceBuilder.size(1000);
         SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
         SearchHit[] searchHits = searchResponse.getHits().getHits();
 
@@ -427,6 +438,30 @@ public class DataDao {
         }
 //        System.out.println("session   :"+session.getAttribute("userName"));
         return result;
+    }
+
+    public String approveQnA(String id,QAEntry qandA) throws IOException {
+        Map dataMap = objectMapper.convertValue(qandA, Map.class);
+        String returnString = "";
+        DeleteRequest deleteRequest = new DeleteRequest(TEMP_INDEX, getDocumentIDforQAEntry(id));
+        try {
+            DeleteResponse deleteResponse = restHighLevelClient.delete(deleteRequest, RequestOptions.DEFAULT);
+            returnString = "Removed from review successfully";
+        } catch (Exception e) {
+            returnString = "Remove from review unsuccessful" + e.toString();
+        }
+        IndexRequest indexRequest = new IndexRequest(INDEX).source(dataMap);
+        try {
+            IndexResponse response = restHighLevelClient.index(indexRequest, RequestOptions.DEFAULT);
+            returnString = returnString + " and Question approved successfully";
+        } catch (ElasticsearchException e) {
+            e.getDetailedMessage();
+            returnString = returnString + " elastic search exception " + e.getDetailedMessage();
+        } catch (IOException ex) {
+            ex.getLocalizedMessage();
+            returnString =  returnString + " IO exception " + ex.getLocalizedMessage() + "  " + Arrays.toString(ex.getStackTrace());
+        }
+        return returnString;
     }
 }
 

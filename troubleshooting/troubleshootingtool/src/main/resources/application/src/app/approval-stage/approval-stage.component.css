@@ -1,0 +1,138 @@
+.parent {
+    display: flex;
+    flex-direction: column;
+    width: 75%;
+    margin-left: 16%;
+    margin-right: auto;
+    margin-bottom: 24px;
+  }
+  
+  .head {
+    margin-left: 16%;
+    display: flex;
+    width: max-content;
+    justify-items: center;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    font-size: x-large;
+    margin-bottom: 16px;
+  }
+  
+  .textarea {
+    word-wrap: break-word;
+    margin-left: 16px;
+    margin-right: 16px;
+  }
+  
+  .button {
+    background-color: #1776bf;
+    color: #ffffff;
+    margin-left: 24px;
+  }
+  mat-icon {
+    cursor: pointer;
+    padding: 2px;
+    margin-left: 5px;
+  }
+  
+  .item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .fileitem {
+    background-color: lightgrey;
+    border-radius: 4px;
+    width: max-content;
+    padding-left: 4px;
+    margin-top: 4px;
+  }
+  .upload-table {
+    font-size: small;
+    font-weight: bold;
+    margin-left: 16px;
+  }
+  
+  .uploadfilecontainer {
+    width: 95%;
+    display: flex;
+    justify-content: center;
+    text-decoration: none;
+    border: none;
+    margin-left: 16px;
+    margin-right: 16px;
+    align-self: center;
+    align-items: center;
+    height: 70px;
+    border: 0.5px dashed #0f4c7b;
+    border-radius: 0px;
+  }
+  
+  .uploadfilecontainer:hover {
+    cursor: pointer;
+    background-color: #ceeafd !important;
+    opacity: 0.8;
+  }
+  
+  .richtexteditor {
+    align-self: center;
+    z-index: 1;
+    min-width: 95%;
+    max-width: 95%;
+    min-height: 350px;
+    max-height: 700px;
+  }
+  .search {
+    width: 100%;
+    color: #000000;
+  }
+  .dlt-button {
+    color: #ffffff;
+    background-color: #1776bf;
+    text-decoration: none;
+    padding: 0 0.75rem;
+    font-family: Roboto, Helvetica, Arial, sans-serif;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 30px;
+    -moz-transition: 0.25s ease-in;
+    -o-transition: 0.25s ease-in;
+    -webkit-transition: 0.25s ease-in;
+    transition: 0.25s ease-in;
+    cursor: pointer;
+    border: 1px solid transparent;
+    outline: 1px solid transparent;
+    outline-offset: -2px;
+    margin-right: 10px;
+    float: right;
+    display: inline-block;
+  }
+  
+  .dlt-button-post {
+    margin-top: 16px;
+    left: 16px;
+    width: max-content;
+    color: #ffffff;
+    background-color: green;
+    font-family: Roboto, Helvetica, Arial, sans-serif;
+    margin-right: 10px;
+  }
+  
+  .close {
+    cursor: pointer;
+    outline: none;
+    font-size: medium;
+    color: #1776bf;
+    font-family: Roboto, Helvetica, Arial, sans-serif;
+    float: right;
+    padding-right: 16px;
+    padding-bottom: 16px;
+  }
+  
+  .attachment-items{
+    cursor: pointer;
+    width: max-content;
+    padding: 4px;
+    background-color: lightgrey;
+    margin: 2px;
+    border-radius: 4px;
+  }

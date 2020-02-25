@@ -45,5 +45,5 @@ export class ListOfCategoriesComponent implements OnInit {
     this.listingService.category = cat;
     // this.router.navigateByUrl('/cat');
   }
- 
+
 }

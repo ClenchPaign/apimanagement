@@ -31,7 +31,7 @@ public class DataController {
     //    @GetMapping("/all")
     @GetMapping("/qnas")
     public List<QAEntry> readAll(){
-        return dataDao.getAllQAEntry();
+        return dataDao.getAllQAEntry("approved");
     }
 
     //    @PostMapping("/insertQandA")
@@ -43,7 +43,7 @@ public class DataController {
     //    @RequestMapping(value = "/get_qa/{id}", method = RequestMethod.GET)
     @RequestMapping(value = "/qnas/{id}", method = RequestMethod.GET)
     public QAEntry getQandA(@PathVariable("id") String id) throws IOException {
-        return dataDao.getQAEntryById(id);
+        return dataDao.getQAEntryById(id,"approved");
     }
 
     //    @RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
@@ -68,16 +68,11 @@ public class DataController {
         return dataDao.getAllTags();
     }
 
-    //    @RequestMapping(value = "/get_qa_cat/{cat}", method = RequestMethod.GET)
     @RequestMapping(value = "/categories/{cat}", method = RequestMethod.GET)
     public List<QAEntry> getQandAforCategory(@PathVariable("cat") String category) throws IOException {
         return dataDao.getQAEntryforCategory(category);
     }
 
-//    @RequestMapping(value = "/search/{keyword}", method = RequestMethod.GET)
-//    public List<QAEntry> matchQuestion(@PathVariable("keyword") String keyword) throws IOException {
-//        return dataDao.matchQuestion(keyword);
-//    }
 
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     public List<QAEntry> searchQuestion(@RequestBody SearchQuery searchQuery) throws IOException {
@@ -85,12 +80,12 @@ public class DataController {
     }
 
     @RequestMapping(value = "/restore", method = RequestMethod.POST)
-    public String restoreValues(@RequestBody List<QAEntry> qaEntryList) throws IOException {
+    public String restoreValues(@RequestBody List<QAEntry> qaEntryList) {
         return dataDao.restore(qaEntryList);
     }
 
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
-    public String upload(@RequestBody ImageModel file) throws IOException {
+    public String upload(@RequestBody ImageModel file) {
         System.out.println("File :" + file);
         return dataDao.uploadFiles(file);
     }
@@ -108,5 +103,20 @@ public class DataController {
     @RequestMapping(value = "/logout", method = RequestMethod.POST)
     public Boolean logout() throws NullPointerException {
         return dataDao.logout();
+    }
+
+    @RequestMapping(value = "/approve/{id}", method = RequestMethod.POST)
+    public String approveQandA(@PathVariable("id") String id, @RequestBody QAEntry qandA) throws IOException {
+        return dataDao.approveQnA(id, qandA);
+    }
+
+    @GetMapping("/review")
+    public List<QAEntry> readAllReviewQAEntry(){
+        return dataDao.getAllQAEntry("review");
+    }
+
+    @GetMapping("/review/{id}")
+    public QAEntry readAllReviewQAEntry(@PathVariable("id") String id) throws IOException {
+        return dataDao.getQAEntryById(id,"review");
     }
 }

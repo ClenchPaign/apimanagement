@@ -7,50 +7,72 @@
   margin-bottom: 24px;
 }
 
+.head {
+  margin-left: 16%;
+  display: flex;
+  width: max-content;
+  justify-items: center;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-size: x-large;
+  margin-bottom: 16px;
+}
+
 .textarea {
   word-wrap: break-word;
   margin-left: 16px;
   margin-right: 16px;
 }
 
-.button{
+.button {
   background-color: #1776bf;
   color: #ffffff;
   margin-left: 24px;
-  
 }
-mat-icon{
+mat-icon {
   cursor: pointer;
   padding: 2px;
   margin-left: 5px;
 }
 
-.item{
+.item {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.fileitem{
+.fileitem {
   background-color: lightgrey;
   border-radius: 4px;
   width: max-content;
   padding-left: 4px;
   margin-top: 4px;
 }
-.upload-table{
+.upload-table {
   font-size: small;
   font-weight: bold;
   margin-left: 16px;
 }
 
-.filedrop{
-  /* background-color: lightgreen; */
+.uploadfilecontainer {
   width: 95%;
-  
+  display: flex;
+  justify-content: center;
+  text-decoration: none;
+  border: none;
   margin-left: 16px;
   margin-right: 16px;
   align-self: center;
+  align-items: center;
+  height: 70px;
+  border: 0.5px dashed #0f4c7b;
+  border-radius: 0px;
 }
+
+.uploadfilecontainer:hover {
+  cursor: pointer;
+  background-color: #ceeafd !important;
+  opacity: 0.8;
+}
+
 .richtexteditor {
   align-self: center;
   z-index: 1;
@@ -62,7 +84,6 @@ mat-icon{
 .search {
   width: 100%;
   color: #000000;
- 
 }
 .dlt-button {
   color: #ffffff;
@@ -104,6 +125,5 @@ mat-icon{
   font-family: Roboto, Helvetica, Arial, sans-serif;
   float: right;
   padding-right: 16px;
-  padding-left: 16px;
   padding-bottom: 16px;
 }
