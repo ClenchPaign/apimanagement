@@ -1,5 +1,5 @@
 import { Component, OnInit, HostListener, ElementRef } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ListingService } from '../listing.service';
 import { SearchQuery } from '../data-models/SearchQuery';
 import { QAEntry } from '../data-models/QAEntry';
@@ -14,11 +14,20 @@ export class SearchComponent implements OnInit {
   response: any;
   category: any;
   searchdata: SearchQuery;
-  username:string;
-  password:string;
-  
-  constructor(private listingService: ListingService, private router: Router, private eRef: ElementRef) { }
+  tags: any;
+  username: string;
+  password: string;
+
+  constructor(private listingService: ListingService, private route: ActivatedRoute, private router: Router, private eRef: ElementRef) {
+    // this.route.queryParams.subscribe(params => {
+    //   this.tags = params['tags'];
+    //   console.log('In search comp: ' + this.tags);
+    //   this.searchdata = new SearchQuery('', this.tags, []);
+    //   this.ngOnInit();
+    // });
+  }
   ngOnInit() {
+
     this.listingService.searchForKeyword(this.searchdata).subscribe(
       data => {
         this.response = data;
@@ -27,7 +36,7 @@ export class SearchComponent implements OnInit {
         console.log(res);
       });
 
-    this.username= this.listingService.getUsername(); 
+    this.username = this.listingService.getUsername();
   }
 
   @HostListener('document:click', ['$event'])
@@ -77,7 +86,7 @@ export class SearchComponent implements OnInit {
     this.listingService.keyword = val;
     const tag = '###';
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
-      this.router.navigate(['/main/search/' + tag + '/' + val ]));
+      this.router.navigate(['/main/search/' + tag + '/' + val]));
     // this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
     //   this.router.navigate(['/search/ ' + val + '/']));
   }
@@ -90,16 +99,16 @@ export class SearchComponent implements OnInit {
       this.router.navigate(['/main/search/' + tag + '/ ']));
   }
 
-  logout(){
-    const user=new User(this.username,this.password,"");
+  logout() {
+    const user = new User(this.username, this.password, "");
     this.listingService.logout().subscribe(
       data => {
         console.log(data);
-        if(data === 'true'){
+        if (data === 'true') {
           this.router.navigateByUrl('/');
         }
       },
-     );
+    );
 
   }
 }

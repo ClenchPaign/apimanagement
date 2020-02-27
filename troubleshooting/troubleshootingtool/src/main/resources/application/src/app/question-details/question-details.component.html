@@ -44,11 +44,22 @@
           <div>Votes</div>
           <mat-icon>arrow_drop_down</mat-icon>
         </div>
-        <div class="answer-layout">
-          <div class="answer" *ngIf="item.isApproved">Approved</div>
-          <div class="description" [innerHTML]="item.description"></div>
+        <div style="width: 100%;">
+          <div class="answer-layout">
+            <div class="answer" *ngIf="item.isApproved">Approved</div>
+            <div class="description" [innerHTML]="item.description"></div>
+          </div>
+          <div style="float: right;margin-bottom: 10px;" class="posted-details">
+            <div class="posted">Posted on</div>
+            <div class="posted-date">
+              {{ item.postedDate | date: "mediumDate" }}
+            </div>
+          </div>
         </div>
+        
+        
       </div>
+      
       <mat-divider></mat-divider>
     </div>
     <div>

@@ -2,27 +2,19 @@
   <!-- <div class="span" [routerLink]="['']" ><mat-icon class="icon">home</mat-icon><div class="text">Home</div></div> -->
   <!-- <div class="span" [routerLink]="['/dashboard']" ><mat-icon class="icon">dashboard</mat-icon><div class="text">Dashboard</div></div> -->
   <div class="header">
-    <mat-icon class="product-icon" [routerLink]="['/main/category']"
-      >devices</mat-icon
-    >
+    <mat-icon class="product-icon" [routerLink]="['/main/category']">devices</mat-icon>
     <div class="product">
       <div class="product-name">TROUBLESHOOTING</div>
       <div class="product-name-secondary">TOOL</div>
     </div>
   </div>
   <div class="span">
-    <mat-icon id="category_icon" class="icon" (click)="onCategoriesClick()"
-      >keyboard_arrow_down</mat-icon
-    >
+    <mat-icon id="category_icon" class="icon" (click)="onCategoriesClick()">keyboard_arrow_down</mat-icon>
     <div class="category" (click)="onCategoryHeadClick()">Categories</div>
   </div>
   <div id="list" style="display: none;visibility: hidden;">
     <div style="display: block;" *ngFor="let item of getResponse()">
-      <div
-        id="list-of-categories"
-        class="list-of-categories"
-        (click)="onSelectingCategory(item)"
-      >
+      <div id="list-of-categories" class="list-of-categories" (click)="onSelectingCategory(item)">
         <mat-icon class="icon">keyboard_arrow_right</mat-icon>
         <div class="category">
           {{ item }}
@@ -38,26 +30,28 @@
     <div class="category">Tags</div>
   </div>
   <div id="tag-list">
-    <div
-      style="display: inline-block;zoom: 1; *display: inline;margin-left: 10px;"
-      *ngFor="let item of tags; index as i"
-    >
+    <div style="display: inline-block;zoom: 1; *display: inline;margin-left: 10px;"
+      *ngFor="let item of tags; index as i">
       <div class="chips">
         <span (click)="onSelectTag(item, i)">{{ item }}</span>
-        <mat-icon
-          class="close_icon"
-          (click)="onRemoveTag(item, i)"
-          style="display: none; font-size: 10px;width: 10px;height: 10px; margin-left: 4px;"
-          >close</mat-icon
-        >
+        <mat-icon class="close_icon" (click)="onRemoveTag(item, i)"
+          style="display: none; font-size: 10px;width: 10px;height: 10px; margin-left: 4px;">close</mat-icon>
       </div>
     </div>
   </div>
+  <div id="filter_buttons" style="visibility: hidden;">
+    <button class="apply-button" mat-stroked-button (click)="removeFilter()">Remove</button>
+    <button class="apply-button" mat-stroked-button (click)="filter()">Filter</button>
+  </div>
+  
+
+  
   <!-- [ngStyle]="{'background-color': color? 'lightgray' : 'white'}"> -->
   <!-- <div class="span" [routerLink]="['/search/###/ ']" ><mat-icon class="icon">label</mat-icon><div class="text">Tags</div></div> -->
   <!-- <div class="span" [routerLink]="['/category']">Categories</div> -->
   <!-- <div class="span" [routerLink]="['/category', category]">{{ getCategory() }}</div> -->
   <!-- <div class="span" [routerLink]="['/search/###/ ']">Tags</div> -->
+
 </div>
 <!-- <div class="shrink">
   <mat-icon>double_arrow</mat-icon>

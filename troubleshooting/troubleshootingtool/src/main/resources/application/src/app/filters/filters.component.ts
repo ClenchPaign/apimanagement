@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ListingService } from '../listing.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { MatIconRegistry } from '@angular/material/icon';
+import { SearchQuery } from '../data-models/SearchQuery';
 
 @Component({
   selector: 'app-filters',
@@ -14,6 +15,8 @@ export class FiltersComponent implements OnInit {
   response: any;
   color: boolean;
   tags: string[];
+  selectedTags: string[] = [];
+
   constructor(private listingService: ListingService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
@@ -37,6 +40,9 @@ export class FiltersComponent implements OnInit {
   onTag() {
     this.tags = this.listingService.getTagsFromSearch();
     this.tags = this.tags.filter((el, i, a) => i === a.indexOf(el));
+
+    const filterButtons = document.getElementById('filter_buttons');
+    filterButtons.style.visibility = 'visible';
   }
 
   onCategoryHeadClick() {
@@ -48,6 +54,7 @@ export class FiltersComponent implements OnInit {
     const gg = chip[index] as HTMLDivElement;
     const close = document.getElementsByClassName('close_icon');
     const closeIcon = close[index] as HTMLElement;
+    this.selectedTags = this.selectedTags.filter(obj => obj !== tag);
     closeIcon.style.display = 'none';
     gg.style.backgroundColor = 'lightgrey';
     gg.style.color = '#000';
@@ -57,6 +64,7 @@ export class FiltersComponent implements OnInit {
     const gg = chip[index] as HTMLDivElement;
     const close = document.getElementsByClassName('close_icon');
     const closeIcon = close[index] as HTMLElement;
+    this.selectedTags.push(tag);
     closeIcon.style.display = 'inline';
     gg.style.backgroundColor = '#1776bf';
     gg.style.color = '#fff';
@@ -82,5 +90,31 @@ export class FiltersComponent implements OnInit {
 
   getResponse() {
     return this.response;
+  }
+
+  filter() {
+    let searchdata = new SearchQuery('', this.selectedTags, []);
+    let navigationExtras: NavigationExtras = {
+      queryParams: {
+        'tags': searchdata.tags,
+      }
+    };
+    console.log('On filter: ' + this.selectedTags);
+    this.router.navigate(['/main/search/###/ '], navigationExtras);
+  }
+
+  removeFilter() {
+    const chip = document.getElementsByClassName('chips');
+    for (let i = 0; i < chip.length; i++) {
+      const gg = chip[i] as HTMLDivElement;
+      const close = document.getElementsByClassName('close_icon');
+      const closeIcon = close[i] as HTMLElement;
+      this.selectedTags = [];
+      closeIcon.style.display = 'none';
+      gg.style.backgroundColor = 'lightgrey';
+      gg.style.color = '#000';
+    }
+
+    // this.router.navigateByUrl('/main/search/###/ ');
   }
 }

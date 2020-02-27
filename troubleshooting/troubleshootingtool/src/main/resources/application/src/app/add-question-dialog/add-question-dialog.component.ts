@@ -10,6 +10,8 @@ import { FormControl, Validators } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { RichTextEditorComponent } from '@syncfusion/ej2-angular-richtexteditor';
 import { ImageModel } from '../data-models/ImageModel';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-question-dialog',
@@ -39,7 +41,7 @@ export class AddQuestionDialogComponent implements OnInit {
   description: any = '';
   @ViewChild('imageRTE', { static: true })
   private rteObj: RichTextEditorComponent;
-  constructor(private listingService: ListingService) { }
+  constructor(private listingService: ListingService, private router: Router, private snackbar: MatSnackBar) { }
 
   question = new FormControl('', [
     Validators.required,
@@ -162,16 +164,20 @@ export class AddQuestionDialogComponent implements OnInit {
     for (let tags of this.fruits) {
       this.quesTags.push(tags.name);
     }
-    console.log(this.quesTags);
     const d = new Date();
     const creationDate = d.getTime();
     const ques = new Question('', categories, question, description, this.uploadedFiles.toString(), creationDate, '', creationDate);
     const qa = new QAEntry(ques, [], this.quesTags, false, 0, 0);
-    console.log(ques);
-    console.log(JSON.stringify(qa));
-    console.log(this.fruits);
     this.listingService.post_question(qa).subscribe(data => {
       console.log('POST Request is successful ', JSON.stringify(qa));
+      this.openSnackBar('Question posted successfully', 'OK');
+      this.router.navigateByUrl('/main/category');
+    });
+  }
+
+  openSnackBar(message: string, action: string) {
+    this.snackbar.open(message, action, {
+      duration: 2000,
     });
   }
 }

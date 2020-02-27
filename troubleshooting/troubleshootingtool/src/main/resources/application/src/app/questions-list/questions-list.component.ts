@@ -14,8 +14,21 @@ export class QuestionsListComponent implements OnInit {
   response: any;
   searchData: any;
   tag: any;
+  myTag: any;
   @Input() keyword: string;
-  constructor(private listingService: ListingService, private router: Router, private route: ActivatedRoute) { }
+  constructor(private listingService: ListingService, private router: Router, private route: ActivatedRoute) {
+    this.route.queryParams.subscribe(params => {
+      this.myTag = params['tags'];
+      console.log('In question list comp: ' + this.myTag);
+      this.searchData = new SearchQuery('', this.myTag, []);
+      this.listingService.searchForKeyword(this.searchData).subscribe(
+        data => {
+          console.log('Getting questions for ' + this.searchData + ' successful ', data);
+          this.response = data;
+        },
+        res => { console.log(res); });
+    });
+   }
 
   ngOnInit() {
     this.keyword = this.listingService.keyword;
