@@ -22,6 +22,7 @@ export class QuestionDetailsComponent implements OnInit {
   response: any;
   postedDate: any;
   ans_count: number;
+  username:any;
 
   attachment: string[] = [];
   returnAttachment: string[] = [];
@@ -133,9 +134,10 @@ export class QuestionDetailsComponent implements OnInit {
       const d = new Date();
       const qaEntry = this.response;
       const creationDate = d.getTime();
+      this.username= localStorage.getItem('username');
       const ques = new Question(this.id, qaEntry.Question.category, qaEntry.Question.question, qaEntry.Question.description,
         qaEntry.Question.attachment, qaEntry.Question.creationDate, qaEntry.Question.ownerId, qaEntry.Question.lastModifiedDate);
-      const ans = new Answer(qaEntry.answerCount, answer, creationDate, 'y509476', 'user', creationDate, 0, false);
+      const ans = new Answer(qaEntry.answerCount, answer, creationDate,this.username,this.username, creationDate, 0, false);
       this.response.Answers.push(ans);
       let answers: Array<Answer>;
       answers = qaEntry.Answers;

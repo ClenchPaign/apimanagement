@@ -37,7 +37,7 @@ export class SearchComponent implements OnInit {
         console.log(res);
       });
 
-    this.username = this.listingService.getUsername();
+    this.username= localStorage.getItem('username');
   }
 
   @HostListener('document:click', ['$event'])
@@ -131,13 +131,17 @@ export class SearchComponent implements OnInit {
       this.router.navigate(['/main/home/search/list'], this.navigationExtras));
   }
 
-  logout() {
-    const user = new User(this.username, this.password, '');
+  logout(){
+    const user=new User(this.username,this.password,"",false);
     this.listingService.logout().subscribe(
       data => {
         console.log(data);
         if (data === 'true') {
           this.router.navigateByUrl('');
+        if(data === 'true'){
+          localStorage.removeItem('username');
+          localStorage.removeItem('isAdmin');
+          this.router.navigateByUrl('/');
         }
       },
     );

@@ -1,6 +1,7 @@
 package com.example.troubleshootingtool.controller;
 
 import com.example.troubleshootingtool.bean.*;
+import com.example.troubleshootingtool.bean.*;
 import com.example.troubleshootingtool.dao.DataDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
@@ -96,9 +98,11 @@ public class DataController {
         return dataDao.getFilesById(id);
     }
 
-    @RequestMapping(value = "/auth", method = RequestMethod.POST)
-    public Boolean authenticate(@RequestBody User user, HttpServletRequest request, HttpServletResponse response) throws NullPointerException {
-        return dataDao.authenticate(user, request, response);
+//
+
+    @RequestMapping(value="/auth",method = RequestMethod.POST)
+    public User authenticate(@RequestBody User user, HttpServletRequest request, HttpServletResponse response) throws NullPointerException, ServletException, IOException {
+        return dataDao.authenticate(user,request,response);
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.POST)
@@ -125,4 +129,12 @@ public class DataController {
     public QAEntry readAllReviewQAEntry(@PathVariable("id") String id) throws IOException {
         return dataDao.getQAEntryById(id, "review");
     }
+
+
+    @PostMapping("/admin")
+    public String insertAdmin(@RequestBody Admin admin) {
+        return dataDao.insertAdmin(admin);
+    }
+
+
 }

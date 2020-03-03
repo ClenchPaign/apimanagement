@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "username",
         "password",
         "email",
+        "isAdmin"
 
 })
 public class User {
@@ -18,6 +19,8 @@ public class User {
     private String password;
     @JsonProperty("email")
     private String email;
+    @JsonProperty("isAdmin")
+    private Boolean isAdmin;
 
 
     /**
@@ -27,11 +30,12 @@ public class User {
     }
 
 
-    public User(String username, String password, String email) {
+    public User(String username, String password, String email,Boolean isAdmin) {
         super();
         this.username = username;
         this.password = password;
         this.email = email;
+        this.isAdmin=isAdmin;
 
     }
 
@@ -63,6 +67,15 @@ public class User {
     @JsonProperty("email")
     public void setEmail(String email) {
         this.email = email;
+    }
+    @JsonProperty("")
+    public Boolean getIsAdmin() {
+        return isAdmin;
+    }
+
+    @JsonProperty("isAdmin")
+    public void setIsAdmin(Boolean isAdmin) {
+        this.isAdmin = isAdmin;
     }
 }
 

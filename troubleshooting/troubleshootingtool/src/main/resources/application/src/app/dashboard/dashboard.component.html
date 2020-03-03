@@ -1,7 +1,8 @@
 <div class="parent-lay">
   <div class="headers">
-    <h2 class="username">Divyabharathi .K</h2>
-    <h6 class="admin">ADMIN</h6>
+    <h2 class="username">{{username}}</h2>
+    <h6 class="admin" *ngIf="isAdmin === 'true' ">ADMIN</h6>
+    <h6 class="admin" *ngIf="isAdmin === 'false' ">USER</h6>
   </div>
 
   <div class="parent">
@@ -21,7 +22,7 @@
     </div>
   </div>
 
-  <div>
+  <div id="review_ques">
     <app-review-questions></app-review-questions>
   </div>
 </div>

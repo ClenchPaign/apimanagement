@@ -11,8 +11,9 @@ import { element } from 'protractor';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  response: string;
+  response: any;
   showPassword: boolean;
+  isAdmin:any;
   constructor(private listingService: ListingService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
@@ -37,18 +38,25 @@ export class LoginComponent implements OnInit {
     const username = (document.getElementById('username') as HTMLInputElement).value;
     const password = (document.getElementById('password') as HTMLInputElement).value;
     // const user = new User('y509476', 'Divya@14101997', "");
-    const user = new User(username, password, '');
-    this.listingService.setUser(username);
-    if (username === '' && password === '') { alert('Please enter username and password'); }
+    const user = new User(username, password,"",false);
+    //  this.listingService.setUser(username);
+
+
+    if (username == "" && password == "") { alert("Please enter username and password"); }
     else {
       this.listingService.getAuthstatus(user).subscribe(
         data => {
           console.log('LDAP user auth is successful ', data);
           this.response = data;
           if (this.response === 'true') {
-            this.router.navigateByUrl('/main');
+            this.router.navigateByUrl('/main/category');
           } else {
-            this.response = 'true';
+            // this.response = 'true';
+            localStorage.setItem('username', username);
+
+            localStorage.setItem('isAdmin', "false");
+            // this.listingService.setIsAdmin(false);
+            this.router.navigateByUrl('/main/category');
           }
         },
         err => {

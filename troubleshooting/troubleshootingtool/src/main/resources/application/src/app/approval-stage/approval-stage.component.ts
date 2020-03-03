@@ -42,6 +42,7 @@ export class ApprovalStageComponent implements OnInit {
   returnAttachment: string[] = [];
   returnAttachmentFileName: string[] = [];
   attachmentList: any = [];
+  username:any;
 
   navigationExtras: NavigationExtras;
   public files: string[] = [];
@@ -280,7 +281,8 @@ export class ApprovalStageComponent implements OnInit {
     } else {
       isAnswered = false;
     }
-    const answer = new Answer('0', ans, creationDate, 'y509476', 'y509476', creationDate, 0, approveAnswer);
+    this.username=localStorage.getItem("username");
+    const answer = new Answer('0', ans, creationDate,  this.username,  this.username, creationDate, 0, approveAnswer);
     let qa: QAEntry;
     if (isAnswered) {
       qa = new QAEntry(ques, [answer], this.quesTags, true, 1, 0);

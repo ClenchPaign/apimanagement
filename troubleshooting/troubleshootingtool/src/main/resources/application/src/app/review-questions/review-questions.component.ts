@@ -12,6 +12,7 @@ export class ReviewQuestionsComponent implements OnInit {
 
   constructor(private listingService: ListingService, private route: ActivatedRoute,private router: Router) { }
   response: any;
+  public isAdmin:any;
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
@@ -27,5 +28,13 @@ export class ReviewQuestionsComponent implements OnInit {
         // });
       },
       res => { console.log(res); });
+      this.isAdmin=localStorage.getItem('isAdmin');
+      console.log('admin or not ', this.isAdmin);
+      if (this.isAdmin==="false"){
+
+        (document.getElementById('ques')as HTMLAnchorElement).setAttribute("disabled","true");
+        // (document.getElementById('review_ques') as HTMLDivElement).setAttribute("disabled","true");
+      }
+     
   }
 }

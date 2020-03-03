@@ -18,12 +18,12 @@ export class ListingService {
   public tags: string[];
   public keyword: string;
   public id: string;
-  public username: string;
-
+  
+  
   constructor(private http: HttpClient) {
   }
 
-  baseUrl = 'http://localhost:4343';
+  baseUrl = 'http://localhost:4040';
   getAllCategories() {
     return this.http.get(this.baseUrl + '/categories', httpOptions);
   }
@@ -81,12 +81,7 @@ export class ListingService {
     return this.http.post(this.baseUrl + '/auth/', user, { headers, responseType: 'text' });
   }
 
-  setUser(username: string) {
-    this.username = username;
-  }
-  getUsername() {
-    return this.username;
-  }
+  
 
   logout() {
     return this.http.post(this.baseUrl + '/logout', '', { headers, responseType: 'text' });
@@ -95,6 +90,7 @@ export class ListingService {
   getAllReviewQuestions() {
     return this.http.get(this.baseUrl + '/review', httpOptions);
   }
+
 
   approve_question(qa: QAEntry, id: string) {
     return this.http.post(this.baseUrl + '/approve/' + id, qa, { headers, responseType: 'text' });

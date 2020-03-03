@@ -28,7 +28,7 @@ export class AddQuestionDialogComponent implements OnInit {
   addOnBlur = true;
   tagList: string[];
   tagsResponse: any;
-
+username:any;
   base64String: any;
   uploadedFiles: string[] = [];
   imageUrlPREVIEW: any;
@@ -157,17 +157,18 @@ export class AddQuestionDialogComponent implements OnInit {
     this.files = this.files.filter(item => item !== file);
     console.log('remove file:' + file);
   }
-  post_ques() {
+  post_qaentry() {
     const question = this.question.value;
     const description = this.rteObj.getHtml();
     const categories = this.categories.value;
     this.quesTags = [];
+    this.username= localStorage.getItem('username');
     for (let tags of this.fruits) {
       this.quesTags.push(tags.name);
     }
     const d = new Date();
     const creationDate = d.getTime();
-    const ques = new Question('', categories, question, description, this.uploadedFiles.toString(), creationDate, '', creationDate);
+    const ques = new Question('', categories, question, description, this.uploadedFiles.toString(), creationDate,  this.username, creationDate);
     const qa = new QAEntry(ques, [], this.quesTags, false, 0, 0);
     console.log('POST Request before ', JSON.stringify(qa));
     this.listingService.post_question(qa).subscribe(data => {

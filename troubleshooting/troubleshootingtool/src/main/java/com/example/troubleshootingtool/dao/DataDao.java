@@ -2,6 +2,8 @@ package com.example.troubleshootingtool.dao;
 
 import com.example.troubleshootingtool.bean.*;
 import com.example.troubleshootingtool.config.ElasticSearchConfigurationClass;
+import com.fasterxml.jackson.databind.DeserializationConfig;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.action.delete.DeleteRequest;
@@ -42,6 +44,7 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
 @Repository
 public class DataDao {
 
+    String ADMIN = "admin";
     private ElasticSearchConfigurationClass elasticSearchConfigurationClass;
 
     private RestHighLevelClient restHighLevelClient;
@@ -218,7 +221,8 @@ public class DataDao {
         SearchRequest searchRequest = new SearchRequest();
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
-        boolQueryBuilder.filter(termQuery("_index", INDEX));
+        searchSourceBuilder.query(QueryBuilders.matchQuery("_index", INDEX));
+        boolQueryBuilder.filter(termQuery("_index",INDEX));
         if (!searchQuery.getCategory().equals("")) {
 //            TermQueryBuilder queryBuilders = termQuery("Question.category.keyword", searchQuery.getCategory());
             boolQueryBuilder.filter(termQuery("Question.category.keyword", searchQuery.getCategory()));
@@ -316,47 +320,63 @@ public class DataDao {
         return obj;
     }
 
-    public Boolean authenticate(User user, HttpServletRequest request, HttpServletResponse response) throws NullPointerException {
+    public User authenticate(User user, HttpServletRequest request, HttpServletResponse response) throws NullPointerException, IOException {
         LdapContext ctx = null;
         boolean result = false;
         System.out.println("ctx   :" + ctx);
 
         String username = user.getUsername();
         String passwd = user.getPassword();
+        Boolean isAdmin = user.getIsAdmin();
+        int count = 0;
         try {
-
+            HttpSession session = request.getSession();
+            session.setAttribute("userName", username);
+            httpServletRequest = request;
+            httpSession = request.getSession();
+            System.out.println("session   :" + session.getAttribute("userName"));
             ctx = context(username, passwd);
             System.out.println("ctx   :" + ctx);
             SearchControls searchCtls = new SearchControls();
-            String[] returnedAtts = {"sn", "mail", "cn", "givenName", "telephoneNumber"};
+            String[] returnedAtts = {"sn", "mail", "cn", "givenName", "telephoneNumber", "memberOf"};
             searchCtls.setReturningAttributes(returnedAtts);
             searchCtls.setSearchScope(SearchControls.SUBTREE_SCOPE);
-            String searchFilter = "(&(objectClass=user)(mail=*))";
+//            String searchFilter = "(&(objectClass=user)(mail=*))";
+
+//            String searchFilter = "(&(objectClass=user)(cn=username)(&(mail=*))(&(memberOf=CN=SL24-Corr-Administrators,OU=Security Groups,OU=Germany,DC=eur,DC=ad,DC=sag)))";
+//            String searchFilter = "(&(objectClass=user)(cn=username)(&(mail=*))(&(memberOf=CN=SL24-Corr-Administrators,OU=Security Groups,OU=Germany,DC=eur,DC=ad,DC=sag)))";
+//            CN=ccp-all-employee-users,OU=Administration,OU=vCAC6,OU=VM Server,OU=Germany,DC=eur,DC=ad,DC=sag
+            String searchFilter = "(&(objectClass=user)(mail=*)(cn=" + username + "))";
             String searchBase = "OU=India,DC=eur,DC=ad,DC=sag";
             NamingEnumeration<?> answer = ctx.search(searchBase, searchFilter, searchCtls);
 
             while (answer.hasMoreElements()) {
                 SearchResult sr = (SearchResult) answer.next();
+                count++;
+                String search = sr.toString();
+                System.out.println("answer   :" + sr);
                 // Print some of the attributes, catch the exception if the
                 // attributes have no values
                 Attributes attrs = sr.getAttributes();
                 if (attrs != null) {
                     String cn = attrs.get("cn").get().toString();
-
                     if (cn.endsWith(username.toLowerCase())
                             || cn.endsWith(username.toUpperCase())) {
-                        result = true;
-                        HttpSession session = request.getSession();
-                        session.setAttribute("userName", username);
-                        session.setAttribute("password", passwd);
-                        httpServletRequest = request;
-                        httpSession = request.getSession();
-                        System.out.println("session   :" + session.getAttribute("userName"));
+                        Admin admins = searchAdmin(cn);
+                        String admin_user=admins.getUsername();
+                        String mail = attrs.get("mail").get().toString();
+                        user.setEmail(mail);
+                        if(search.contains(admin_user)){
+                            user.setIsAdmin(true);
+                        }
+                        else{
+                            user.setIsAdmin(false);
+                        }
                         break;
-                    } else
-                        result = false;
+                    }
                 }
             }
+
         } catch (Exception e) {
             System.out.println("Provide valid username or password");
         } finally {
@@ -369,9 +389,11 @@ public class DataDao {
                 System.out.println("Provide valid username or password");
             }
         }
-        System.out.println("RESULT:" + result);
+        System.out.println("isAdmin  :" + user.getIsAdmin());
+        System.out.println("count  :" + count);
+//        System.out.println("RESULT:" + result);
 
-        return result;
+        return user;
     }
 
     public LdapContext context(String user, String passwd) throws NamingException {
@@ -445,6 +467,42 @@ public class DataDao {
         return returnString;
     }
 
+
+    public String insertAdmin(Admin admin) {
+//        @PostMapping("/insertQAEntry")
+        Map dataMap = objectMapper.convertValue(admin, Map.class);
+        IndexRequest indexRequest = new IndexRequest(ADMIN).source(dataMap);
+        try {
+            IndexResponse response = restHighLevelClient.index(indexRequest, RequestOptions.DEFAULT);
+            return " Inserted successfully";
+        } catch (ElasticsearchException e) {
+            e.getDetailedMessage();
+            return "elastic search exception " + e.getDetailedMessage();
+        } catch (IOException ex) {
+            ex.getLocalizedMessage();
+            return "IO exception " + ex.getLocalizedMessage() + "  " + Arrays.toString(ex.getStackTrace());
+        }
+    }
+
+    public Admin searchAdmin(String cn) throws IOException {
+        Admin admins=null;
+        SearchRequest searchRequest = new SearchRequest();
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
+        boolQueryBuilder.filter(QueryBuilders.termQuery("_index", ADMIN));
+        boolQueryBuilder.filter(QueryBuilders.matchQuery("user", cn));
+        searchSourceBuilder.query(boolQueryBuilder);
+        searchSourceBuilder.size(10000);
+        searchRequest.source(searchSourceBuilder);
+        SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        SearchHit[] searchHits = searchResponse.getHits().getHits();
+        for (SearchHit searchHit : searchHits) {
+            admins = new ObjectMapper().readValue(searchHit.getSourceAsString(), Admin.class);
+        }
+        return admins;
+
+    }
+
     public String rejectQnA(String id) throws IOException {
         String returnString = "";
         DeleteRequest deleteRequest = new DeleteRequest(TEMP_INDEX, getDocumentIDforQAEntry(id));
@@ -456,6 +514,5 @@ public class DataDao {
         }
         return returnString;
     }
+
 }
-
-

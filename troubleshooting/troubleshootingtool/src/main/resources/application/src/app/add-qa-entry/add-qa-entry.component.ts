@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
 import { Tags } from '../list-of-categories/list-of-categories.component';
 import { ListingService } from '../listing.service';
-import { Router, NavigationExtras } from '@angular/router';
+import { Router } from '@angular/router';
 import { Question } from '../data-models/Question';
 import { QAEntry } from '../data-models/QAEntry';
 import { MatChipInputEvent } from '@angular/material/chips';
@@ -11,7 +11,6 @@ import { Answer } from '../data-models/Answer';
 import { RichTextEditorComponent } from '@syncfusion/ej2-angular-richtexteditor';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { ImageModel } from '../data-models/ImageModel';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-add-qa-entry',
@@ -37,6 +36,8 @@ export class AddQaEntryComponent implements OnInit {
   removable = true;
   addOnBlur = true;
   imageUrlPREVIEW: any;
+  username:any;
+
   navigationExtras: NavigationExtras;
   public files: string[] = [];
 
@@ -201,8 +202,8 @@ export class AddQaEntryComponent implements OnInit {
     // console.log(this.quesTags);
     const d = new Date();
     const creationDate = d.getTime();
-    const ques = new Question('', categories, question, description, this.uploadedFiles.toString(), creationDate, '', creationDate);
-    const answer = new Answer('0', ans, creationDate, '123', 'user', creationDate, 0, false);
+    const ques = new Question('', categories, question, description, this.uploadedFiles.toString(), creationDate,  this.username, creationDate);
+    const answer = new Answer('0', ans, creationDate, '123', this.username, creationDate, 0, false);
     const qa = new QAEntry(ques, [answer], this.quesTags, true, 1, 0);
     console.log(qa);
 
