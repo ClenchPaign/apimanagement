@@ -11,7 +11,7 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { RichTextEditorComponent } from '@syncfusion/ej2-angular-richtexteditor';
 import { ImageModel } from '../data-models/ImageModel';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
+import { Router, NavigationExtras } from '@angular/router';
 
 @Component({
   selector: 'app-add-question-dialog',
@@ -39,6 +39,7 @@ export class AddQuestionDialogComponent implements OnInit {
   resultTags: string[] = [];
   categoryList: string[];
   description: any = '';
+  navigationExtras: NavigationExtras;
   @ViewChild('imageRTE', { static: true })
   private rteObj: RichTextEditorComponent;
   constructor(private listingService: ListingService, private router: Router, private snackbar: MatSnackBar) { }
@@ -168,16 +169,24 @@ export class AddQuestionDialogComponent implements OnInit {
     const creationDate = d.getTime();
     const ques = new Question('', categories, question, description, this.uploadedFiles.toString(), creationDate, '', creationDate);
     const qa = new QAEntry(ques, [], this.quesTags, false, 0, 0);
+    console.log('POST Request before ', JSON.stringify(qa));
     this.listingService.post_question(qa).subscribe(data => {
       console.log('POST Request is successful ', JSON.stringify(qa));
       this.openSnackBar('Question posted successfully', 'OK');
-      this.router.navigateByUrl('/main/category');
+      this.navigationExtras = {
+        queryParams: {
+          'reload': true
+        }
+      };
+      this.router.navigateByUrl('/main/add_q', { skipLocationChange: true }).then(() =>
+        this.router.navigate(['/main/dashboard/review'], this.navigationExtras));
     });
   }
 
   openSnackBar(message: string, action: string) {
     this.snackbar.open(message, action, {
       duration: 2000,
+      verticalPosition: 'top'
     });
   }
 }

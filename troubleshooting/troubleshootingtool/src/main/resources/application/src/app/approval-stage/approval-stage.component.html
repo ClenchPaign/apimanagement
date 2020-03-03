@@ -16,7 +16,6 @@
           #autosize="cdkTextareaAutosize"
           cdkAutosizeMinRows="2"
           cdkAutosizeMaxRows="8"
-          
           [formControl]="question"
         ></textarea>
       </mat-form-field>
@@ -35,10 +34,14 @@
       <div style="margin-left: 16px; margin-bottom:16px">
         <div style="display: flex; ">
           <p>Attachments</p>
-          <mat-icon style="align-self: center; margin-left: 5px;">attachment</mat-icon>
+          <mat-icon style="align-self: center; margin-left: 5px;"
+            >attachment</mat-icon
+          >
         </div>
         <div *ngFor="let item of getAttachmentFileNames()">
-          <div class="attachment-items" (click)="onAttachmentClick(item)">{{ item }}</div>
+          <div class="attachment-items" (click)="onAttachmentClick(item)">
+            {{ item }}
+          </div>
         </div>
       </div>
 
@@ -137,26 +140,31 @@
         [(ngModel)]="val"
       >
       </ejs-richtexteditor>
-      <div style="margin-left: 16px; margin-top: 16px;">
-          <input id="approveAnswer" type="checkbox"/>Check here to approve Solution above
+      <div hidden style="margin-left: 16px; margin-top: 16px;">
+        <input id="approveAnswer" type="checkbox" />Check here to approve
+        Solution above
       </div>
-      <button
-        mat-button
-        ejs-button
-        class="dlt-button-post"
-        type="submit"
-        (click)="post_qaentry()"
-      >
-        APPROVE
-      </button>
-      <button
-      mat-button
-      ejs-button
-      class="dlt-button-post"
-      style="background-color: #E0000E;"
-    >
-      DELETE
-    </button>
+      <div>
+        <button
+          mat-button
+          ejs-button
+          class="dlt-button-post"
+          type="submit"
+          (click)="post_qaentry()"
+        >
+          APPROVE
+        </button>
+        <button
+          mat-button
+          ejs-button
+          type="submit"
+          class="dlt-button-post"
+          (click)="reject_qaentry()"
+          style="background-color: #E0000E;"
+        >
+          REJECT
+        </button>
+      </div>
     </mat-card>
   </div>
 </div>

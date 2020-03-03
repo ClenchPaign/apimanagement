@@ -1,9 +1,11 @@
 <div>
-  <div class="head">POST A QUESTION</div>
-  <div>
-    <div class="close" [routerLink]="['/main/category']">
+  <div class="head">
+    <div>POST A QUESTION</div>
+    <div class="close" [routerLink]="['/main/home/category']">
       <mat-icon>close</mat-icon>
     </div>
+  </div>
+  <div>
     <mat-card class="parent">
       <mat-form-field class="textarea">
         <textarea
@@ -121,9 +123,9 @@
         ejs-button
         class="dlt-button-post"
         type="submit"
-        (click)="post_qaentry()"
+        (click)="post_ques()"
       >
-        POST QUESTION
+        SUBMIT
       </button>
     </mat-card>
   </div>

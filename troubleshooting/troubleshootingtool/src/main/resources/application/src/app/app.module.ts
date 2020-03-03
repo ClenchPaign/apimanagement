@@ -27,7 +27,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { RichTextEditorAllModule } from '@syncfusion/ej2-angular-richtexteditor';
 import { NgxFileDropModule } from 'ngx-file-drop';
-import {MatMenuModule} from '@angular/material/menu';
+import { MatMenuModule } from '@angular/material/menu';
 
 import { AddQuestionDialogComponent } from './add-question-dialog/add-question-dialog.component';
 import { AddQaEntryComponent } from './add-qa-entry/add-qa-entry.component';
@@ -35,12 +35,16 @@ import { FiltersComponent } from './filters/filters.component';
 import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { MainComponent } from './main/main.component';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {MatRippleModule} from '@angular/material/core';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatRippleModule } from '@angular/material/core';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { DragDropDirective } from './DragDropDirective';
 import { ReviewQuestionsComponent } from './review-questions/review-questions.component';
 import { ApprovalStageComponent } from './approval-stage/approval-stage.component';
+import { HomeComponent } from './home/home.component';
+import { PreviousRouteService } from './previous-route.service';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -59,7 +63,8 @@ import { ApprovalStageComponent } from './approval-stage/approval-stage.componen
     MainComponent,
     DragDropDirective,
     ReviewQuestionsComponent,
-    ApprovalStageComponent
+    ApprovalStageComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
@@ -84,9 +89,11 @@ import { ApprovalStageComponent } from './approval-stage/approval-stage.componen
     NgxFileDropModule,
     MatMenuModule,
     MatProgressSpinnerModule,
-    MatRippleModule
+    MatRippleModule,
+    MatFormFieldModule,
+    MatSelectModule
   ],
-  providers: [ListingService, MessageService],
+  providers: [ListingService, MessageService, PreviousRouteService],
   bootstrap: [AppComponent],
   entryComponents: [AddQuestionDialogComponent]
 })

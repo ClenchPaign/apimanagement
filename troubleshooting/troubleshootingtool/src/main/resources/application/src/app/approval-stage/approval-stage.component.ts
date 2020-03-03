@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Tags } from '../list-of-categories/list-of-categories.component';
 import { ListingService } from '../listing.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { Question } from '../data-models/Question';
 import { QAEntry } from '../data-models/QAEntry';
 import { MatChipInputEvent } from '@angular/material/chips';
@@ -43,6 +43,7 @@ export class ApprovalStageComponent implements OnInit {
   returnAttachmentFileName: string[] = [];
   attachmentList: any = [];
 
+  navigationExtras: NavigationExtras;
   public files: string[] = [];
 
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
@@ -295,9 +296,29 @@ export class ApprovalStageComponent implements OnInit {
       this.listingService.approve_question(qa, this.questionData.Question.id).subscribe(data => {
         console.log('Question approved ', data);
         this.openSnackBar('Question approved successfully', 'OK');
-        this.router.navigateByUrl('/main/dashboard/review');
+        this.navigationExtras = {
+          queryParams: {
+            'reload': true
+          }
+        };
+        this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
+          this.router.navigate(['/main/dashboard/review'], this.navigationExtras));
       });
     }
+  }
+
+  reject_qaentry() {
+    this.listingService.reject_question(this.questionData.Question.id).subscribe(data => {
+      console.log('Question rejected ', data);
+      this.openSnackBar('Question rejected', 'OK');
+      this.navigationExtras = {
+        queryParams: {
+          'reload': true
+        }
+      };
+      this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
+        this.router.navigate(['/main/dashboard/review'], this.navigationExtras));
+    });
   }
 
   openSnackBar(message: string, action: string) {

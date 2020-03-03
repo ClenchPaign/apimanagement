@@ -12,6 +12,7 @@ import { LoginComponent } from './login/login.component';
 import { AddQuestionDialogComponent } from './add-question-dialog/add-question-dialog.component';
 import { ReviewQuestionsComponent } from './review-questions/review-questions.component';
 import { ApprovalStageComponent } from './approval-stage/approval-stage.component';
+import { HomeComponent } from './home/home.component';
 
 
 const routes: Routes = [
@@ -24,14 +25,18 @@ const routes: Routes = [
           { path: 'search/:tag/:keyword', component: QuestionsListComponent }
         ]
       },
-      { path: 'category', component: ListOfCategoriesComponent },
-      { path: 'category/:category', component: CategoryOfQuestionsComponent },
-      { path: 'qna/:id', component: QuestionDetailsComponent },
       { path: 'add_qna', component: AddQaEntryComponent },
       { path: 'add_q', component: AddQuestionDialogComponent },
-      { path: 'search/:tag/:keyword', component: QuestionsListComponent },
-      { path: 'search', component: SearchComponent },
-      { path: 'approval/:id', component: ApprovalStageComponent }
+      { path: 'approval/:id', component: ApprovalStageComponent },
+      { path: 'qna/:id', component: QuestionDetailsComponent },
+      {
+        path: 'home', component: HomeComponent, children: [
+          { path: 'category', component: ListOfCategoriesComponent },
+          { path: 'category/:category/:from/:size', component: CategoryOfQuestionsComponent },
+          { path: 'search/list', component: QuestionsListComponent },
+          { path: 'search', component: SearchComponent }
+        ]
+      }
     ]
   }
 ];

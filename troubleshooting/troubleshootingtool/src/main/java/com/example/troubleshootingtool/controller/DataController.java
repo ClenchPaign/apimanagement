@@ -4,6 +4,7 @@ import com.example.troubleshootingtool.bean.*;
 import com.example.troubleshootingtool.dao.DataDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,7 +31,7 @@ public class DataController {
 
     //    @GetMapping("/all")
     @GetMapping("/qnas")
-    public List<QAEntry> readAll(){
+    public List<QAEntry> readAll() {
         return dataDao.getAllQAEntry("approved");
     }
 
@@ -43,7 +44,7 @@ public class DataController {
     //    @RequestMapping(value = "/get_qa/{id}", method = RequestMethod.GET)
     @RequestMapping(value = "/qnas/{id}", method = RequestMethod.GET)
     public QAEntry getQandA(@PathVariable("id") String id) throws IOException {
-        return dataDao.getQAEntryById(id,"approved");
+        return dataDao.getQAEntryById(id, "approved");
     }
 
     //    @RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
@@ -68,15 +69,15 @@ public class DataController {
         return dataDao.getAllTags();
     }
 
-    @RequestMapping(value = "/categories/{cat}", method = RequestMethod.GET)
-    public List<QAEntry> getQandAforCategory(@PathVariable("cat") String category) throws IOException {
-        return dataDao.getQAEntryforCategory(category);
+    @RequestMapping(value = "/categories/{cat}/{from}/{size}", method = RequestMethod.GET)
+    public List<QAEntry> getQandAforCategory(@PathVariable("cat") String category, @PathVariable("from") int from, @PathVariable("size") int size) throws IOException {
+        return dataDao.getQAEntryforCategory(category, from, size);
     }
 
 
-    @RequestMapping(value = "/search", method = RequestMethod.POST)
-    public List<QAEntry> searchQuestion(@RequestBody SearchQuery searchQuery) throws IOException {
-        return dataDao.searchQuery(searchQuery);
+    @RequestMapping(value = "/search/{from}/{size}", method = RequestMethod.POST)
+    public List<QAEntry> searchQuestion(@RequestBody SearchQuery searchQuery, @PathVariable("from") int from, @PathVariable("size") int size) throws IOException {
+        return dataDao.searchQuery(searchQuery,from,size);
     }
 
     @RequestMapping(value = "/restore", method = RequestMethod.POST)
@@ -110,13 +111,18 @@ public class DataController {
         return dataDao.approveQnA(id, qandA);
     }
 
+    @RequestMapping(value = "/approve/reject/{id}", method = RequestMethod.DELETE)
+    public String rejectQandA(@PathVariable("id") String id) throws IOException {
+        return dataDao.rejectQnA(id);
+    }
+
     @GetMapping("/review")
-    public List<QAEntry> readAllReviewQAEntry(){
+    public List<QAEntry> readAllReviewQAEntry() {
         return dataDao.getAllQAEntry("review");
     }
 
     @GetMapping("/review/{id}")
     public QAEntry readAllReviewQAEntry(@PathVariable("id") String id) throws IOException {
-        return dataDao.getQAEntryById(id,"review");
+        return dataDao.getQAEntryById(id, "review");
     }
 }

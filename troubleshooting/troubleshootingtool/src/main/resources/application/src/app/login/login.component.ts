@@ -46,7 +46,7 @@ export class LoginComponent implements OnInit {
           console.log('LDAP user auth is successful ', data);
           this.response = data;
           if (this.response === 'true') {
-            this.router.navigateByUrl('/main/category');
+            this.router.navigateByUrl('/main');
           } else {
             this.response = 'true';
           }

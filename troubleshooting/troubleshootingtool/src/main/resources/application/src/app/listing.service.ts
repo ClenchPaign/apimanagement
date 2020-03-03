@@ -21,9 +21,6 @@ export class ListingService {
   public username: string;
 
   constructor(private http: HttpClient) {
-    this.getAllCategories();
-    this.getQuestionsForCategory(this.category);
-    this.getQuestionForID(this.id);
   }
 
   baseUrl = 'http://localhost:4343';
@@ -45,12 +42,14 @@ export class ListingService {
   getAllTags() {
     return this.http.get(this.baseUrl + '/tags', httpOptions);
   }
-  getQuestionsForCategory(cat: string) {
-    return this.http.get(this.baseUrl + '/categories/' + cat, httpOptions);
+  getQuestionsForCategory(cat: string, from: number, size: number) {
+    console.log('cat-' + cat + ' from-' + from + ' size-' + size);
+    return this.http.get(this.baseUrl + '/categories/' + cat + '/' + from + '/' + size, httpOptions);
   }
-  searchForKeyword(searchdata: SearchQuery) {
-    console.log(searchdata);
-    return this.http.post(this.baseUrl + '/search', searchdata, httpOptions);
+  searchForKeyword(searchdata: SearchQuery, from: number, size: number) {
+    // console.log(searchdata);
+    console.log(this.baseUrl + '/search/' + from + '/' + size);
+    return this.http.post(this.baseUrl + '/search/' + from + '/' + size, searchdata, { headers, responseType: 'json' });
   }
 
   getQuestionForID(id: string) {
@@ -99,6 +98,10 @@ export class ListingService {
 
   approve_question(qa: QAEntry, id: string) {
     return this.http.post(this.baseUrl + '/approve/' + id, qa, { headers, responseType: 'text' });
+  }
+
+  reject_question(id: string) {
+    return this.http.delete(this.baseUrl + '/approve/reject/' + id, { headers, responseType: 'text' });
   }
 
   getReviewQuestionForID(id: string) {

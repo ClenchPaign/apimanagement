@@ -1,13 +1,12 @@
 <div>
-  <div  class="head">
-    <div class="close" [routerLink]="['/main/category']">
+  <div class="head">
+    <div>ADD A TROUBLESHOOTING STEP</div>
+    <div class="close" [routerLink]="['/main/home/category']">
       <mat-icon>close</mat-icon>
     </div>
-    <div>ADD A TROUBLESHOOTING STEP</div>
   </div>
- 
+
   <div>
-    
     <mat-card class="parent">
       <mat-form-field class="textarea">
         <textarea
@@ -140,7 +139,7 @@
         type="submit"
         (click)="post_qaentry()"
       >
-        SUBMIT TROUBLESHOOTING STEP
+        SUBMIT
       </button>
     </mat-card>
   </div>

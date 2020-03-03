@@ -1,4 +1,7 @@
 <div class="parent">
+  <div class="close" (click)="close()">
+    <mat-icon>close</mat-icon>
+  </div>
   <mat-card class="layout">
     <div class="question">{{ response.Question.question }}</div>
     <div class="description" [innerHTML]="response.Question.description"></div>

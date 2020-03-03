@@ -1,36 +1,28 @@
-<div>
-    <div class="parent">
-     
+<div class="parent">
+  <div style="width: 100%; height: 100px;display: block;">
+    <app-search></app-search>
+  </div>
+  <!-- <app-home></app-home> -->
+  <router-outlet></router-outlet>
+  <!-- <div class="green">
+    <div style="width: 16%;">
       <app-filters></app-filters>
-      <app-search class="app-search"></app-search>
-      <div class="toolbar"></div>
-      <!-- <div class="breadcrumbs">
-        <ul class="breadcrumb">
-          <li><span [routerLink]="['']">Home</span></li>
-          <li><span [routerLink]="['/category']">Categories</span></li>
-          <li>
-            <span [routerLink]="['/category', category]">{{
-              getCategory()
-            }}</span>
-          </li>
-        </ul>
-      </div> -->
     </div>
-  
-    <div class="main-layout">
-      <!-- <app-filters></app-filters> -->
-      <mat-divider [vertical]="true"></mat-divider>
-      <div class="router"><router-outlet></router-outlet></div>
+    <mat-divider [vertical]="true"></mat-divider>
+    <div style="width: 84%;">
+      <router-outlet></router-outlet>
     </div>
-  </div>
-  <button mat-fab class="fab" (click)="openOptions()">
-    <mat-icon>add</mat-icon>
+  </div> -->
+</div>
+
+<button mat-fab class="fab" (click)="openOptions()">
+  <mat-icon>add</mat-icon>
+</button>
+<div id="options" class="options">
+  <button mat-button class="options-button" (click)="addQAEntry()">
+    Add a troubleshooting step
   </button>
-  <div id="options" class="options">
-    <button mat-button class="options-button" (click)="addQAEntry()">
-      Add a troubleshooting step
-    </button>
-    <button mat-button class="options-button" (click)="addQuestion()">
-      Post a question
-    </button>
-  </div>
+  <button mat-button class="options-button" (click)="addQuestion()">
+    Post a question
+  </button>
+</div>

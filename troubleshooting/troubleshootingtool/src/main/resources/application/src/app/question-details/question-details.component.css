@@ -1,13 +1,26 @@
 .parent {
   display: flex;
   margin-top: 20px;
-  margin-left: 16%;
-  width: 84%;
+  margin-left: 36px;
+  margin-right: 24px;
 }
 
 .layout {
-  width: 90%;
+  width: 95%;
   justify-content: center;
+}
+
+.close {
+  cursor: pointer;
+  outline: none;
+  position: absolute;
+  font-size: medium;
+  color: #1776bf;
+  right: 0;
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+  justify-self: flex-end;
+  padding-right: 8px;
+  padding-bottom: 8px;
 }
 
 .answers {

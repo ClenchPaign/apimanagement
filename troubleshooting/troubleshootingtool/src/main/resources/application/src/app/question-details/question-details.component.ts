@@ -1,12 +1,13 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { ListingService } from '../listing.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { QAEntry } from '../data-models/QAEntry';
 import { Question } from '../data-models/Question';
 import { Answer } from '../data-models/Answer';
 import { SearchQuery } from '../data-models/SearchQuery';
 import { RichTextEditorComponent } from '@syncfusion/ej2-angular-richtexteditor';
 import { ImageModel } from '../data-models/ImageModel';
+import { PreviousRouteService } from '../previous-route.service';
 
 @Component({
   selector: 'app-question-details',
@@ -15,7 +16,8 @@ import { ImageModel } from '../data-models/ImageModel';
 })
 export class QuestionDetailsComponent implements OnInit {
 
-  constructor(private listingService: ListingService, private router: Router, private route: ActivatedRoute) { }
+  constructor(private listingService: ListingService, private router: Router, private route: ActivatedRoute,
+    private previousRoute: PreviousRouteService) { }
   val: any = '';
   response: any;
   postedDate: any;
@@ -25,6 +27,7 @@ export class QuestionDetailsComponent implements OnInit {
   returnAttachment: string[] = [];
   returnAttachmentFileName: string[] = [];
   attachmentList: any = [];
+  navigationExtras: NavigationExtras;
   @Input() id: string;
   @ViewChild('imageRTE', { static: true })
   private rteObj: RichTextEditorComponent;
@@ -43,7 +46,7 @@ export class QuestionDetailsComponent implements OnInit {
           let img: any;
           this.listingService.get_files(val).subscribe(data => {
             img = data;
-            console.log('Get files from attachment '+data);
+            console.log('Get files from attachment ' + data);
             this.attachmentList.push(data);
             this.returnAttachment.push(img.base64Image);
             this.returnAttachmentFileName.push(img.fileName);
@@ -61,6 +64,14 @@ export class QuestionDetailsComponent implements OnInit {
 
   }
 
+  close() {
+    console.log('close -' + this.previousRoute.getPreviousUrl());
+    if (this.previousRoute.getPreviousUrl() === '/' || this.previousRoute.currentUrl === this.previousRoute.previousUrl) {
+      this.router.navigateByUrl('/main/home/search/list?isSearchFromFilters=no&tag=&keyword=%20');
+    } else {
+      this.router.navigateByUrl(this.previousRoute.getPreviousUrl());
+    }
+  }
   onAttachmentClick(itemName: string) {
     for (const item of this.attachmentList) {
       if (itemName === item.fileName) {
@@ -94,13 +105,23 @@ export class QuestionDetailsComponent implements OnInit {
   }
   onTagClick(tag: string) {
     const searchData = new SearchQuery('', [tag], []);
-    this.listingService.searchForKeyword(searchData).subscribe(
+    this.listingService.searchForKeyword(searchData, 0, 5).subscribe(
       data => {
         console.log('Getting questions successful ', data);
         this.response = data;
       },
       res => { console.log(res); });
-    this.router.navigateByUrl('/main/search/' + tag + '/ ');
+    this.navigationExtras = {
+      queryParams: {
+        'isSearchFromFilters': 'fromtags',
+        'tag': tag,
+        'keyword': ''
+      }
+    };
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
+      // this.router.navigate(['/main/search/' + tag + '/ '], this.navigationExtras));
+      this.router.navigate(['/main/home/search/list'], this.navigationExtras));
+    // this.router.navigateByUrl('/main/search/' + tag + '/ ');
   }
 
   post_ans() {

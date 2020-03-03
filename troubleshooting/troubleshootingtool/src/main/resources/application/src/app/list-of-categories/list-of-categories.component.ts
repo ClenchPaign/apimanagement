@@ -43,7 +43,7 @@ export class ListOfCategoriesComponent implements OnInit {
   onClick(cat: string) {
     console.log('clicked ' + cat);
     this.listingService.category = cat;
-    // this.router.navigateByUrl('/cat');
+    this.router.navigateByUrl('/main/home/category/' + cat + '/0/5');
   }
 
 }

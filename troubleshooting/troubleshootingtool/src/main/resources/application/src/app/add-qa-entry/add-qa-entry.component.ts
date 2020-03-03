@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
 import { Tags } from '../list-of-categories/list-of-categories.component';
 import { ListingService } from '../listing.service';
-import { Router } from '@angular/router';
+import { Router, NavigationExtras } from '@angular/router';
 import { Question } from '../data-models/Question';
 import { QAEntry } from '../data-models/QAEntry';
 import { MatChipInputEvent } from '@angular/material/chips';
@@ -11,6 +11,7 @@ import { Answer } from '../data-models/Answer';
 import { RichTextEditorComponent } from '@syncfusion/ej2-angular-richtexteditor';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { ImageModel } from '../data-models/ImageModel';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-add-qa-entry',
@@ -36,7 +37,7 @@ export class AddQaEntryComponent implements OnInit {
   removable = true;
   addOnBlur = true;
   imageUrlPREVIEW: any;
-
+  navigationExtras: NavigationExtras;
   public files: string[] = [];
 
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
@@ -52,7 +53,8 @@ export class AddQaEntryComponent implements OnInit {
 
   constructor(
     private listingService: ListingService,
-    private router: Router
+    private router: Router,
+    private snackbar: MatSnackBar
   ) { }
 
   // filters for categories
@@ -209,8 +211,21 @@ export class AddQaEntryComponent implements OnInit {
     } else {
       this.listingService.post_question(qa).subscribe(data => {
         console.log('POST Request is successful ', data);
-        this.router.navigateByUrl('/main/category');
+        this.openSnackBar('Troubleshooting step posted successfully', 'OK');
+        this.navigationExtras = {
+          queryParams: {
+            'reload': true
+          }
+        };
+        this.router.navigateByUrl('/main/dashboard/review', { skipLocationChange: true }).then(() =>
+          this.router.navigate(['/main/dashboard/review'], this.navigationExtras));
       });
     }
+  }
+  openSnackBar(message: string, action: string) {
+    this.snackbar.open(message, action, {
+      duration: 2000,
+      verticalPosition: 'top'
+    });
   }
 }

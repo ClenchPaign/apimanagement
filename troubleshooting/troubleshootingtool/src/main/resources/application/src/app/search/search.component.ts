@@ -1,5 +1,5 @@
 import { Component, OnInit, HostListener, ElementRef } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { ListingService } from '../listing.service';
 import { SearchQuery } from '../data-models/SearchQuery';
 import { QAEntry } from '../data-models/QAEntry';
@@ -17,6 +17,7 @@ export class SearchComponent implements OnInit {
   tags: any;
   username: string;
   password: string;
+  navigationExtras: NavigationExtras;
 
   constructor(private listingService: ListingService, private route: ActivatedRoute, private router: Router, private eRef: ElementRef) {
     // this.route.queryParams.subscribe(params => {
@@ -28,7 +29,7 @@ export class SearchComponent implements OnInit {
   }
   ngOnInit() {
 
-    this.listingService.searchForKeyword(this.searchdata).subscribe(
+    this.listingService.searchForKeyword(this.searchdata, 0, 5).subscribe(
       data => {
         this.response = data;
       },
@@ -71,41 +72,72 @@ export class SearchComponent implements OnInit {
   onClick(id: string) {
 
     this.listingService.id = id;
-    (document.getElementById('searchinput') as HTMLInputElement).value = '';
+    // (document.getElementById('searchinput') as HTMLInputElement).value = '';
     this.response = null;
     // this.search('');
+    this.navigationExtras = {
+      queryParams: {
+        'isSearchFromFilters': 'no',
+        'tag': '',
+        'keyword': id
+      }
+    };
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
-      this.router.navigate(['main/qna/' + id]));
+      this.router.navigate(['main/qna/' + id], this.navigationExtras));
 
   }
 
   onEnter() {
     const val = (document.getElementById('searchinput') as HTMLInputElement).value;
-    (document.getElementById('searchinput') as HTMLInputElement).value = '';
+    // (document.getElementById('searchinput') as HTMLInputElement).value = '';
     this.response = null;
     this.listingService.keyword = val;
-    const tag = '###';
+    if (this.listingService.keyword === '') {
+      console.log('now here-' + val);
+      this.navigationExtras = {
+        queryParams: {
+          'isSearchFromFilters': 'no',
+          'tag': '',
+          'keyword': ' '
+        }
+      };
+    } else {
+      console.log('now here-' + val);
+      this.navigationExtras = {
+        queryParams: {
+          'isSearchFromFilters': 'no',
+          'tag': '',
+          'keyword': val
+        }
+      };
+    }
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
-      this.router.navigate(['/main/search/' + tag + '/' + val]));
-    // this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
-    //   this.router.navigate(['/search/ ' + val + '/']));
+      this.router.navigate(['/main/home/search/list'], this.navigationExtras));
   }
   onTagClick(tag: string) {
     console.log('clicked ' + tag);
     this.listingService.keyword = tag;
     (document.getElementById('searchinput') as HTMLInputElement).value = '';
     this.search('');
+    this.navigationExtras = {
+      queryParams: {
+        'isSearchFromFilters': 'searchbar-tag',
+        'tag': tag,
+        'keyword': ''
+      }
+    };
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
-      this.router.navigate(['/main/search/' + tag + '/ ']));
+      // this.router.navigate(['/main/search/' + tag + '/ '], this.navigationExtras));
+      this.router.navigate(['/main/home/search/list'], this.navigationExtras));
   }
 
   logout() {
-    const user = new User(this.username, this.password, "");
+    const user = new User(this.username, this.password, '');
     this.listingService.logout().subscribe(
       data => {
         console.log(data);
         if (data === 'true') {
-          this.router.navigateByUrl('/');
+          this.router.navigateByUrl('');
         }
       },
     );

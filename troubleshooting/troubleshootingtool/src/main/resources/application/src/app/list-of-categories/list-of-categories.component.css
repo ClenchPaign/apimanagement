@@ -2,7 +2,8 @@
   font-family: sans-serif;
   font-weight: bolder;
   font-size: x-large;
-  margin-left: 17%;
+  margin-left: 16px;
+  margin-top: 16px;
 }
 
 .categories {
@@ -10,7 +11,6 @@
   justify-content: left;
   flex-wrap: wrap;
   width: 80%;
-  margin-left: 16%;
 }
 .matcard-categories {
   cursor: pointer;

@@ -1,81 +1,76 @@
 <div class="mat-toolbar">
+  <div class="header" [routerLink]="['/main']">
+    <mat-icon class="product-icon">devices</mat-icon>
+    <div class="product">
+      <div class="product-name">TROUBLESHOOTING TOOL</div>
+    </div>
+  </div>
+  <div class="dropdown">
+    <mat-icon
+      style="cursor: pointer;"
+      [matMenuTriggerFor]="menu"
+      class="userprofilepic"
+      >person</mat-icon
+    >
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item [routerLink]="['/main']">
+        <mat-icon style="color: #0f4c7b;">person</mat-icon>
+        <a class="menu-items">{{ username }}</a>
+      </button>
+      <mat-divider></mat-divider>
+      <button mat-menu-item [routerLink]="['/main/dashboard']">
+        <mat-icon>dashboard</mat-icon>
+        <a class="menu-items">Dashboard</a>
+      </button>
+      <button mat-menu-item (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        <a class="menu-items">Logout</a>
+      </button>
+    </mat-menu>
+  </div>
   <div class="searchbar">
-   
-    <div>
+    <div class="inside-searchbar">
       <div class="dummy">
-        <input
-          id="searchinput"
-          class="search"
-          placeholder="Search here"
-          (input)="search($event.target.value)"
-          input
-          (keyup.enter)="onEnter()"
-        />
+        <div class="dummy-inside">
+          <input
+            id="searchinput"
+            class="search"
+            placeholder="Search here"
+            (input)="search($event.target.value)"
+            input
+            (keyup.enter)="onEnter()"
+          />
 
-        <button class="dlt-button" (click)="onEnter()" mat-raised-button>
-          Search
-        </button>
-      </div>
+          <mat-icon class="search-icon" (click)="onEnter()">search</mat-icon>
+        </div>
 
-      <div class="row">
-        <div class="row-ele">
-          <div class="question-layout" *ngFor="let list of getQuestions()">
-            <div class="card">
-              <div
-                class="question"
-                [routerLink]="['main/qna', list.Question.id]"
-                (click)="onClick(list.Question.id)"
-              >
-                {{ list.Question.question }}
-              </div>
-              <div class="chip-layout">
-                <span
-                  (click)="onTagClick(tag)"
-                  class="chips"
-                  *ngFor="let tag of getTags(list.tags)"
+        <!-- </div> -->
+        <div class="row">
+          <div class="row-ele">
+            <div class="question-layout" *ngFor="let list of getQuestions()">
+              <div class="card">
+                <div
+                  class="question"
+                  [routerLink]="['main/qna', list.Question.id]"
+                  (click)="onClick(list.Question.id)"
                 >
-                  {{ tag }}
-                </span>
+                  {{ list.Question.question }}
+                </div>
+                <div class="chip-layout">
+                  <span
+                    (click)="onTagClick(tag)"
+                    class="chips"
+                    *ngFor="let tag of getTags(list.tags)"
+                  >
+                    {{ tag }}
+                  </span>
+                </div>
               </div>
+              <mat-divider></mat-divider>
             </div>
-            <mat-divider></mat-divider>
           </div>
         </div>
       </div>
     </div>
-    <div class="dropdown">
-      <mat-icon
-        style="cursor: pointer;"
-        [matMenuTriggerFor]="menu"
-        class="userprofilepic"
-        >person</mat-icon
-      >
-      <mat-menu #menu="matMenu">
-        <button mat-menu-item [routerLink]="['/main/category']">
-          <mat-icon style="color: #0f4c7b;">person</mat-icon>
-          <a class="menu-items" >{{username}}</a>
-        </button>
-        <mat-divider></mat-divider>
-        <button mat-menu-item [routerLink]="['/main/dashboard']">
-          <mat-icon>dashboard</mat-icon>
-          <a class="menu-items">Dashboard</a>
-        </button>
-        <button mat-menu-item  (click)="logout()">
-          <mat-icon>logout</mat-icon>
-          <a class="menu-items" >Logout</a>
-        </button>
-      </mat-menu>
-      <!-- <div class="dlt-overflow-menu">
-        <a href="">Divyabharathi</a>
-        <a href="">Logout</a>
-      </div> -->
-    </div>
-
-    <!-- <div class="dropdown">
-      <mat-icon class="userprofilepic">face</mat-icon>
-      <div class="username">Divyabharathi K</div>
-    </div> -->
   </div>
 </div>
-
-

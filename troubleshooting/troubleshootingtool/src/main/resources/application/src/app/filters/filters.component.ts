@@ -22,7 +22,6 @@ export class FiltersComponent implements OnInit {
   ngOnInit() {
     this.color = false;
     this.category = this.listingService.category;
-
     // this.route.paramMap.subscribe(params => {
     //   this.category = params.get('category');
     // });
@@ -30,11 +29,11 @@ export class FiltersComponent implements OnInit {
 
     this.listingService.getAllCategories().subscribe(
       data => {
-        console.log('GET Request is successful ', data);
+        // console.log('GET Request is successful ', data);
         this.response = data;
       },
       res => { console.log(res); });
-
+    setTimeout(() => this.onTag(), 500);
   }
 
   onTag() {
@@ -46,7 +45,7 @@ export class FiltersComponent implements OnInit {
   }
 
   onCategoryHeadClick() {
-    this.router.navigateByUrl('/main/category');
+    this.router.navigateByUrl('/main/home/category');
     this.tags = null;
   }
   onRemoveTag(tag: string, index: number) {
@@ -55,6 +54,7 @@ export class FiltersComponent implements OnInit {
     const close = document.getElementsByClassName('close_icon');
     const closeIcon = close[index] as HTMLElement;
     this.selectedTags = this.selectedTags.filter(obj => obj !== tag);
+    console.log('On remove tag :' + this.selectedTags);
     closeIcon.style.display = 'none';
     gg.style.backgroundColor = 'lightgrey';
     gg.style.color = '#000';
@@ -71,7 +71,7 @@ export class FiltersComponent implements OnInit {
   }
   onSelectingCategory(item: string) {
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
-      this.router.navigate(['/main/category/' + item]));
+      this.router.navigate(['/main/home/category/' + item + '/0/5']));
   }
 
   onCategoriesClick() {
@@ -93,14 +93,15 @@ export class FiltersComponent implements OnInit {
   }
 
   filter() {
-    let searchdata = new SearchQuery('', this.selectedTags, []);
-    let navigationExtras: NavigationExtras = {
+    const navigationExtras: NavigationExtras = {
       queryParams: {
-        'tags': searchdata.tags,
+        'tag': this.selectedTags,
+        'isSearchFromFilters': 'yes',
       }
     };
     console.log('On filter: ' + this.selectedTags);
-    this.router.navigate(['/main/search/###/ '], navigationExtras);
+    this.selectedTags = [];
+    this.router.navigate(['/main/home/search/list'], navigationExtras);
   }
 
   removeFilter() {
@@ -114,7 +115,6 @@ export class FiltersComponent implements OnInit {
       gg.style.backgroundColor = 'lightgrey';
       gg.style.color = '#000';
     }
-
     // this.router.navigateByUrl('/main/search/###/ ');
   }
 }

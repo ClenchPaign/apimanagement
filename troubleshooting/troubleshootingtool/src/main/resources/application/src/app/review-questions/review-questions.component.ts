@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ListingService } from '../listing.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { QAEntry } from '../data-models/QAEntry';
 
 @Component({
   selector: 'app-review-questions',
@@ -8,20 +10,22 @@ import { ListingService } from '../listing.service';
 })
 export class ReviewQuestionsComponent implements OnInit {
 
-  constructor(private listingService: ListingService) { }
+  constructor(private listingService: ListingService, private route: ActivatedRoute,private router: Router) { }
   response: any;
 
   ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      const reload = params['reload'];
+      // console.log('reload-' + reload);
+    });
     this.listingService.getAllReviewQuestions().subscribe(
       data => {
         console.log('Getting review questions successful ', data);
         this.response = data;
+        // this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+        //   this.router.navigate(['/main/dashboard/review']);
+        // });
       },
       res => { console.log(res); });
   }
-
-  getQuestions() {
-    return this.response;
-  }
-
 }

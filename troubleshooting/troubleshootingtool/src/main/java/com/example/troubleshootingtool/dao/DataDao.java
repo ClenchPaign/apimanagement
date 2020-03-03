@@ -22,6 +22,7 @@ import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.stereotype.Repository;
+
 import javax.naming.Context;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
@@ -97,7 +98,7 @@ public class DataDao {
         }
     }
 
-    public QAEntry getQAEntryById(String id,String index) throws IOException {
+    public QAEntry getQAEntryById(String id, String index) throws IOException {
 //        @RequestMapping(value = "/get_qa/{id}", method = RequestMethod.GET)
         QAEntry obj = null;
         SearchRequest searchRequest = new SearchRequest();
@@ -121,7 +122,6 @@ public class DataDao {
         String obj = null;
         SearchRequest searchRequest = new SearchRequest();
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(QueryBuilders.matchQuery("_index", INDEX));
         searchSourceBuilder.query(QueryBuilders.matchQuery("Question.id.keyword", id));
         searchRequest.source(searchSourceBuilder);
         searchSourceBuilder.size(100);
@@ -190,7 +190,7 @@ public class DataDao {
         return list;
     }
 
-    public List<QAEntry> getQAEntryforCategory(String category) throws IOException {
+    public List<QAEntry> getQAEntryforCategory(String category,int from,int size) throws IOException {
 //        @RequestMapping(value = "/get_qa_cat/{cat}", method = RequestMethod.GET)
         ArrayList<QAEntry> list = new ArrayList<>();
         SearchRequest searchRequest = new SearchRequest();
@@ -199,7 +199,8 @@ public class DataDao {
         boolQueryBuilder.filter(QueryBuilders.termQuery("_index", INDEX));
         boolQueryBuilder.filter(QueryBuilders.termQuery("Question.category.keyword", category));
         searchSourceBuilder.query(boolQueryBuilder);
-        searchSourceBuilder.size(10000);
+        searchSourceBuilder.from(from);
+        searchSourceBuilder.size(size);
         searchRequest.source(searchSourceBuilder);
         SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
         SearchHit[] searchHits = searchResponse.getHits().getHits();
@@ -210,34 +211,14 @@ public class DataDao {
         return list;
     }
 
-    public List<QAEntry> matchQuestion(String keyword) throws IOException {
-//        @RequestMapping(value = "/search/{keyword}", method = RequestMethod.GET)
-        ArrayList<QAEntry> list = new ArrayList<>();
-        SearchRequest searchRequest = new SearchRequest();
-        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
-        boolQueryBuilder.filter(QueryBuilders.termQuery("_index", INDEX));
-        boolQueryBuilder.filter(QueryBuilders.wildcardQuery("Question.question.keyword", "*" + keyword + "*"));
-        searchSourceBuilder.query(boolQueryBuilder);
-        searchSourceBuilder.size(10000);
-        searchRequest.source(searchSourceBuilder);
-        SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
-        SearchHit[] searchHits = searchResponse.getHits().getHits();
-        for (SearchHit searchHit : searchHits) {
-            QAEntry q_a = new ObjectMapper().readValue(searchHit.getSourceAsString(), QAEntry.class);
-            list.add(q_a);
-        }
-        return list;
-    }
 
-    public List<QAEntry> searchQuery(SearchQuery searchQuery) throws IOException {
+    public List<QAEntry> searchQuery(SearchQuery searchQuery,int from,int size) throws IOException {
 
         ArrayList<QAEntry> list = new ArrayList<>();
         SearchRequest searchRequest = new SearchRequest();
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
-        searchSourceBuilder.query(QueryBuilders.matchQuery("_index", INDEX));
-        boolQueryBuilder.filter(termQuery("_index",INDEX));
+        boolQueryBuilder.filter(termQuery("_index", INDEX));
         if (!searchQuery.getCategory().equals("")) {
 //            TermQueryBuilder queryBuilders = termQuery("Question.category.keyword", searchQuery.getCategory());
             boolQueryBuilder.filter(termQuery("Question.category.keyword", searchQuery.getCategory()));
@@ -247,7 +228,6 @@ public class DataDao {
         if (searchQuery.getTags().size() > 0) {
             for (int i = 0; i < searchQuery.getTags().size(); i++) {
                 boolQueryBuilder.filter(QueryBuilders.wildcardQuery("tags.keyword", "*" + searchQuery.getTags().get(i) + "*"));
-                System.out.println("--------------------------------------------------------------");
             }
         }
         if (searchQuery.getKeyword().size() > 0) {
@@ -262,7 +242,8 @@ public class DataDao {
 //            }
 //        }
         searchSourceBuilder.query(boolQueryBuilder);
-        searchSourceBuilder.size(10000);
+        searchSourceBuilder.from(from);
+        searchSourceBuilder.size(size);
         searchRequest.source(searchSourceBuilder);
         SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
         SearchHit[] searchHits = searchResponse.getHits().getHits();
@@ -276,6 +257,7 @@ public class DataDao {
         if (searchQuery.getCategory().equals("") && searchQuery.getKeyword().size() == 0 && searchQuery.getTags().size() == 0) {
             list.clear();
         }
+        System.out.println(list.size());
         return list;
     }
 
@@ -365,11 +347,11 @@ public class DataDao {
                             || cn.endsWith(username.toUpperCase())) {
                         result = true;
                         HttpSession session = request.getSession();
-                      session.setAttribute("userName",username );
-                        session.setAttribute("password",passwd );
+                        session.setAttribute("userName", username);
+                        session.setAttribute("password", passwd);
                         httpServletRequest = request;
                         httpSession = request.getSession();
-                        System.out.println("session   :"+session.getAttribute("userName"));
+                        System.out.println("session   :" + session.getAttribute("userName"));
                         break;
                     } else
                         result = false;
@@ -432,15 +414,14 @@ public class DataDao {
             } else {
                 result = false;
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return result;
         }
 //        System.out.println("session   :"+session.getAttribute("userName"));
         return result;
     }
 
-    public String approveQnA(String id,QAEntry qandA) throws IOException {
+    public String approveQnA(String id, QAEntry qandA) throws IOException {
         Map dataMap = objectMapper.convertValue(qandA, Map.class);
         String returnString = "";
         DeleteRequest deleteRequest = new DeleteRequest(TEMP_INDEX, getDocumentIDforQAEntry(id));
@@ -459,7 +440,19 @@ public class DataDao {
             returnString = returnString + " elastic search exception " + e.getDetailedMessage();
         } catch (IOException ex) {
             ex.getLocalizedMessage();
-            returnString =  returnString + " IO exception " + ex.getLocalizedMessage() + "  " + Arrays.toString(ex.getStackTrace());
+            returnString = returnString + " IO exception " + ex.getLocalizedMessage() + "  " + Arrays.toString(ex.getStackTrace());
+        }
+        return returnString;
+    }
+
+    public String rejectQnA(String id) throws IOException {
+        String returnString = "";
+        DeleteRequest deleteRequest = new DeleteRequest(TEMP_INDEX, getDocumentIDforQAEntry(id));
+        try {
+            DeleteResponse deleteResponse = restHighLevelClient.delete(deleteRequest, RequestOptions.DEFAULT);
+            returnString = "Removed from review successfully";
+        } catch (Exception e) {
+            returnString = "Remove from review unsuccessful" + e.toString();
         }
         return returnString;
     }

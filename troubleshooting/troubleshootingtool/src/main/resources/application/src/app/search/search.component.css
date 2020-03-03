@@ -1,13 +1,13 @@
 .mat-toolbar {
-  /*   background-color: #000000; */
+  /* background-color: #000000; */
   background-color: #1776bf;
   /* background-color: #bf4717; */
+  height: max-content;
   position: fixed;
   top: 0;
   left: 0;
-  margin-left: 16%;
-  /* z-index: 2; */
-  width: 84% !important;
+  z-index: 2;
+  width: 100% !important;
 }
 
 .search {
@@ -17,9 +17,20 @@
   padding-top: 8px;
   padding-bottom: 8px;
   color: #000000;
-  width: 700px;
+  width: 80%;
 }
-
+.dummy {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+}
+.dummy-inside {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  width: 90%;
+}
 .dlt-button {
   color: #1776bf;
   text-decoration: none;
@@ -42,23 +53,42 @@
 
 .searchbar {
   display: flex;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  justify-content: center;
+  background-color: #eeeeee;
+  padding: 10px;
+}
+.search-icon {
+  color: white;
+  background-color: #1776bf;
+  padding: 5px;
+}
+.inside-searchbar {
+  width: 100%;
+  display: flex;
   justify-content: center;
 }
-
 .list-of-questions {
   position: relative;
 }
 
+.row {
+  width: 100%;
+}
 .row-ele {
   position: absolute;
   overflow-y: auto;
-  height: 400px;
+  overflow-x: hidden;
+  display: inline-flexbox;
+  flex-direction: column;
+  align-self: center;
+  left: 50%;
+  margin-left: -37.5%;
+  max-height: 400px;
+  width: 73%;
 }
 
 .question-layout {
-  width: 700px;
+  width: 100%;
   padding-right: 16px;
   padding-left: 16px;
   white-space: nowrap;
@@ -130,7 +160,7 @@
 
 .menu-items {
   text-decoration: none;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   color: #0f4c7b;
 }
 .icon {
@@ -147,100 +177,76 @@
   top: 0;
   background-color: #0f4c7b;
 }
-.userprofilepic{
+.userprofilepic {
   color: white;
 }
 
-.dlt-overflow-menu {
-  position: absolute;
-  display: none;
-  white-space: nowrap;
-  font-family: Roboto, Helvetica, Arial, sans-serif;
-  font-size: 0.875rem;
-  color: #333;
-  background: #fff;
-  -webkit-box-shadow: 0 0.03rem 0.25rem 0 rgba(0, 0, 0, 0.5);
-  -moz-box-shadow: 0 0.03rem 0.25rem 0 rgba(0, 0, 0, 0.5);
-  box-shadow: 0 0.03rem 0.25rem 0 rgba(0, 0, 0, 0.5);
-  list-style-type: none;
-  z-index: 2;
-  top: 2.125rem;
-  right: -0.875rem;
-  background: #fff;
-  -webkit-filter: drop-shadow(0 0 0 rgba(0, 0, 0, 0.5));
-  -moz-filter: 0 0 0 rgba(0, 0, 0, 0.5);
-  filter: drop-shadow(0 0 0 rgba(0, 0, 0, 0.5));
-  padding: 0.5rem 0;
-}
-
-.dlt-overflow-menu .scroll-wrapper {
-  padding: 1rem 0.5rem 0.5rem 1rem;
-  height: 14.25rem;
-  overflow: auto;
-}
-
-.dlt-overflow-menu .scroll-wrapper .mCSB_inside > .mCSB_container {
-  margin-right: 0;
-}
-
-.dlt-overflow-menu .scroll-wrapper .mCSB_scrollTools {
-  width: 0.25rem;
-  background: #f2f2f2;
-}
-
-.dlt-overflow-menu .scroll-wrapper .mCSB_draggerContainer {
-  right: 0 !important;
-}
-
-.dlt-overflow-menu .scroll-wrapper .mCSB_dragger_bar {
-  border-radius: 0 !important;
-  background-color: #666 !important;
-}
-
-.dlt-overflow-menu .scroll-wrapper .mCSB_draggerRail {
-  opacity: 0;
-}
-
-.dlt-overflow-menu a {
-  color: black;
-  padding-left: 10px;
-  padding-right: 10px;
-  display: block;
-  font-size: small;
-  text-decoration: none;
-  font-family: Roboto, Helvetica, Arial, sans-serif;
-}
-
-.dlt-overflow-menu a:hover {
-  background-color: rgb(30, 169, 255);
-}
-
-.dropdown:hover .dlt-overflow-menu {
-  display: inline-block;
-}
-
-.parent{
+.parent {
   position: -webkit-sticky;
   position: sticky;
   top: 0;
   z-index: 2;
   width: 100% !important;
 }
-.toolbar{
+.toolbar {
   height: 52px;
 }
 
-span{
+span {
   outline: none;
 }
 
-.main-layout{
+.main-layout {
   margin-top: 16px;
   display: flex;
 }
-.router{
+.router {
   width: 100%;
   margin-left: 24px;
+}
+
+.header {
+  display: flex;
+  align-self: start;
+  align-items: center;
+  justify-items: center;
+  width: max-content;
+  outline: none;
+  margin: 5px;
+}
+
+.product-icon {
+  color: #ffffff;
+  border-radius: 200px;
+  margin-left: 10px;
+  padding: 8px;
+  width: fit-content;
+  height: fit-content;
+  cursor: pointer;
+  outline: none;
+  background-color: #0f4c7b;
+}
+.product-name {
+  font-family: "Segoe UI", Tahoma, Verdana, sans-serif;
+  font-size: small;
+  margin: 0;
+  margin-top: 0;
+  cursor: pointer;
+  /* font-weight: bolder; */
+}
+/* .product-name-secondary {
+  font-family: "Segoe UI", Tahoma, Verdana, sans-serif;
+  font-size: small;
+  margin: 0;
+} */
+
+.product {
+  /* background-color: lightcoral; */
+  margin-left: 10px;
+  display: flex;
+  color: #ffffff;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 ul.breadcrumb {
@@ -257,7 +263,7 @@ ul.breadcrumb li {
   font-family: Roboto, Helvetica, Arial, sans-serif;
   color: #0275d8;
 }
-ul.breadcrumb li+li:before {
+ul.breadcrumb li + li:before {
   padding: 8px;
   color: black;
   content: "/\00a0";
@@ -268,93 +274,91 @@ ul.breadcrumb li:hover {
   font-weight: bolder;
 }
 
-
 .dlt-breadcrumbs {
-	list-style: none;
-	width: 100%;
-	max-width: 48rem;
-	margin: 0;
-	padding: 0;
-	font-family: Roboto, Helvetica, Arial, sans-serif;
-	font-size: 0.875rem;
-	line-height: 20px;
-  }
+  list-style: none;
+  width: 100%;
+  max-width: 48rem;
+  margin: 0;
+  padding: 0;
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+  font-size: 0.875rem;
+  line-height: 20px;
+}
 
-  .dlt-breadcrumbs li {
-	color: #666;
-	display: inline-block;
-  }
+.dlt-breadcrumbs li {
+  color: #666;
+  display: inline-block;
+}
 
-  .dlt-breadcrumbs li::before {
-	content: "\f1df";
-	font-family: dlt-icons;
-	font-size: 1rem;
-	color: grey;
-	vertical-align: middle;
-	padding: 0 0.125rem;
-  }
+.dlt-breadcrumbs li::before {
+  content: "\f1df";
+  font-family: dlt-icons;
+  font-size: 1rem;
+  color: grey;
+  vertical-align: middle;
+  padding: 0 0.125rem;
+}
 
-  .dlt-breadcrumbs li:first-child::before {
-	visibility: hidden;
-  }
+.dlt-breadcrumbs li:first-child::before {
+  visibility: hidden;
+}
 
-  .dlt-breadcrumbs li a[aria-current="page"] {
-	color: #666;
-	text-decoration: none;
-	pointer-events: none;
-  }
+.dlt-breadcrumbs li a[aria-current="page"] {
+  color: #666;
+  text-decoration: none;
+  pointer-events: none;
+}
 
-  .dlt-breadcrumbs li a[aria-current="page"]:active,
-  .dlt-breadcrumbs li a[aria-current="page"]:focus,
-  .dlt-breadcrumbs li a[aria-current="page"]:hover {
-	color: #666;
-	text-decoration: none;
-	pointer-events: none;
-  }
+.dlt-breadcrumbs li a[aria-current="page"]:active,
+.dlt-breadcrumbs li a[aria-current="page"]:focus,
+.dlt-breadcrumbs li a[aria-current="page"]:hover {
+  color: #666;
+  text-decoration: none;
+  pointer-events: none;
+}
 
-  .dlt-breadcrumbs .has-submenu {
-	position: relative;
-  }
+.dlt-breadcrumbs .has-submenu {
+  position: relative;
+}
 
-  .dlt-breadcrumbs .has-submenu .dlt-overflow-menu {
-	top: initial;
-  }
+.dlt-breadcrumbs .has-submenu .dlt-overflow-menu {
+  top: initial;
+}
 
-  .dlt-breadcrumbs .has-submenu .dlt-overflow-menu::after {
-	left: calc(50% - 5px);
-	margin: 0;
-	right: 0;
-  }
+.dlt-breadcrumbs .has-submenu .dlt-overflow-menu::after {
+  left: calc(50% - 5px);
+  margin: 0;
+  right: 0;
+}
 
-  .dlt-breadcrumbs .has-submenu:hover .dlt-overflow-menu {
-	display: block;
-  }
+.dlt-breadcrumbs .has-submenu:hover .dlt-overflow-menu {
+  display: block;
+}
 
-  .dlt-breadcrumbs .has-submenu > a {
-	line-height: 1.875rem;
-  }
+.dlt-breadcrumbs .has-submenu > a {
+  line-height: 1.875rem;
+}
 
-  .lg-breadcrumb {
-	font-size: 1rem;
-  }
+.lg-breadcrumb {
+  font-size: 1rem;
+}
 
-  .lg-breadcrumb .dlt-links {
-	font-size: 1rem;
-  }
+.lg-breadcrumb .dlt-links {
+  font-size: 1rem;
+}
 
-  .lg-breadcrumb li::before {
-	font-size: 1.125rem;
-  }
+.lg-breadcrumb li::before {
+  font-size: 1.125rem;
+}
 
-  .sm-breadcrumb {
-	font-size: 0.75rem;
-  }
+.sm-breadcrumb {
+  font-size: 0.75rem;
+}
 
-  .sm-breadcrumb .dlt-links {
-	font-size: 0.75rem;
-  }
+.sm-breadcrumb .dlt-links {
+  font-size: 0.75rem;
+}
 
-  .sm-breadcrumb li::before {
-	font-size: 0.875rem;
-  }
-
+.sm-breadcrumb li::before {
+  font-size: 0.875rem;
+}
