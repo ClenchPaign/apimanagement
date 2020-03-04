@@ -542,7 +542,7 @@ public class DataDao {
         CreateSnapshotRequest req = new CreateSnapshotRequest();
         req.repository("backup");
         req.snapshot("backup_data");
-        req.indices(INDEX, TEMP_INDEX, ADMIN);
+        req.indices(INDEX, TEMP_INDEX, ADMIN, "others");
         CreateSnapshotResponse snapres = restHighLevelClient.snapshot().create(req, RequestOptions.DEFAULT);
         System.out.println("snapshot : " + snapres);
         return "snapshot created successfully";
@@ -551,7 +551,7 @@ public class DataDao {
 
     public String restoreSnapshot() throws IOException {
         RestoreSnapshotRequest request = new RestoreSnapshotRequest("backup", "backup_data");
-        request.indices(INDEX, TEMP_INDEX, ADMIN);
+        request.indices(INDEX, TEMP_INDEX, ADMIN, "others");
         try {
             RestoreSnapshotResponse response = restHighLevelClient.snapshot().restore(request, RequestOptions.DEFAULT);
             return "Restored";
