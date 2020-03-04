@@ -193,6 +193,7 @@ export class AddQuestionDialogComponent implements OnInit {
       duration: 3000,
       verticalPosition: 'top'
     });
-    window.location.replace('http://localhost:4343/main/dashboard');
+    // window.location.replace('http://localhost:4343/main/dashboard');
+    window.location.replace('/main/dashboard');
   }
 }

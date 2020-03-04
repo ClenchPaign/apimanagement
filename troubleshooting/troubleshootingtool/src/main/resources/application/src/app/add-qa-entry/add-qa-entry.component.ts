@@ -218,6 +218,7 @@ export class AddQaEntryComponent implements OnInit {
       duration: 2000,
       verticalPosition: 'top'
     });
-    window.location.replace('http://localhost:4343/main/dashboard');
+    window.location.replace('/main/dashboard');
+    // window.location.replace('http://localhost:4343/main/dashboard');
   }
 }
