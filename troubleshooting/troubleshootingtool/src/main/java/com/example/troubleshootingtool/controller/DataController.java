@@ -1,7 +1,6 @@
 package com.example.troubleshootingtool.controller;
 
 import com.example.troubleshootingtool.bean.*;
-import com.example.troubleshootingtool.bean.*;
 import com.example.troubleshootingtool.dao.DataDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -10,7 +9,6 @@ import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
@@ -131,11 +129,25 @@ public class DataController {
         return dataDao.getQAEntryById(id, "review");
     }
 
-
     @PostMapping("/admin")
     public String insertAdmin(@RequestBody Admin admin) {
         return dataDao.insertAdmin(admin);
     }
 
-
+    @GetMapping("/repo")
+    public String createRepo() throws IOException {
+        return dataDao.createRepo();
+    }
+    @GetMapping("/snapshot/create")
+    public String CreateSnapshot() throws IOException {
+        return dataDao.CreateSnapshot();
+    }
+    @GetMapping("/snapshot/get")
+    public String getSnapshot() throws IOException {
+        return dataDao.getSnapshot();
+    }
+    @PostMapping("/snapshot/restore")
+    public String restoreSnapshot() throws IOException {
+        return dataDao.restoreSnapshot();
+    }
 }

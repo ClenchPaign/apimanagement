@@ -6,23 +6,38 @@ import com.fasterxml.jackson.databind.DeserializationConfig;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.elasticsearch.ElasticsearchException;
+import org.elasticsearch.action.admin.cluster.repositories.put.PutRepositoryRequest;
+import org.elasticsearch.action.admin.cluster.snapshots.create.CreateSnapshotRequest;
+import org.elasticsearch.action.admin.cluster.snapshots.create.CreateSnapshotResponse;
+import org.elasticsearch.action.admin.cluster.snapshots.get.GetSnapshotsRequest;
+
+import org.elasticsearch.action.admin.cluster.snapshots.get.GetSnapshotsResponse;
+import org.elasticsearch.action.admin.cluster.snapshots.restore.RestoreSnapshotRequest;
+import org.elasticsearch.action.admin.cluster.snapshots.restore.RestoreSnapshotResponse;
 import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.support.master.AcknowledgedResponse;
 import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.client.indices.CloseIndexRequest;
+import org.elasticsearch.client.indices.CloseIndexResponse;
+import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.repositories.fs.FsRepository;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.snapshots.RestoreInfo;
+import org.elasticsearch.snapshots.SnapshotInfo;
 import org.springframework.stereotype.Repository;
 
 import javax.naming.Context;
@@ -495,5 +510,55 @@ public class DataDao {
         }
         return returnString;
     }
+
+    public String createRepo() throws IOException {
+        PutRepositoryRequest repo = new PutRepositoryRequest();
+        repo.type(FsRepository.TYPE);
+        String locationKey = FsRepository.LOCATION_SETTING.getKey();
+        String locationValue = "/path/to/data/backup";
+        String compressKey = FsRepository.COMPRESS_SETTING.getKey();
+        boolean compressValue = true;
+        Settings settings = Settings.builder()
+                .put(locationKey, locationValue)
+                .put(compressKey, compressValue)
+                .build();
+        repo.settings(settings);
+        repo.name("backup");
+        AcknowledgedResponse res = restHighLevelClient.snapshot().createRepository(repo, RequestOptions.DEFAULT);
+        boolean acknowledged = res.isAcknowledged();
+        System.out.println("acknolwgd" + acknowledged);
+        return "Repository created successfully";
+    }
+
+    public String getSnapshot() throws IOException {
+        String[] str = {"backup_data"};
+        GetSnapshotsRequest snaprequest = new GetSnapshotsRequest("backup", str);
+        GetSnapshotsResponse response = restHighLevelClient.snapshot().get(snaprequest, RequestOptions.DEFAULT);
+        System.out.println("snapshot : " + response);
+        return response.toString();
+    }
+
+    public String CreateSnapshot() throws IOException {
+        CreateSnapshotRequest req = new CreateSnapshotRequest();
+        req.repository("backup");
+        req.snapshot("backup_data");
+        req.indices(INDEX, TEMP_INDEX, ADMIN);
+        CreateSnapshotResponse snapres = restHighLevelClient.snapshot().create(req, RequestOptions.DEFAULT);
+        System.out.println("snapshot : " + snapres);
+        return "snapshot created successfully";
+    }
+
+
+    public String restoreSnapshot() throws IOException {
+        RestoreSnapshotRequest request = new RestoreSnapshotRequest("backup", "backup_data");
+        request.indices(INDEX, TEMP_INDEX, ADMIN);
+        try {
+            RestoreSnapshotResponse response = restHighLevelClient.snapshot().restore(request, RequestOptions.DEFAULT);
+            return "Restored";
+        } catch (Exception e) {
+            return "Restoration failed" + e.getStackTrace();
+        }
+    }
+
 
 }
