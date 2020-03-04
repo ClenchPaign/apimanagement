@@ -328,7 +328,6 @@ export class ApprovalStageComponent implements OnInit {
       duration: 2000,
       verticalPosition: 'top'
     });
-    window.location.replace('/main/dashboard/review');
-    // this.router.navigateByUrl('/main/dashboard/review');
+    window.location.replace('http://localhost:4343/main/dashboard');
   }
 }
