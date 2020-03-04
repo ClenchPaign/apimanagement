@@ -6,8 +6,8 @@ import { Directive, Output, Input, EventEmitter, HostBinding, HostListener } fro
 export class DragDropDirective {
     @Output() onFileDropped = new EventEmitter<any>();
 
-    @HostBinding('style.background-color') private background = '#f5fcff'
-    @HostBinding('style.opacity') private opacity = '1'
+    @HostBinding('style.background-color') public background = '#f5fcff'
+    @HostBinding('style.opacity') public opacity = '1'
 
 
     //Dragover listener
