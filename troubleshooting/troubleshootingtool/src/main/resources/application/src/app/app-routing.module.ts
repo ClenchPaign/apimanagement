@@ -13,12 +13,12 @@ import { AddQuestionDialogComponent } from './add-question-dialog/add-question-d
 import { ReviewQuestionsComponent } from './review-questions/review-questions.component';
 import { ApprovalStageComponent } from './approval-stage/approval-stage.component';
 import { HomeComponent } from './home/home.component';
-
+import { AuthGuardService as AuthGuard } from './auth-guard.service';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
   {
-    path: 'main', component: MainComponent, children: [
+    path: 'main', component: MainComponent, canActivate: [AuthGuard], children: [
       {
         path: 'dashboard', component: DashboardComponent, children: [
           { path: 'review', component: ReviewQuestionsComponent },

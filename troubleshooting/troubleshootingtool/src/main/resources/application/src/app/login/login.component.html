@@ -28,7 +28,7 @@
       </div>
       <mat-error
         style="margin-left: 16px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;font-size: small;"
-        *ngIf="response === 'true'" >
+        *ngIf="authentication === 'false'" >
         Invalid Credentials !!
       </mat-error>
       <button mat-button class="loginbutton" (click)="login()">LOG IN</button>

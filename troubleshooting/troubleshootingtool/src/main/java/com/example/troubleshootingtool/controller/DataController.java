@@ -6,6 +6,7 @@ import com.example.troubleshootingtool.dao.DataDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -79,7 +80,7 @@ public class DataController {
 
     @RequestMapping(value = "/search/{from}/{size}", method = RequestMethod.POST)
     public List<QAEntry> searchQuestion(@RequestBody SearchQuery searchQuery, @PathVariable("from") int from, @PathVariable("size") int size) throws IOException {
-        return dataDao.searchQuery(searchQuery,from,size);
+        return dataDao.searchQuery(searchQuery, from, size);
     }
 
     @RequestMapping(value = "/restore", method = RequestMethod.POST)
@@ -100,9 +101,9 @@ public class DataController {
 
 //
 
-    @RequestMapping(value="/auth",method = RequestMethod.POST)
-    public User authenticate(@RequestBody User user, HttpServletRequest request, HttpServletResponse response) throws NullPointerException, ServletException, IOException {
-        return dataDao.authenticate(user,request,response);
+    @RequestMapping(value = "/auth", method = RequestMethod.POST)
+    public User authenticate(@RequestBody User user, HttpServletRequest request) throws NullPointerException, IOException, NamingException {
+        return dataDao.authenticate(user, request);
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.POST)

@@ -2,39 +2,48 @@
   <div class="close" (click)="close()">
     <mat-icon>close</mat-icon>
   </div>
-  <mat-card class="layout">
-    <div class="question">{{ response.Question.question }}</div>
-    <div class="description" [innerHTML]="response.Question.description"></div>
-    <div>
-      <span
-        *ngFor="let tag of response.tags"
-        class="chips"
-        (click)="onTagClick(tag)"
-      >
-        {{ tag }}</span
-      >
-    </div>
-    <div>
-      <div style="display: flex;">
-        <p>Attachments</p>
-        <mat-icon style="align-self: center; margin-left: 5px;">attachment</mat-icon>
-      </div>
-      <div *ngFor="let item of getAttachmentFileNames()">
-        <div class="attachment-items" (click)="onAttachmentClick(item)">{{ item }}</div>
-        <!-- <div *ngIf="item.includes('/png')"><img style="max-width: 70px; max-height: 50px;" src="{{ item }}" /></div> -->
-        <!-- <div *ngIf="item.includes('/pdf')"><iframe src="{{ item }}"></iframe></div> -->
-      </div>
-    </div>
-    <div class="qn-details">
+  <div class="layout">
+    <div style="">
+      <div class="question">{{ response.Question.question }}</div>
+      <div
+        class="description"
+        [innerHTML]="response.Question.description"
+      ></div>
       <div>
-        <p class="answer-count" id="answercount">
-          {{ response.answerCount }} Answers
-        </p>
+        <span
+          *ngFor="let tag of response.tags"
+          class="chips"
+          (click)="onTagClick(tag)"
+        >
+          {{ tag }}</span
+        >
       </div>
-      <div class="posted-details">
-        <div class="posted">Posted on</div>
-        <div class="posted-date">
-          {{ response.Question.creationDate | date: "mediumDate" }}
+      <div>
+        <div style="display: flex;">
+          <p>Attachments</p>
+          <mat-icon style="align-self: center; margin-left: 5px;"
+            >attachment</mat-icon
+          >
+        </div>
+        <div *ngFor="let item of getAttachmentFileNames()">
+          <div class="attachment-items" (click)="onAttachmentClick(item)">
+            {{ item }}
+          </div>
+          <!-- <div *ngIf="item.includes('/png')"><img style="max-width: 70px; max-height: 50px;" src="{{ item }}" /></div> -->
+          <!-- <div *ngIf="item.includes('/pdf')"><iframe src="{{ item }}"></iframe></div> -->
+        </div>
+      </div>
+      <div class="qn-details">
+        <div>
+          <p class="answer-count" id="answercount">
+            {{ response.answerCount }} Answers
+          </p>
+        </div>
+        <div class="posted-details">
+          <div class="posted">Posted on</div>
+          <div class="posted-date">
+            {{ response.Question.creationDate | date: "mediumDate" }}
+          </div>
         </div>
       </div>
     </div>
@@ -52,17 +61,15 @@
             <div class="answer" *ngIf="item.isApproved">Approved</div>
             <div class="description" [innerHTML]="item.description"></div>
           </div>
-          <div style="float: right;margin-bottom: 10px;" class="posted-details">
+          <div style="float: right;margin-bottom: 10px;margin-right: 10px;" class="posted-details">
             <div class="posted">Posted on</div>
             <div class="posted-date">
               {{ item.postedDate | date: "mediumDate" }}
             </div>
           </div>
         </div>
-        
-        
       </div>
-      
+
       <mat-divider></mat-divider>
     </div>
     <div>
@@ -83,5 +90,5 @@
         Post Answer
       </button>
     </div>
-  </mat-card>
+  </div>
 </div>

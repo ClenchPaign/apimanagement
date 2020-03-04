@@ -42,7 +42,7 @@ export class ApprovalStageComponent implements OnInit {
   returnAttachment: string[] = [];
   returnAttachmentFileName: string[] = [];
   attachmentList: any = [];
-  username:any;
+  username: any;
 
   navigationExtras: NavigationExtras;
   public files: string[] = [];
@@ -281,8 +281,8 @@ export class ApprovalStageComponent implements OnInit {
     } else {
       isAnswered = false;
     }
-    this.username=localStorage.getItem("username");
-    const answer = new Answer('0', ans, creationDate,  this.username,  this.username, creationDate, 0, approveAnswer);
+    this.username = localStorage.getItem("username");
+    const answer = new Answer('0', ans, creationDate, this.username, this.username, creationDate, 0, approveAnswer);
     let qa: QAEntry;
     if (isAnswered) {
       qa = new QAEntry(ques, [answer], this.quesTags, true, 1, 0);
@@ -313,19 +313,22 @@ export class ApprovalStageComponent implements OnInit {
     this.listingService.reject_question(this.questionData.Question.id).subscribe(data => {
       console.log('Question rejected ', data);
       this.openSnackBar('Question rejected', 'OK');
-      this.navigationExtras = {
-        queryParams: {
-          'reload': true
-        }
-      };
-      this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
-        this.router.navigate(['/main/dashboard/review'], this.navigationExtras));
+      // this.navigationExtras = {
+      //   queryParams: {
+      //     'add_qa': 'false'
+      //   }
+      // };
+      // this.router.navigateByUrl('/', { skipLocationChange: false }).then(() =>
+      //   this.router.navigate(['/main/dashboard/review'], this.navigationExtras));
     });
   }
 
   openSnackBar(message: string, action: string) {
     this._snackBar.open(message, action, {
       duration: 2000,
+      verticalPosition: 'top'
     });
+    window.location.replace('/main/dashboard/review');
+    // this.router.navigateByUrl('/main/dashboard/review');
   }
 }

@@ -7,18 +7,15 @@ import { ListingService } from '../listing.service';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-public username:any;
-public isAdmin:any;
-  constructor(private listingService: ListingService) { }
+  public username: any;
+  public isAdmin: any;
+  constructor() {
+    this.username = localStorage.getItem('username');
+    this.isAdmin = localStorage.getItem('isAdmin');
+   }
 
   ngOnInit() {
-    this.username= localStorage.getItem('username');
-    this.isAdmin=localStorage.getItem('isAdmin');
+    console.log('user', this.username);
     console.log('ADMIN', this.isAdmin);
-    if (this.isAdmin==="false"){
-
-      (document.getElementById('review_ques') as HTMLDivElement).style.display="block";
-      // (document.getElementById('review_ques') as HTMLDivElement).setAttribute("disabled","true");
-    }
   }
 }

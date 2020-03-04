@@ -1,7 +1,7 @@
 <div>
   <div class="head">
     <div>POST A QUESTION</div>
-    <div class="close" [routerLink]="['/main/home/category']">
+    <div class="close" (click)="close()">
       <mat-icon>close</mat-icon>
     </div>
   </div>
@@ -123,7 +123,7 @@
         ejs-button
         class="dlt-button-post"
         type="submit"
-        (click)="post_ques()"
+        (click)="post_qaentry()"
       >
         SUBMIT
       </button>

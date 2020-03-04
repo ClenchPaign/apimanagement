@@ -1,18 +1,22 @@
 package com.example.troubleshootingtool.bean;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+        "userID",
         "username",
         "password",
         "email",
-        "isAdmin"
-
+        "isAdmin",
+        "isAuthenticated"
 })
 public class User {
 
+    @JsonProperty("userID")
+    private String userID;
     @JsonProperty("username")
     private String username;
     @JsonProperty("password")
@@ -21,22 +25,29 @@ public class User {
     private String email;
     @JsonProperty("isAdmin")
     private Boolean isAdmin;
+    @JsonProperty("isAuthenticated")
+    private Boolean isAuthenticated;
 
-
-    /**
-     * No args constructor for use in serialization
-     */
     public User() {
     }
-
-
-    public User(String username, String password, String email,Boolean isAdmin) {
+    public User(String userID, String username, String password, String email, Boolean isAdmin, Boolean isAuthenticated) {
         super();
+        this.userID = userID;
         this.username = username;
         this.password = password;
         this.email = email;
-        this.isAdmin=isAdmin;
+        this.isAdmin = isAdmin;
+        this.isAuthenticated = isAuthenticated;
+    }
 
+    @JsonProperty("userID")
+    public String getUserID() {
+        return userID;
+    }
+
+    @JsonProperty("userID")
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 
     @JsonProperty("username")
@@ -68,7 +79,8 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
-    @JsonProperty("")
+
+    @JsonProperty("isAdmin")
     public Boolean getIsAdmin() {
         return isAdmin;
     }
@@ -77,5 +89,15 @@ public class User {
     public void setIsAdmin(Boolean isAdmin) {
         this.isAdmin = isAdmin;
     }
-}
 
+    @JsonProperty("isAuthenticated")
+    public Boolean getIsAuthenticated() {
+        return isAuthenticated;
+    }
+
+    @JsonProperty("isAuthenticated")
+    public void setIsAuthenticated(Boolean isAuthenticated) {
+        this.isAuthenticated = isAuthenticated;
+    }
+
+}

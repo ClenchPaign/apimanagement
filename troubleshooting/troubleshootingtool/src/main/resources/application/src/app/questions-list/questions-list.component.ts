@@ -147,7 +147,7 @@ export class QuestionsListComponent implements OnInit {
     } else {
       this.from = 0;
       console.log('previous for zero - from-> ' + this.from + ' page size-> ' + this.pageSize);
-      // this.postCall();
+      this.postCall();
     }
   }
 

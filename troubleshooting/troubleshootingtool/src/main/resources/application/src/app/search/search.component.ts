@@ -3,7 +3,6 @@ import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { ListingService } from '../listing.service';
 import { SearchQuery } from '../data-models/SearchQuery';
 import { QAEntry } from '../data-models/QAEntry';
-import { User } from '../data-models/User';
 
 @Component({
   selector: 'app-search',
@@ -37,7 +36,7 @@ export class SearchComponent implements OnInit {
         console.log(res);
       });
 
-    this.username= localStorage.getItem('username');
+    this.username = localStorage.getItem('username');
   }
 
   @HostListener('document:click', ['$event'])
@@ -131,20 +130,16 @@ export class SearchComponent implements OnInit {
       this.router.navigate(['/main/home/search/list'], this.navigationExtras));
   }
 
-  logout(){
-    const user=new User(this.username,this.password,"",false);
+  logout() {
+    // const user = new User(this.username, this.password, "", false);
     this.listingService.logout().subscribe(
       data => {
         console.log(data);
         if (data === 'true') {
-          this.router.navigateByUrl('');
-        if(data === 'true'){
-          localStorage.removeItem('username');
-          localStorage.removeItem('isAdmin');
-          this.router.navigateByUrl('/');
+            localStorage.removeItem('username');
+            localStorage.removeItem('isAdmin');
+            this.router.navigateByUrl('/');
         }
-      },
-    );
-
+      });
   }
 }

@@ -2,39 +2,33 @@ import { Component, OnInit } from '@angular/core';
 import { ListingService } from '../listing.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { QAEntry } from '../data-models/QAEntry';
+import { Question } from '../data-models/Question';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-review-questions',
   templateUrl: './review-questions.component.html',
   styleUrls: ['./review-questions.component.css']
 })
-export class ReviewQuestionsComponent implements OnInit {
-
-  constructor(private listingService: ListingService, private route: ActivatedRoute,private router: Router) { }
+export class ReviewQuestionsComponent {
   response: any;
-  public isAdmin:any;
-
-  ngOnInit() {
-    this.route.queryParams.subscribe(params => {
-      const reload = params['reload'];
-      // console.log('reload-' + reload);
-    });
+  editedResponse: [];
+  public isAdmin: any;
+  reload: string;
+  constructor(private listingService: ListingService, private route: ActivatedRoute, private router: Router, private http: HttpClient) {
     this.listingService.getAllReviewQuestions().subscribe(
       data => {
-        console.log('Getting review questions successful ', data);
+        console.log('ng ONInit ', data);
         this.response = data;
-        // this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-        //   this.router.navigate(['/main/dashboard/review']);
-        // });
+        this.getQuestions();
       },
       res => { console.log(res); });
-      this.isAdmin=localStorage.getItem('isAdmin');
-      console.log('admin or not ', this.isAdmin);
-      if (this.isAdmin==="false"){
-
-        (document.getElementById('ques')as HTMLAnchorElement).setAttribute("disabled","true");
-        // (document.getElementById('review_ques') as HTMLDivElement).setAttribute("disabled","true");
-      }
-     
   }
+
+  getQuestions() {
+    console.log('in get Questions');
+    this.editedResponse = this.response;
+  }
+
 }
+

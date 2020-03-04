@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
 import { Tags } from '../list-of-categories/list-of-categories.component';
 import { ListingService } from '../listing.service';
-import { Router } from '@angular/router';
+import { Router, NavigationExtras } from '@angular/router';
 import { Question } from '../data-models/Question';
 import { QAEntry } from '../data-models/QAEntry';
 import { MatChipInputEvent } from '@angular/material/chips';
@@ -11,6 +11,8 @@ import { Answer } from '../data-models/Answer';
 import { RichTextEditorComponent } from '@syncfusion/ej2-angular-richtexteditor';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { ImageModel } from '../data-models/ImageModel';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { PreviousRouteService } from '../previous-route.service';
 
 @Component({
   selector: 'app-add-qa-entry',
@@ -36,7 +38,7 @@ export class AddQaEntryComponent implements OnInit {
   removable = true;
   addOnBlur = true;
   imageUrlPREVIEW: any;
-  username:any;
+  username: any;
 
   navigationExtras: NavigationExtras;
   public files: string[] = [];
@@ -55,7 +57,8 @@ export class AddQaEntryComponent implements OnInit {
   constructor(
     private listingService: ListingService,
     private router: Router,
-    private snackbar: MatSnackBar
+    private snackbar: MatSnackBar,
+    private previousRoute: PreviousRouteService
   ) { }
 
   // filters for categories
@@ -76,6 +79,13 @@ export class AddQaEntryComponent implements OnInit {
     return this.result;
   }
 
+  close() {
+    if (this.previousRoute.getPreviousUrl() === '/' || this.previousRoute.currentUrl === this.previousRoute.previousUrl) {
+      this.router.navigateByUrl('/main/dashboard');
+    } else {
+      this.router.navigateByUrl(this.previousRoute.getPreviousUrl());
+    }
+  }
   // filter for tags
   getFilteredTags() {
     return this.resultTags;
@@ -155,24 +165,6 @@ export class AddQaEntryComponent implements OnInit {
     this.files = this.files.filter(item => item !== file);
     console.log('remove file:' + file);
   }
-  // public dropped(files: NgxFileDropEntry[]) {
-  //   for (const droppedFile of files) {
-  //     this.files.push(droppedFile);
-  //     const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
-  //     fileEntry.file((file: File) => {
-  //       const reader = new FileReader();
-  //       reader.readAsDataURL(file);
-  //       reader.onload = (e) => {
-  //         const imageModel: ImageModel = new ImageModel('', file.name, reader.result as string);
-  //         this.listingService.upload_files(imageModel).subscribe(data => {
-  //           console.log('Upload', data);
-  //           this.uploadedFiles.push(data);
-  //         });
-  //       };
-  //     });
-
-  //   }
-  // }
   uploadFile(event) {
     for (const droppedFile of event) {
       this.files.push(droppedFile.name);
@@ -202,7 +194,8 @@ export class AddQaEntryComponent implements OnInit {
     // console.log(this.quesTags);
     const d = new Date();
     const creationDate = d.getTime();
-    const ques = new Question('', categories, question, description, this.uploadedFiles.toString(), creationDate,  this.username, creationDate);
+    const ques = new Question('', categories, question, description,
+      this.uploadedFiles.toString(), creationDate, this.username, creationDate);
     const answer = new Answer('0', ans, creationDate, '123', this.username, creationDate, 0, false);
     const qa = new QAEntry(ques, [answer], this.quesTags, true, 1, 0);
     console.log(qa);
@@ -213,20 +206,18 @@ export class AddQaEntryComponent implements OnInit {
       this.listingService.post_question(qa).subscribe(data => {
         console.log('POST Request is successful ', data);
         this.openSnackBar('Troubleshooting step posted successfully', 'OK');
-        this.navigationExtras = {
-          queryParams: {
-            'reload': true
-          }
-        };
-        this.router.navigateByUrl('/main/dashboard/review', { skipLocationChange: true }).then(() =>
-          this.router.navigate(['/main/dashboard/review'], this.navigationExtras));
-      });
+      }, res => {
+        console.log(res);
+      }
+      );
     }
   }
+  
   openSnackBar(message: string, action: string) {
     this.snackbar.open(message, action, {
       duration: 2000,
       verticalPosition: 'top'
     });
+    window.location.replace('/main/dashboard/review');
   }
 }

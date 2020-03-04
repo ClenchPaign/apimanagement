@@ -193,7 +193,7 @@ public class DataDao {
         return list;
     }
 
-    public List<QAEntry> getQAEntryforCategory(String category,int from,int size) throws IOException {
+    public List<QAEntry> getQAEntryforCategory(String category, int from, int size) throws IOException {
 //        @RequestMapping(value = "/get_qa_cat/{cat}", method = RequestMethod.GET)
         ArrayList<QAEntry> list = new ArrayList<>();
         SearchRequest searchRequest = new SearchRequest();
@@ -215,14 +215,14 @@ public class DataDao {
     }
 
 
-    public List<QAEntry> searchQuery(SearchQuery searchQuery,int from,int size) throws IOException {
+    public List<QAEntry> searchQuery(SearchQuery searchQuery, int from, int size) throws IOException {
 
         ArrayList<QAEntry> list = new ArrayList<>();
         SearchRequest searchRequest = new SearchRequest();
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
         searchSourceBuilder.query(QueryBuilders.matchQuery("_index", INDEX));
-        boolQueryBuilder.filter(termQuery("_index",INDEX));
+        boolQueryBuilder.filter(termQuery("_index", INDEX));
         if (!searchQuery.getCategory().equals("")) {
 //            TermQueryBuilder queryBuilders = termQuery("Question.category.keyword", searchQuery.getCategory());
             boolQueryBuilder.filter(termQuery("Question.category.keyword", searchQuery.getCategory()));
@@ -261,8 +261,16 @@ public class DataDao {
         if (searchQuery.getCategory().equals("") && searchQuery.getKeyword().size() == 0 && searchQuery.getTags().size() == 0) {
             list.clear();
         }
-        System.out.println(list.size());
-        return list;
+        ArrayList<QAEntry> edited = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
+            try {
+                list.get(i).getQuestion().toString();
+                edited.add(list.get(i));
+            } catch (Exception e) {
+//                System.out.println("exception");
+            }
+        }
+        return edited;
     }
 
     public String restore(List<QAEntry> list) {
@@ -320,99 +328,64 @@ public class DataDao {
         return obj;
     }
 
-    public User authenticate(User user, HttpServletRequest request, HttpServletResponse response) throws NullPointerException, IOException {
-        LdapContext ctx = null;
-        boolean result = false;
-        System.out.println("ctx   :" + ctx);
-
-        String username = user.getUsername();
+    public User authenticate(User user, HttpServletRequest request) throws NullPointerException, NamingException, IOException {
+        LdapContext ctx;
+        String userID = user.getUserID();
         String passwd = user.getPassword();
-        Boolean isAdmin = user.getIsAdmin();
-        int count = 0;
+        user.setIsAuthenticated(false);
+        HttpSession session = request.getSession();
+        session.setAttribute("userName", userID);
+        httpServletRequest = request;
+        httpSession = request.getSession();
+        System.out.println("session   :" + session.getAttribute("userName").toString());
         try {
-            HttpSession session = request.getSession();
-            session.setAttribute("userName", username);
-            httpServletRequest = request;
-            httpSession = request.getSession();
-            System.out.println("session   :" + session.getAttribute("userName"));
-            ctx = context(username, passwd);
+            ctx = context(userID, passwd);
             System.out.println("ctx   :" + ctx);
             SearchControls searchCtls = new SearchControls();
-            String[] returnedAtts = {"sn", "mail", "cn", "givenName", "telephoneNumber", "memberOf"};
+            String[] returnedAtts = {"sn", "mail", "cn", "givenName", "memberOf"};
             searchCtls.setReturningAttributes(returnedAtts);
             searchCtls.setSearchScope(SearchControls.SUBTREE_SCOPE);
-//            String searchFilter = "(&(objectClass=user)(mail=*))";
-
-//            String searchFilter = "(&(objectClass=user)(cn=username)(&(mail=*))(&(memberOf=CN=SL24-Corr-Administrators,OU=Security Groups,OU=Germany,DC=eur,DC=ad,DC=sag)))";
-//            String searchFilter = "(&(objectClass=user)(cn=username)(&(mail=*))(&(memberOf=CN=SL24-Corr-Administrators,OU=Security Groups,OU=Germany,DC=eur,DC=ad,DC=sag)))";
-//            CN=ccp-all-employee-users,OU=Administration,OU=vCAC6,OU=VM Server,OU=Germany,DC=eur,DC=ad,DC=sag
-            String searchFilter = "(&(objectClass=user)(mail=*)(cn=" + username + "))";
+            String searchFilter = "(&(objectClass=user)(mail=*)(cn=" + userID + "))";
             String searchBase = "OU=India,DC=eur,DC=ad,DC=sag";
             NamingEnumeration<?> answer = ctx.search(searchBase, searchFilter, searchCtls);
 
             while (answer.hasMoreElements()) {
+                System.out.println("answer has more elements");
                 SearchResult sr = (SearchResult) answer.next();
-                count++;
                 String search = sr.toString();
                 System.out.println("answer   :" + sr);
-                // Print some of the attributes, catch the exception if the
-                // attributes have no values
                 Attributes attrs = sr.getAttributes();
                 if (attrs != null) {
                     String cn = attrs.get("cn").get().toString();
-                    if (cn.endsWith(username.toLowerCase())
-                            || cn.endsWith(username.toUpperCase())) {
-                        Admin admins = searchAdmin(cn);
-                        String admin_user=admins.getUsername();
+                    if (cn.endsWith(userID.toLowerCase()) || cn.endsWith(userID.toUpperCase())) {
                         String mail = attrs.get("mail").get().toString();
+                        String username = attrs.get("givenName").get().toString();
                         user.setEmail(mail);
-                        if(search.contains(admin_user)){
-                            user.setIsAdmin(true);
-                        }
-                        else{
-                            user.setIsAdmin(false);
-                        }
-                        break;
+                        user.setUsername(username);
+                        user.setIsAuthenticated(true);
+                        user.setIsAdmin(searchAdmin(cn));
                     }
                 }
             }
-
         } catch (Exception e) {
-            System.out.println("Provide valid username or password");
-        } finally {
-            try {
-                if (ctx.equals(null))
-                    System.out.println("\"There is no such user");
-
-                ctx.close();
-            } catch (NamingException e) {
-                System.out.println("Provide valid username or password");
-            }
+            System.out.println("Invalid username or password");
         }
-        System.out.println("isAdmin  :" + user.getIsAdmin());
-        System.out.println("count  :" + count);
-//        System.out.println("RESULT:" + result);
-
         return user;
     }
 
     public LdapContext context(String user, String passwd) throws NamingException {
 
         Hashtable<String, String> env = new Hashtable<String, String>();
-        String adminName = "CN=" + user
-                + ",OU=User,OU=India,DC=eur,DC=ad,DC=sag";
+        String adminName = "CN=" + user + ",OU=User,OU=India,DC=eur,DC=ad,DC=sag";
         System.out.println("name :" + adminName);
-        String adminPassword = passwd;
         String ldapURL = "ldap://hqdc.eur.ad.sag:3268";
-        env.put(Context.INITIAL_CONTEXT_FACTORY,
-                "com.sun.jndi.ldap.LdapCtxFactory");
-
+        env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
         // connect to my domain controller
         env.put(Context.PROVIDER_URL, ldapURL);
         // set security credentials
         env.put(Context.SECURITY_AUTHENTICATION, "simple");
         env.put(Context.SECURITY_PRINCIPAL, adminName);
-        env.put(Context.SECURITY_CREDENTIALS, adminPassword);
+        env.put(Context.SECURITY_CREDENTIALS, passwd);
 
         // Create the initial directory context
 //		DirContext ctx = new InitialLdapContext(env, null);
@@ -484,22 +457,30 @@ public class DataDao {
         }
     }
 
-    public Admin searchAdmin(String cn) throws IOException {
-        Admin admins=null;
+    public boolean searchAdmin(String cn) throws IOException {
+        Admin admins = null;
         SearchRequest searchRequest = new SearchRequest();
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
         boolQueryBuilder.filter(QueryBuilders.termQuery("_index", ADMIN));
         boolQueryBuilder.filter(QueryBuilders.matchQuery("user", cn));
         searchSourceBuilder.query(boolQueryBuilder);
-        searchSourceBuilder.size(10000);
+        searchSourceBuilder.size(1);
         searchRequest.source(searchSourceBuilder);
         SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
         SearchHit[] searchHits = searchResponse.getHits().getHits();
         for (SearchHit searchHit : searchHits) {
             admins = new ObjectMapper().readValue(searchHit.getSourceAsString(), Admin.class);
         }
-        return admins;
+        try {
+            if (admins.getUsername().equals(cn)) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (NullPointerException e) {
+            return false;
+        }
 
     }
 

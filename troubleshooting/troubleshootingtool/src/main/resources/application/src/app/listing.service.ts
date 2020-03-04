@@ -8,7 +8,6 @@ import { User } from './data-models/User';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' })
-
 };
 const headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
 
@@ -18,12 +17,11 @@ export class ListingService {
   public tags: string[];
   public keyword: string;
   public id: string;
-  
-  
+
   constructor(private http: HttpClient) {
   }
 
-  baseUrl = 'http://localhost:4040';
+  baseUrl = 'http://localhost:4343';
   getAllCategories() {
     return this.http.get(this.baseUrl + '/categories', httpOptions);
   }
@@ -78,10 +76,9 @@ export class ListingService {
   }
 
   getAuthstatus(user: User) {
+    console.log(user);
     return this.http.post(this.baseUrl + '/auth/', user, { headers, responseType: 'text' });
   }
-
-  
 
   logout() {
     return this.http.post(this.baseUrl + '/logout', '', { headers, responseType: 'text' });

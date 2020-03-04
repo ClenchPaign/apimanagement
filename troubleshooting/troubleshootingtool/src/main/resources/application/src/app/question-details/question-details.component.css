@@ -1,12 +1,13 @@
 .parent {
   display: flex;
   margin-top: 20px;
-  margin-left: 36px;
+  margin-left: 24px;
   margin-right: 24px;
+  font-family: Roboto, Helvetica, Arial, sans-serif;
 }
 
 .layout {
-  width: 95%;
+  width: 100%;
   justify-content: center;
 }
 
@@ -172,5 +173,7 @@ mat-icon {
   margin-top: 10px;
   display: inline-block;
 }
-
+.list-of-answers{
+  background-color: rgb(247, 247, 247);
+}
 /* ----------------------------------------------------------------------------------------------------- */

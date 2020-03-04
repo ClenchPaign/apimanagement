@@ -45,6 +45,8 @@ import { HomeComponent } from './home/home.component';
 import { PreviousRouteService } from './previous-route.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
+import { AuthGuardService } from './auth-guard.service';
+import { AuthService } from './auth.service';
 
 @NgModule({
   declarations: [
@@ -93,7 +95,7 @@ import { MatSelectModule } from '@angular/material/select';
     MatFormFieldModule,
     MatSelectModule
   ],
-  providers: [ListingService, MessageService, PreviousRouteService],
+  providers: [ListingService, MessageService, PreviousRouteService, AuthGuardService, AuthService],
   bootstrap: [AppComponent],
   entryComponents: [AddQuestionDialogComponent]
 })

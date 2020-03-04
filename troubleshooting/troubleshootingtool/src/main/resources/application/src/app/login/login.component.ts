@@ -4,6 +4,7 @@ import { ListingService } from '../listing.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { User } from '../data-models/User';
 import { element } from 'protractor';
+import { stringify } from 'querystring';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +14,9 @@ import { element } from 'protractor';
 export class LoginComponent implements OnInit {
   response: any;
   showPassword: boolean;
-  isAdmin:any;
+  isAdmin: any;
+  userData: User;
+  authentication: string;
   constructor(private listingService: ListingService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
@@ -35,37 +38,46 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    const username = (document.getElementById('username') as HTMLInputElement).value;
+    const userID = (document.getElementById('username') as HTMLInputElement).value;
     const password = (document.getElementById('password') as HTMLInputElement).value;
-    // const user = new User('y509476', 'Divya@14101997', "");
-    const user = new User(username, password,"",false);
-    //  this.listingService.setUser(username);
-
-
-    if (username == "" && password == "") { alert("Please enter username and password"); }
-    else {
+    const user = new User('', userID, password, '', false, false);
+    if (userID === '' && password === '') {
+      alert('Please enter username and password');
+    } else {
       this.listingService.getAuthstatus(user).subscribe(
         data => {
           console.log('LDAP user auth is successful ', data);
           this.response = data;
-          if (this.response === 'true') {
-            this.router.navigateByUrl('/main/category');
-          } else {
-            // this.response = 'true';
-            localStorage.setItem('username', username);
-
-            localStorage.setItem('isAdmin', "false");
-            // this.listingService.setIsAdmin(false);
-            this.router.navigateByUrl('/main/category');
-          }
+          this.auth();
         },
         err => {
-          this.response = 'true';
+          this.authentication = 'false';
           console.log('error -- ', err);
         }
       );
     }
+  }
 
+  auth() {
+    this.userData = JSON.parse(this.response);
+    localStorage.setItem('username', this.userData.username);
+    if (this.userData.isAdmin) {
+      localStorage.setItem('isAdmin', 'true');
+    } else {
+      localStorage.setItem('isAdmin', 'false');
+    }
+    localStorage.setItem('email', this.userData.email);
+    console.log('username = ' + this.userData.username);
+    console.log('userid = ' + this.userData.userID);
+    console.log('auth = ' + this.userData.isAuthenticated);
+    if (this.userData.isAuthenticated) {
+      console.log('inside authen');
+      this.authentication = 'true';
+      this.router.navigateByUrl('/main');
+    } else {
+      console.log('inside unauth');
+      this.authentication = 'false';
+    }
   }
 }
 

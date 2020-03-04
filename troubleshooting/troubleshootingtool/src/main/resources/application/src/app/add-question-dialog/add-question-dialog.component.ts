@@ -12,6 +12,7 @@ import { RichTextEditorComponent } from '@syncfusion/ej2-angular-richtexteditor'
 import { ImageModel } from '../data-models/ImageModel';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router, NavigationExtras } from '@angular/router';
+import { PreviousRouteService } from '../previous-route.service';
 
 @Component({
   selector: 'app-add-question-dialog',
@@ -28,7 +29,7 @@ export class AddQuestionDialogComponent implements OnInit {
   addOnBlur = true;
   tagList: string[];
   tagsResponse: any;
-username:any;
+  username: any;
   base64String: any;
   uploadedFiles: string[] = [];
   imageUrlPREVIEW: any;
@@ -42,7 +43,11 @@ username:any;
   navigationExtras: NavigationExtras;
   @ViewChild('imageRTE', { static: true })
   private rteObj: RichTextEditorComponent;
-  constructor(private listingService: ListingService, private router: Router, private snackbar: MatSnackBar) { }
+  constructor(
+    private listingService: ListingService,
+    private router: Router,
+    private snackbar: MatSnackBar,
+    private previousRoute: PreviousRouteService) { }
 
   question = new FormControl('', [
     Validators.required,
@@ -65,7 +70,13 @@ username:any;
       'Formats', 'OrderedList', 'UnorderedList', '|', 'CreateLink', '|', 'Undo', 'Redo', '|', 'SourceCode'];
     this.rteObj.insertImageSettings.saveFormat = 'Base64';
   }
-
+  close() {
+    if (this.previousRoute.getPreviousUrl() === '/' || this.previousRoute.currentUrl === this.previousRoute.previousUrl) {
+      this.router.navigateByUrl('/main/dashboard');
+    } else {
+      this.router.navigateByUrl(this.previousRoute.getPreviousUrl());
+    }
+  }
   getFilteredList() {
     return this.result;
   }
@@ -162,32 +173,26 @@ username:any;
     const description = this.rteObj.getHtml();
     const categories = this.categories.value;
     this.quesTags = [];
-    this.username= localStorage.getItem('username');
+    this.username = localStorage.getItem('username');
     for (let tags of this.fruits) {
       this.quesTags.push(tags.name);
     }
     const d = new Date();
     const creationDate = d.getTime();
-    const ques = new Question('', categories, question, description, this.uploadedFiles.toString(), creationDate,  this.username, creationDate);
+    const ques = new Question('', categories, question, description,
+    this.uploadedFiles.toString(), creationDate, this.username, creationDate);
     const qa = new QAEntry(ques, [], this.quesTags, false, 0, 0);
-    console.log('POST Request before ', JSON.stringify(qa));
     this.listingService.post_question(qa).subscribe(data => {
       console.log('POST Request is successful ', JSON.stringify(qa));
       this.openSnackBar('Question posted successfully', 'OK');
-      this.navigationExtras = {
-        queryParams: {
-          'reload': true
-        }
-      };
-      this.router.navigateByUrl('/main/add_q', { skipLocationChange: true }).then(() =>
-        this.router.navigate(['/main/dashboard/review'], this.navigationExtras));
     });
   }
 
   openSnackBar(message: string, action: string) {
     this.snackbar.open(message, action, {
-      duration: 2000,
+      duration: 3000,
       verticalPosition: 'top'
     });
+    window.location.replace('/main/dashboard/review');
   }
 }
