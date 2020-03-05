@@ -12,7 +12,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class ReviewQuestionsComponent {
   response: any;
-  editedResponse: [];
+  editedResponse: Array<QAEntry>;
   public isAdmin: any;
   reload: string;
   constructor(private listingService: ListingService, private route: ActivatedRoute, private router: Router, private http: HttpClient) {
@@ -26,8 +26,13 @@ export class ReviewQuestionsComponent {
   }
 
   getQuestions() {
-    console.log('in get Questions');
     this.editedResponse = this.response;
+    for (let i = 0; i < this.editedResponse.length; i++) {
+      let temp: string = this.response[i].Question.description.replace(/&nbsp;/g, '');
+      temp = temp.replace(/<[^>]*>/g, '');
+      this.editedResponse[i].Question.description = temp;
+    }
+    return this.editedResponse;
   }
 
 }
