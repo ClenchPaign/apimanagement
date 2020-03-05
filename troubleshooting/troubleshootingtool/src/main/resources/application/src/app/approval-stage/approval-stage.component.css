@@ -28,6 +28,9 @@
   padding-right: 8px;
   padding-bottom: 8px;
 }
+.white-snackbar{
+  background: #1776bf;
+}
 
 .textarea {
   word-wrap: break-word;

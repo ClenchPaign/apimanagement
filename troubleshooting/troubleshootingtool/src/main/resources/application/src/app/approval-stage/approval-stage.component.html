@@ -1,6 +1,6 @@
 <div>
   <div class="head">
-    <div class="close" [routerLink]="['/main/dashboard/review']">
+    <div class="close" [routerLink]="['/main']">
       <mat-icon>close</mat-icon>
     </div>
     <div>APPROVAL PROCESS</div>
@@ -11,7 +11,7 @@
       <mat-form-field class="textarea">
         <textarea
           matInput
-          placeholder="Troubleshooting query"
+          placeholder="Troubleshooting query*"
           cdkTextareaAutosize
           #autosize="cdkTextareaAutosize"
           cdkAutosizeMinRows="2"
@@ -19,7 +19,7 @@
           [formControl]="question"
         ></textarea>
       </mat-form-field>
-      <label class="textarea">Description of the problem</label>
+      <label class="textarea">Description of the problem*</label>
       <br />
       <ejs-richtexteditor
         #imageRTE
@@ -80,7 +80,7 @@
         <input
           [formControl]="categories"
           type="text"
-          placeholder="Select a category"
+          placeholder="Select a category*"
           matInput
           (input)="filter($event.target.value)"
           [matAutocomplete]="auto"

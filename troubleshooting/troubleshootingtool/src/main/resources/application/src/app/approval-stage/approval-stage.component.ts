@@ -280,7 +280,7 @@ export class ApprovalStageComponent implements OnInit {
     } else {
       isAnswered = false;
     }
-    const answer = new Answer('0', ans, creationDate, '', 
+    const answer = new Answer('0', ans, creationDate, '',
     '', creationDate, 0, approveAnswer);
     let qa: QAEntry;
     if (isAnswered) {
@@ -288,12 +288,16 @@ export class ApprovalStageComponent implements OnInit {
     } else {
       qa = new QAEntry(ques, [], this.quesTags, false, 0, 0);
     }
-    // let qa = new QAEntry(this.questionData.Question, this.questionData.Answers, this.quesTags, true, 3, 0);
-    console.log(qa);
-    if (question === '') {
+    if (question === '' || categories === undefined || description === '') {
       // validate form
       console.log('Form incomplete');
+      this._snackBar.open('Provide the required fields', "OK", {
+        duration: 2000,
+        verticalPosition: 'top',
+        panelClass: ['white-snackbar']
+      });
     } else {
+      console.log('Form posted');
       this.listingService.approve_question(qa, this.questionData.Question.id).subscribe(data => {
         console.log('Question approved ', data);
         this.openSnackBar('Question approved successfully', 'OK');
@@ -311,7 +315,8 @@ export class ApprovalStageComponent implements OnInit {
   openSnackBar(message: string, action: string) {
     this._snackBar.open(message, action, {
       duration: 2000,
-      verticalPosition: 'top'
+      verticalPosition: 'top',
+      panelClass: ['white-snackbar']
     });
     // window.location.replace('http://localhost:4343/main/dashboard');
     // window.location.replace('/main/dashboard');
