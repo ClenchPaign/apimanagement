@@ -15,6 +15,8 @@ export class FiltersComponent implements OnInit {
   response: any;
   color: boolean;
   tags: string[];
+  categoryList: string[];
+
   selectedTags: string[] = [];
 
   constructor(private listingService: ListingService, private route: ActivatedRoute, private router: Router) { }
@@ -26,27 +28,36 @@ export class FiltersComponent implements OnInit {
     //   this.category = params.get('category');
     // });
 
-
+    if (this.router.url === '/main/category') {
+      console.log('url - ' + this.router.url);
+      setTimeout(() => this.onTag(), 500);
+    }
     this.listingService.getAllCategories().subscribe(
       data => {
         // console.log('GET Request is successful ', data);
         this.response = data;
+        this.categoryList = this.response;
       },
       res => { console.log(res); });
-    setTimeout(() => this.onTag(), 500);
+    setTimeout(() => this.onTag(), 800);
   }
 
   onTag() {
     this.tags = this.listingService.getTagsFromSearch();
+    this.categoryList = this.listingService.getCategoriesListFromSearch();
+    console.log('before-1' + this.tags);
     this.tags = this.tags.filter((el, i, a) => i === a.indexOf(el));
-
+    // this.categoryList = this.categoryList.filter((el, i, a) => i === a.indexOf(el));
+    console.log('after-1' + this.tags);
+    console.log('cat list' + this.categoryList);
     const filterButtons = document.getElementById('filter_buttons');
     filterButtons.style.visibility = 'visible';
   }
 
   onCategoryHeadClick() {
-    this.router.navigateByUrl('/main/home/category');
+    this.onTag();
     this.tags = null;
+    this.router.navigateByUrl('/main/home/category');
   }
   onRemoveTag(tag: string, index: number) {
     const chip = document.getElementsByClassName('chips');

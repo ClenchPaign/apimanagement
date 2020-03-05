@@ -9,17 +9,6 @@
       <mat-icon>chevron_right</mat-icon>
       <div class="breadcrumb">Search</div>
     </div>
-    <div class="topbar">
-      <select class="pagesize" (change)="onChange($event)">
-        <option *ngFor="let item of pagesizelist" [value]="item"
-          >{{ item }}
-        </option>
-      </select>
-      <div class="navigation">
-        <mat-icon (click)="previousPage()">chevron_left</mat-icon>
-        <mat-icon (click)="nextPage()">chevron_right</mat-icon>
-      </div>
-    </div>
   </div>
 </div>
 <div class="list-of-questions">
@@ -69,4 +58,24 @@
       <div class="no_results">No Results found</div>
     </div>
   </ul>
+</div>
+<div class="topbar">
+  <div
+    style="font-family: sans-serif;display: flex;font-size: smaller; align-items: center;"
+  >
+    <div>Showing results from</div>
+    <div class="pg-number" id="from">{{ from + 1 }}</div>
+    <div class="pg-number">to</div>
+    <div class="pg-number" id="to">{{ from + resultSize }}</div>
+  </div>
+
+  <div class="navigation">
+    <mat-icon (click)="previousPage()">chevron_left</mat-icon>
+    <mat-icon (click)="nextPage()">chevron_right</mat-icon>
+  </div>
+  <select class="pagesize" (change)="onChange($event)">
+    <option *ngFor="let item of pagesizelist" [value]="item"
+      >{{ item }}
+    </option>
+  </select>
 </div>

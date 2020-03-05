@@ -110,7 +110,15 @@ public class DataDao {
                 QAEntry q_a = new ObjectMapper().readValue(searchHit.getSourceAsString(), QAEntry.class);
                 list.add(q_a);
             }
-            return list;
+            ArrayList<QAEntry> edited = new ArrayList<>();
+            for (QAEntry qaEntry : list) {
+                try {
+                    qaEntry.getQuestion().toString();
+                    edited.add(qaEntry);
+                } catch (Exception ignored) {
+                }
+            }
+            return edited;
         } catch (Exception e) {
             return list;
         }

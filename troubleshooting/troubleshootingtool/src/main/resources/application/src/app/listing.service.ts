@@ -15,6 +15,7 @@ const headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Access-Co
 export class ListingService {
   public category: string;
   public tags: string[];
+  public categoriesList: string[] = [];
   public keyword: string;
   public id: string;
 
@@ -22,6 +23,10 @@ export class ListingService {
   }
 
   baseUrl = 'http://localhost:4343';
+  getAllQuestions() {
+    return this.http.get(this.baseUrl + '/qnas', httpOptions);
+  }
+
   getAllCategories() {
     return this.http.get(this.baseUrl + '/categories', httpOptions);
   }
@@ -37,6 +42,21 @@ export class ListingService {
   getTagsFromSearch(): string[] {
     return this.tags;
   }
+
+  setCategoriesList(categoryFromSearch: string) {
+    if (categoryFromSearch === 'nothing') {
+
+    } else {
+      // console.log('in listing-'+this.categoriesList);
+      if (this.categoriesList.indexOf(categoryFromSearch) === -1) {
+        this.categoriesList.push(categoryFromSearch);
+      }
+    }
+  }
+  getCategoriesListFromSearch(): string[] {
+    return this.categoriesList;
+  }
+
   getAllTags() {
     return this.http.get(this.baseUrl + '/tags', httpOptions);
   }

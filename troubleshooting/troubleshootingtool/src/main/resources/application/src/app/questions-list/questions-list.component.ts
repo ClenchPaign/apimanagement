@@ -14,7 +14,8 @@ export class QuestionsListComponent implements OnInit {
   searchData: any;
   tag: any;
   navigationExtras: NavigationExtras;
-  pageSize = 5;
+  pageSize: number = 5;
+  resultSize: number = 0;
   from: number = 0;
   pagesizelist = [5, 10, 25];
   editedResponse: Array<QAEntry>;
@@ -164,6 +165,7 @@ export class QuestionsListComponent implements OnInit {
         this.response = data;
         this.getQuestions();
         console.log(data);
+        this.resultSize = this.response.length;
       },
       res => {
         console.log(res);
@@ -172,6 +174,7 @@ export class QuestionsListComponent implements OnInit {
   }
 
   getQuestions(): Array<QAEntry> {
+    this.resultSize = this.response.length;
     const tagList: string[] = [];
     this.editedResponse = this.response;
     for (let i = 0; i < this.editedResponse.length; i++) {
@@ -184,6 +187,8 @@ export class QuestionsListComponent implements OnInit {
       for (const j of this.editedResponse[i].tags) {
         tagList.push(j);
       }
+      this.listingService.setCategoriesList(this.response[i].Question.category);
+      console.log('cats-- ' + this.response[i].Question.category);
     }
     this.listingService.setTags(tagList);
     const noResult = document.getElementById('no_results');

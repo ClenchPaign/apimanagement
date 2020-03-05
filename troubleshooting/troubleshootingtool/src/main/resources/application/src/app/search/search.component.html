@@ -6,12 +6,19 @@
     </div>
   </div>
   <div class="dropdown">
-    <mat-icon
-      style="cursor: pointer;"
+    <div
       [matMenuTriggerFor]="menu"
-      class="userprofilepic"
-      >person</mat-icon
+      style="display: flex;height: min-content;align-items: center;cursor: pointer;"
     >
+      <mat-icon class="userprofilepic">person</mat-icon>
+      <div
+        style="font-size: smaller;font-family: sans-serif;color:#fff;margin-left: 10px;"
+      >
+        {{ username }}
+      </div>
+      <!-- <div class="admin" *ngIf="isAdmin === 'true' "><p style="margin:0;padding: 0;">ADMIN</p></div> -->
+    </div>
+
     <mat-menu #menu="matMenu">
       <button mat-menu-item [routerLink]="['/main']">
         <mat-icon style="color: #0f4c7b;">person</mat-icon>
@@ -21,6 +28,14 @@
       <button mat-menu-item [routerLink]="['/main/dashboard']">
         <mat-icon>dashboard</mat-icon>
         <a class="menu-items">Dashboard</a>
+      </button>
+      <button
+        *ngIf="isAdmin === 'true'"
+        mat-menu-item
+        [routerLink]="['/main/review']"
+      >
+        <mat-icon>how_to_reg</mat-icon>
+        <a class="menu-items">Approvals</a>
       </button>
       <button mat-menu-item (click)="logout()">
         <mat-icon>logout</mat-icon>

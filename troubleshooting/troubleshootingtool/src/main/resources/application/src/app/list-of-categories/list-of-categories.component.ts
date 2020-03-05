@@ -33,6 +33,8 @@ export class ListOfCategoriesComponent implements OnInit {
       data => {
         console.log('GET Request is successful ', data);
         this.response = data;
+        const t = data.toString().split(',');
+        t.forEach((e) => this.listingService.setCategoriesList(e));
       },
       res => { console.log(res); });
   }

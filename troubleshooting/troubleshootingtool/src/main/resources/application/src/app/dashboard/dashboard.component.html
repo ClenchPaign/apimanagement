@@ -1,28 +1,43 @@
 <div class="parent-lay">
-  <div class="headers">
+  <!-- <div class="headers">
     <h2 class="username">{{username}}</h2>
     <h6 class="admin" *ngIf="isAdmin === 'true' ">ADMIN</h6>
     <h6 class="admin" *ngIf="isAdmin === 'false' ">USER</h6>
-  </div>
+  </div> -->
 
   <div class="parent">
     <div class="card-set">
-      <mat-card class="card">
+      <mat-card class="card" (click)="cardClick('Questions Posted')">
         <div>Questions posted</div>
-        <div class="number-values">13</div>
+        <div class="number-values">{{ questionsposted }}</div>
       </mat-card>
-      <mat-card class="card">
+      <mat-card class="card" (click)="cardClick('Questions Answered')">
         <div>Questions answered</div>
-        <div class="number-values">23</div>
+        <div class="number-values">{{ questionsanswered }}</div>
       </mat-card>
-      <mat-card class="card">
+      <mat-card class="card" (click)="cardClick('Pending questions for Approval')">
         <div>Pending for Approval</div>
-        <div class="number-values">2</div>
+        <div class="number-values">{{ pendingquestions }}</div>
       </mat-card>
     </div>
   </div>
 
   <div id="review_ques">
-    <app-review-questions></app-review-questions>
+    <div class="list-of-questions">
+      <div class="head">{{head}}</div>
+      <mat-card class="question-card" *ngFor="let list of editedResponse" matRipple >
+        <div class="question-item">
+          <div class="answer-layout">
+            <div class="no-of-answers">{{ list.answerCount }}</div>
+            <div class="answer-text">Answers</div>
+          </div>
+          <div class="question-layout">
+            <a class="question" id="ques" [routerLink]="['/main/approval', list.Question.id]">{{ list.Question.question }}</a>
+            <div class="description" [routerLink]="['/main/approval', list.Question.id]" >{{ list.Question.description }}</div>
+              <span *ngFor="let tag of list.tags" class="chips"> {{ tag }}</span>
+          </div>
+        </div>
+      </mat-card>
+  </div>
   </div>
 </div>

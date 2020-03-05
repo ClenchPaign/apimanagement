@@ -15,6 +15,7 @@ export class SearchComponent implements OnInit {
   searchdata: SearchQuery;
   tags: any;
   username: string;
+  isAdmin: string;
   password: string;
   navigationExtras: NavigationExtras;
 
@@ -37,6 +38,7 @@ export class SearchComponent implements OnInit {
       });
 
     this.username = localStorage.getItem('username');
+    this.isAdmin = localStorage.getItem('isAdmin');
   }
 
   @HostListener('document:click', ['$event'])
@@ -136,10 +138,11 @@ export class SearchComponent implements OnInit {
       data => {
         console.log(data);
         if (data === 'true') {
-            localStorage.removeItem('username');
-            localStorage.removeItem('isAdmin');
-            this.router.navigateByUrl('/');
+          localStorage.removeItem('username');
+          localStorage.removeItem('userID');
+          localStorage.removeItem('isAdmin');
         }
       });
+    this.router.navigateByUrl('/');
   }
 }

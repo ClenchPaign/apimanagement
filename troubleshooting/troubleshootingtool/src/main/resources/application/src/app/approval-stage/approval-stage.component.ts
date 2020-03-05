@@ -42,7 +42,6 @@ export class ApprovalStageComponent implements OnInit {
   returnAttachment: string[] = [];
   returnAttachmentFileName: string[] = [];
   attachmentList: any = [];
-  username: any;
 
   navigationExtras: NavigationExtras;
   public files: string[] = [];
@@ -269,7 +268,7 @@ export class ApprovalStageComponent implements OnInit {
     const creationDate = d.getTime();
     let isAnswered: boolean;
     const ques = new Question(this.questionData.Question.id, categories,
-      question, description, this.uploadedFiles.toString(), creationDate, '', creationDate);
+      question, description, this.uploadedFiles.toString(), creationDate, this.questionData.Question.ownerId, creationDate);
 
     if (this.questionData.isAnswered) {
       isAnswered = true;
@@ -281,8 +280,8 @@ export class ApprovalStageComponent implements OnInit {
     } else {
       isAnswered = false;
     }
-    this.username = localStorage.getItem("username");
-    const answer = new Answer('0', ans, creationDate, this.username, this.username, creationDate, 0, approveAnswer);
+    const answer = new Answer('0', ans, creationDate, '', 
+    '', creationDate, 0, approveAnswer);
     let qa: QAEntry;
     if (isAnswered) {
       qa = new QAEntry(ques, [answer], this.quesTags, true, 1, 0);
@@ -298,13 +297,6 @@ export class ApprovalStageComponent implements OnInit {
       this.listingService.approve_question(qa, this.questionData.Question.id).subscribe(data => {
         console.log('Question approved ', data);
         this.openSnackBar('Question approved successfully', 'OK');
-        this.navigationExtras = {
-          queryParams: {
-            'reload': true
-          }
-        };
-        this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
-          this.router.navigate(['/main/dashboard/review'], this.navigationExtras));
       });
     }
   }
@@ -313,13 +305,6 @@ export class ApprovalStageComponent implements OnInit {
     this.listingService.reject_question(this.questionData.Question.id).subscribe(data => {
       console.log('Question rejected ', data);
       this.openSnackBar('Question rejected', 'OK');
-      // this.navigationExtras = {
-      //   queryParams: {
-      //     'add_qa': 'false'
-      //   }
-      // };
-      // this.router.navigateByUrl('/', { skipLocationChange: false }).then(() =>
-      //   this.router.navigate(['/main/dashboard/review'], this.navigationExtras));
     });
   }
 
@@ -329,6 +314,7 @@ export class ApprovalStageComponent implements OnInit {
       verticalPosition: 'top'
     });
     // window.location.replace('http://localhost:4343/main/dashboard');
-    window.location.replace('/main/dashboard');
+    // window.location.replace('/main/dashboard');
+    this.router.navigateByUrl('/main');
   }
 }

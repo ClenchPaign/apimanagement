@@ -173,14 +173,14 @@ export class AddQuestionDialogComponent implements OnInit {
     const description = this.rteObj.getHtml();
     const categories = this.categories.value;
     this.quesTags = [];
-    this.username = localStorage.getItem('username');
+    const userID = localStorage.getItem('userID');
     for (let tags of this.fruits) {
       this.quesTags.push(tags.name);
     }
     const d = new Date();
     const creationDate = d.getTime();
     const ques = new Question('', categories, question, description,
-    this.uploadedFiles.toString(), creationDate, this.username, creationDate);
+    this.uploadedFiles.toString(), creationDate, userID, creationDate);
     const qa = new QAEntry(ques, [], this.quesTags, false, 0, 0);
     this.listingService.post_question(qa).subscribe(data => {
       console.log('POST Request is successful ', JSON.stringify(qa));
@@ -193,7 +193,8 @@ export class AddQuestionDialogComponent implements OnInit {
       duration: 3000,
       verticalPosition: 'top'
     });
-    // window.location.replace('http://localhost:4343/main/dashboard');
-    window.location.replace('/main/dashboard');
+    this.router.navigateByUrl('/main');
+    // // window.location.replace('http://localhost:4343/main/dashboard');
+    // window.location.replace('/main/dashboard');
   }
 }

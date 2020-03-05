@@ -33,9 +33,17 @@
 }
 
 .topbar {
+  /* position: absolute; */
+  bottom: 10px;
+  left: 10px;
   cursor: pointer;
   display: flex;
   padding: 10px;
+}
+
+.pg-number{
+  margin-left: 5px;
+  margin-right: 5px;
 }
 .head {
   display: flex;

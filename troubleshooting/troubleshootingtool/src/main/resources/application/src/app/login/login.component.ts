@@ -61,15 +61,13 @@ export class LoginComponent implements OnInit {
   auth() {
     this.userData = JSON.parse(this.response);
     localStorage.setItem('username', this.userData.username);
+    localStorage.setItem('userID', this.userData.userID);
     if (this.userData.isAdmin) {
       localStorage.setItem('isAdmin', 'true');
     } else {
       localStorage.setItem('isAdmin', 'false');
     }
     localStorage.setItem('email', this.userData.email);
-    console.log('username = ' + this.userData.username);
-    console.log('userid = ' + this.userData.userID);
-    console.log('auth = ' + this.userData.isAuthenticated);
     if (this.userData.isAuthenticated) {
       console.log('inside authen');
       this.authentication = 'true';

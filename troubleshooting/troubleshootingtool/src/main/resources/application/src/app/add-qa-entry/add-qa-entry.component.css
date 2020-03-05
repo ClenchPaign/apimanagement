@@ -31,6 +31,7 @@
 
 .textarea {
   word-wrap: break-word;
+  margin-top: 16px;
   margin-left: 16px;
   margin-right: 16px;
 }
@@ -52,11 +53,12 @@ mat-icon {
   align-items: center;
 }
 .fileitem {
-  background-color: lightgrey;
+  background-color: #eeeeee;
   border-radius: 4px;
   width: max-content;
   padding-left: 4px;
   margin-top: 4px;
+  margin-left: 16px;
 }
 .upload-table {
   font-size: small;

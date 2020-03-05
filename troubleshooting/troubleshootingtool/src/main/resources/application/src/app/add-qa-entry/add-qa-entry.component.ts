@@ -38,7 +38,6 @@ export class AddQaEntryComponent implements OnInit {
   removable = true;
   addOnBlur = true;
   imageUrlPREVIEW: any;
-  username: any;
 
   navigationExtras: NavigationExtras;
   public files: string[] = [];
@@ -191,12 +190,13 @@ export class AddQaEntryComponent implements OnInit {
     for (const tags of this.fruits) {
       this.quesTags.push(tags.name);
     }
+    const userID = localStorage.getItem('userID');
     // console.log(this.quesTags);
     const d = new Date();
     const creationDate = d.getTime();
     const ques = new Question('', categories, question, description,
-      this.uploadedFiles.toString(), creationDate, this.username, creationDate);
-    const answer = new Answer('0', ans, creationDate, '123', this.username, creationDate, 0, false);
+      this.uploadedFiles.toString(), creationDate, userID, creationDate);
+    const answer = new Answer('0', ans, creationDate, '123', userID, creationDate, 0, false);
     const qa = new QAEntry(ques, [answer], this.quesTags, true, 1, 0);
     console.log(qa);
 
@@ -212,13 +212,14 @@ export class AddQaEntryComponent implements OnInit {
       );
     }
   }
-  
+
   openSnackBar(message: string, action: string) {
     this.snackbar.open(message, action, {
       duration: 2000,
       verticalPosition: 'top'
     });
-    window.location.replace('/main/dashboard');
+    this.router.navigateByUrl('/main');
+    // window.location.replace('/main/dashboard');
     // window.location.replace('http://localhost:4343/main/dashboard');
   }
 }

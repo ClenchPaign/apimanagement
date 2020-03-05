@@ -21,10 +21,10 @@ const routes: Routes = [
     path: 'main', component: MainComponent, canActivate: [AuthGuard], children: [
       {
         path: 'dashboard', component: DashboardComponent, children: [
-          { path: 'review', component: ReviewQuestionsComponent },
           { path: 'search/:tag/:keyword', component: QuestionsListComponent }
         ]
       },
+      { path: 'review', component: ReviewQuestionsComponent },
       { path: 'add_qna', component: AddQaEntryComponent },
       { path: 'add_q', component: AddQuestionDialogComponent },
       { path: 'approval/:id', component: ApprovalStageComponent },
@@ -42,7 +42,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { useHash: true})],
+  imports: [RouterModule.forRoot(routes, { onSameUrlNavigation: 'reload' })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

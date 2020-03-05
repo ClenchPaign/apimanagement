@@ -1,25 +1,15 @@
 <div>
   <div class="head">
     <div class="list">
-      <div class="breadcrumb" [routerLink]="['/main']" >Home</div> 
+      <div class="breadcrumb" [routerLink]="['/main']">Home</div>
       <mat-icon>chevron_right</mat-icon>
-      <div class="breadcrumb" [routerLink]="['/main/home/category']" >Category</div>
-      <mat-icon>chevron_right</mat-icon>
-      <div class="breadcrumb" >{{ category }}</div>
-    </div>
-    <div class="topbar">
-      <select class="pagesize" (change)="onChange($event)">
-        <option *ngFor="let item of pagesizelist" [value]="item"
-          >{{ item }}
-        </option>
-      </select>
-      <div class="navigation">
-        <mat-icon (click)="previousPage()">chevron_left</mat-icon>
-        <mat-icon (click)="nextPage()">chevron_right</mat-icon>
+      <div class="breadcrumb" [routerLink]="['/main/home/category']">
+        Category
       </div>
+      <mat-icon>chevron_right</mat-icon>
+      <div class="breadcrumb">{{ category }}</div>
     </div>
   </div>
-  
 </div>
 <div class="list-of-questions">
   <ul>
@@ -58,4 +48,24 @@
       </div>
     </mat-card>
   </ul>
+</div>
+<div class="topbar">
+  <div
+    style="font-family: sans-serif;display: flex;font-size: smaller; align-items: center;"
+  >
+    <div>Showing results from</div>
+    <div class="pg-number" id="from">{{ from + 1 }}</div>
+    <div class="pg-number">to</div>
+    <div class="pg-number" id="to">{{ from + resultSize }}</div>
+  </div>
+
+  <div class="navigation">
+    <mat-icon (click)="previousPage()">chevron_left</mat-icon>
+    <mat-icon (click)="nextPage()">chevron_right</mat-icon>
+  </div>
+  <select class="pagesize" (change)="onChange($event)">
+    <option *ngFor="let item of pagesizelist" [value]="item"
+      >{{ item }}
+    </option>
+  </select>
 </div>

@@ -14,7 +14,8 @@ export class CategoryOfQuestionsComponent implements OnInit {
   description = '';
   hello: any;
   navigationExtras: NavigationExtras;
-  pageSize = 5;
+  pageSize: number = 5;
+  resultSize: number = 0;
   from: number = 0;
   pagesizelist = [5, 10, 25];
 
@@ -38,6 +39,7 @@ export class CategoryOfQuestionsComponent implements OnInit {
           data
         );
         this.response = data;
+        this.resultSize = this.response.length;
       },
       res => {
         console.log(res);
@@ -48,10 +50,12 @@ export class CategoryOfQuestionsComponent implements OnInit {
     if (this.pageSize > this.response.length) {
       console.log('no load - from-> ' + this.from);
     } else {
-      this.from = this.from + this.pageSize;
+      this.from = Number(this.from) + Number(this.pageSize);
       this.listingService.getQuestionsForCategory(this.category, this.from, this.pageSize).subscribe(
         data => {
           this.response = data;
+          console.log(data);
+          this.resultSize = this.response.length;
         },
         res => {
           // console.log(res);
@@ -61,13 +65,15 @@ export class CategoryOfQuestionsComponent implements OnInit {
   }
   previousPage() {
     if (this.from > this.pageSize) {
-      this.from = this.from - this.pageSize;
+      this.from = Number(this.from) - Number(this.pageSize);
     } else {
       this.from = 0;
     }
     this.listingService.getQuestionsForCategory(this.category, this.from, this.pageSize).subscribe(
       data => {
         this.response = data;
+        console.log(data);
+        this.resultSize = this.response.length;
       },
       res => {
         // console.log(res);
@@ -99,6 +105,7 @@ export class CategoryOfQuestionsComponent implements OnInit {
       for (const j of editedResponse[i].tags) {
         tagList.push(j);
       }
+      this.listingService.setCategoriesList(this.response[i].Question.category);
     }
     this.listingService.setTags(tagList);
     return editedResponse;
