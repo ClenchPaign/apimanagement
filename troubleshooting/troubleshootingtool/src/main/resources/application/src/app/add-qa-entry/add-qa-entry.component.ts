@@ -31,6 +31,7 @@ export class AddQaEntryComponent implements OnInit {
   tagList: string[];
   base64String: any;
   uploadedFiles: string[] = [];
+  uploadedFAnswerFiles: string[] = [];
   tagsResponse: any;
   response: any;
   visible = true;
@@ -38,9 +39,11 @@ export class AddQaEntryComponent implements OnInit {
   removable = true;
   addOnBlur = true;
   imageUrlPREVIEW: any;
-
+  userID: string;
+  userName: string;
   navigationExtras: NavigationExtras;
   public files: string[] = [];
+  public answerfiles: string[] = [];
 
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   @ViewChild('imageRTE', { static: true })
@@ -106,6 +109,8 @@ export class AddQaEntryComponent implements OnInit {
 
   ngOnInit() {
     this.listingService.category = '';
+    this.userID = localStorage.getItem('userID');
+    this.userName = localStorage.getItem('username');
     this.listingService.getAllCategories().subscribe(
       data => {
         console.log('GET Request is successful ', data);
@@ -160,23 +165,44 @@ export class AddQaEntryComponent implements OnInit {
 
 
 
-  public removeFiles(file: string) {
-    this.files = this.files.filter(item => item !== file);
-    console.log('remove file:' + file);
+  public removeFiles(file: string, type: string) {
+    if (type === 'question') {
+      this.files = this.files.filter(item => item !== file);
+      console.log('remove file:' + file);
+    } else {
+      this.answerfiles = this.answerfiles.filter(item => item !== file);
+      console.log('remove file:' + file);
+    }
   }
-  uploadFile(event) {
-    for (const droppedFile of event) {
-      this.files.push(droppedFile.name);
-      const reader = new FileReader();
-      console.log('Name ', droppedFile.name);
-      reader.readAsDataURL(droppedFile);
-      reader.onload = (e) => {
-        const imageModel: ImageModel = new ImageModel('', droppedFile.name, reader.result as string);
-        this.listingService.upload_files(imageModel).subscribe(data => {
-          console.log('Upload', data);
-          this.uploadedFiles.push(data);
-        });
-      };
+  uploadFile(event, type: string) {
+    if (type === 'question') {
+      for (const droppedFile of event) {
+        this.files.push(droppedFile.name);
+        const reader = new FileReader();
+        console.log('Name ', droppedFile.name);
+        reader.readAsDataURL(droppedFile);
+        reader.onload = (e) => {
+          const imageModel: ImageModel = new ImageModel('', droppedFile.name, reader.result as string);
+          this.listingService.upload_files(imageModel).subscribe(data => {
+            console.log('Upload', data);
+            this.uploadedFiles.push(data);
+          });
+        };
+      }
+    } else {
+      for (const droppedFile of event) {
+        this.answerfiles.push(droppedFile.name);
+        const reader = new FileReader();
+        console.log('Name ', droppedFile.name);
+        reader.readAsDataURL(droppedFile);
+        reader.onload = (e) => {
+          const imageModel: ImageModel = new ImageModel('', droppedFile.name, reader.result as string);
+          this.listingService.upload_files(imageModel).subscribe(data => {
+            console.log('Upload', data);
+            this.uploadedFAnswerFiles.push(data + '**' + droppedFile.name);
+          });
+        };
+      }
     }
   }
 
@@ -190,26 +216,27 @@ export class AddQaEntryComponent implements OnInit {
     for (const tags of this.fruits) {
       this.quesTags.push(tags.name);
     }
-    const userID = localStorage.getItem('userID');
-    // console.log(this.quesTags);
     const d = new Date();
     const creationDate = d.getTime();
     const ques = new Question('', categories, question, description,
-      this.uploadedFiles.toString(), creationDate, userID, creationDate);
-    const answer = new Answer('0', ans, creationDate, '123', userID, creationDate, 0, false);
-    const qa = new QAEntry(ques, [answer], this.quesTags, true, 1, 0);
-    console.log(qa);
-
-    if (this.question.value === '' || this.description.value === '') {
-      // validate form
+      this.uploadedFiles.toString(), creationDate, this.userID, creationDate);
+    const answer = new Answer('0', ans, creationDate, this.userID,
+      this.userName, creationDate, this.uploadedFAnswerFiles.toString(), 0, false);
+    const qa = new QAEntry(ques, [answer], this.quesTags, true, false, 1, 0);
+    console.log('Posted', qa);
+    if (question === '' || description === '') {
+      this.openSnackBar('Provide the required fields', 'OK');
     } else {
       this.listingService.post_question(qa).subscribe(data => {
-        console.log('POST Request is successful ', data);
+        console.log('POST Request is successful ', JSON.stringify(data));
         this.openSnackBar('Troubleshooting step posted successfully', 'OK');
+        setTimeout(() => {
+          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
+            this.router.navigate(['/main/qna/review/' + data]));
+        }, 2000);
       }, res => {
         console.log(res);
-      }
-      );
+      });
     }
   }
 
@@ -218,7 +245,7 @@ export class AddQaEntryComponent implements OnInit {
       duration: 2000,
       verticalPosition: 'top'
     });
-    this.router.navigateByUrl('/main');
+
     // window.location.replace('/main/dashboard');
     // window.location.replace('http://localhost:4343/main/dashboard');
   }

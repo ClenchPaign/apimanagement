@@ -1,4 +1,4 @@
-<div>
+<div class="outerlayout">
   <div class="head">
     <div class="close" [routerLink]="['/main']">
       <mat-icon>close</mat-icon>
@@ -21,26 +21,32 @@
       </mat-form-field>
       <label class="textarea">Description of the problem*</label>
       <br />
-      <ejs-richtexteditor
+      <div class="question_description">
+        <div style="width: 99%;" [innerHTML]="questionDescription"></div>
+        <mat-icon style="width: 1%;margin-right: 10px;" (click)="openDialog(questionDescription,'question')">edit</mat-icon>
+      </div>
+      <!-- <ejs-richtexteditor
         #imageRTE
         id="imageRTE"
         class="richtexteditor"
-        width="95%"
-        height="350px"
+        width="98%"
+        height="200px"
         [(ngModel)]="description"
       >
-        <ng-template #valueTemplate> </ng-template>
-      </ejs-richtexteditor>
+      </ejs-richtexteditor> -->
       <div style="margin-left: 16px; margin-bottom:16px">
-        <div style="display: flex; ">
+        <div style="display: flex;">
           <p>Attachments</p>
           <mat-icon style="align-self: center; margin-left: 5px;"
             >attachment</mat-icon
           >
         </div>
-        <div *ngFor="let item of getAttachmentFileNames()">
-          <div class="attachment-items" (click)="onAttachmentClick(item)">
-            {{ item }}
+        <div *ngFor="let item of questionFiles">
+          <div matTooltip="Click to download file"
+            class="attachment-items"
+            (click)="onAttachmentClick(item.fileName, 'question')"
+          >
+            {{ item.fileName }}
           </div>
         </div>
       </div>
@@ -129,20 +135,46 @@
         </mat-chip-list>
       </mat-form-field>
 
-      <label class="textarea" style="margin-top: 16px;">Solution</label>
-      <br />
-      <ejs-richtexteditor
+      <label class="textarea" style="margin-top: 16px;margin-bottom: 16px;">Solution</label>
+      <div *ngFor="let item of questionData.Answers">
+        <div class="answer_description">
+          <div style="display: flex;">
+            <div style="width: 99%;" [innerHTML]="item.description"></div>
+            <mat-icon style="width: 1%;margin-right: 10px;" (click)="openDialog(item.description,item.id)">edit</mat-icon>
+          </div>
+          <div style="margin-bottom:16px" *ngIf="answerFiles[item.id].imageModelList.length > 0">
+            <div style="display: flex;align-items: center;">
+              <div>Attachments</div>
+              <mat-icon style="margin-left: 4px;">attachment</mat-icon>
+            </div>
+            <div>
+              <div *ngFor="let answer of answerFiles[item.id].imageModelList">
+                <div matTooltip="Click to download file"
+                  class="attachment-items"
+                  (click)="onAttachmentClick(answer.fileName, answer.id)"
+                >
+                  {{ answer.fileName }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- <ejs-richtexteditor
         #imageRTEForAnswer
         id="imageRTEForAnswer"
         class="richtexteditor"
+        style="margin-left: 16px;margin-top: 16px;"
         width="95%"
         height="350px"
         [(ngModel)]="val"
       >
-      </ejs-richtexteditor>
-      <div hidden style="margin-left: 16px; margin-top: 16px;">
+      </ejs-richtexteditor> -->
+        <!-- <div hidden style="margin-left: 16px; margin-top: 16px;">
         <input id="approveAnswer" type="checkbox" />Check here to approve
         Solution above
+      </div> -->
+
+        
       </div>
       <div>
         <button

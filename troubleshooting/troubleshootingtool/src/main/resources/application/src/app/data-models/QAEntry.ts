@@ -7,15 +7,17 @@ export class QAEntry {
     public Answers: Array<Answer>;
     public tags: Array<string>;
     public isAnswered: boolean;
+    public isApproved: boolean;
     public answerCount: number;
     public score: number;
 
     // tslint:disable-next-line: max-line-length
-    constructor($Question: Question, $Answers: Array<Answer>, $tags: Array<string>, $isAnswered: boolean, $answerCount: number, $score: number) {
+    constructor($Question: Question, $Answers: Array<Answer>, $tags: Array<string>, $isAnswered: boolean, $isApproved: boolean, $answerCount: number, $score: number) {
         this.Question = $Question;
         this.Answers = $Answers;
         this.tags = $tags;
         this.isAnswered = $isAnswered;
+        this.isApproved = $isApproved;
         this.answerCount = $answerCount;
         this.score = $score;
     }

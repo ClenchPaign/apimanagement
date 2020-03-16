@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "ownerUserId",
         "ownerUserName",
         "lastEditedDate",
+        "attachment",
         "voteCount",
         "isApproved"
 })
@@ -29,30 +30,18 @@ public class Answer {
     private String ownerUserName;
     @JsonProperty("lastEditedDate")
     private long lastEditedDate;
+    @JsonProperty("attachment")
+    private String attachment;
     @JsonProperty("voteCount")
     private Integer voteCount;
     @JsonProperty("isApproved")
     private Boolean isApproved;
 
-    /**
-     * No args constructor for use in serialization
-     *
-     */
     public Answer() {
     }
 
-    /**
-     *
-     * @param ownerUserId
-     * @param description
-     * @param ownerUserName
-     * @param lastEditedDate
-     * @param id
-     * @param voteCount
-     * @param isApproved
-     * @param postedDate
-     */
-    public Answer(String id, String description, long postedDate, String ownerUserId, String ownerUserName, long lastEditedDate, Integer voteCount, Boolean isApproved) {
+    public Answer(String id, String description, long postedDate, String ownerUserId, String ownerUserName,
+                  long lastEditedDate,String attachment, Integer voteCount, Boolean isApproved) {
         super();
         this.id = id;
         this.description = description;
@@ -60,6 +49,7 @@ public class Answer {
         this.ownerUserId = ownerUserId;
         this.ownerUserName = ownerUserName;
         this.lastEditedDate = lastEditedDate;
+        this.attachment = attachment;
         this.voteCount = voteCount;
         this.isApproved = isApproved;
     }
@@ -122,6 +112,16 @@ public class Answer {
     @JsonProperty("lastEditedDate")
     public void setLastEditedDate(long lastEditedDate) {
         this.lastEditedDate = lastEditedDate;
+    }
+
+    @JsonProperty("attachment")
+    public String getAttachment() {
+        return attachment;
+    }
+
+    @JsonProperty("attachment")
+    public void setAttachment(String attachment) {
+        this.attachment = attachment;
     }
 
     @JsonProperty("voteCount")

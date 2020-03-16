@@ -181,7 +181,7 @@ export class AddQuestionDialogComponent implements OnInit {
     const creationDate = d.getTime();
     const ques = new Question('', categories, question, description,
     this.uploadedFiles.toString(), creationDate, userID, creationDate);
-    const qa = new QAEntry(ques, [], this.quesTags, false, 0, 0);
+    const qa = new QAEntry(ques, [], this.quesTags, false,false, 0, 0);
     this.listingService.post_question(qa).subscribe(data => {
       console.log('POST Request is successful ', JSON.stringify(qa));
       this.openSnackBar('Question posted successfully', 'OK');

@@ -28,7 +28,7 @@ const routes: Routes = [
       { path: 'add_qna', component: AddQaEntryComponent },
       { path: 'add_q', component: AddQuestionDialogComponent },
       { path: 'approval/:id', component: ApprovalStageComponent },
-      { path: 'qna/:id', component: QuestionDetailsComponent },
+      { path: 'qna/:index/:id', component: QuestionDetailsComponent },
       {
         path: 'home', component: HomeComponent, children: [
           { path: 'category', component: ListOfCategoriesComponent },

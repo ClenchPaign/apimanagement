@@ -29,7 +29,7 @@ export class FiltersComponent implements OnInit {
     // });
 
     if (this.router.url === '/main/category') {
-      console.log('url - ' + this.router.url);
+      // console.log('url - ' + this.router.url);
       setTimeout(() => this.onTag(), 500);
     }
     this.listingService.getAllCategories().subscribe(
@@ -38,18 +38,17 @@ export class FiltersComponent implements OnInit {
         this.response = data;
         this.categoryList = this.response;
       },
-      res => { console.log(res); });
+      res => {
+        // console.log(res);
+      });
     setTimeout(() => this.onTag(), 800);
   }
 
   onTag() {
     this.tags = this.listingService.getTagsFromSearch();
     this.categoryList = this.listingService.getCategoriesListFromSearch();
-    console.log('before-1' + this.tags);
     this.tags = this.tags.filter((el, i, a) => i === a.indexOf(el));
     // this.categoryList = this.categoryList.filter((el, i, a) => i === a.indexOf(el));
-    console.log('after-1' + this.tags);
-    console.log('cat list' + this.categoryList);
     const filterButtons = document.getElementById('filter_buttons');
     filterButtons.style.visibility = 'visible';
   }
@@ -65,7 +64,7 @@ export class FiltersComponent implements OnInit {
     const close = document.getElementsByClassName('close_icon');
     const closeIcon = close[index] as HTMLElement;
     this.selectedTags = this.selectedTags.filter(obj => obj !== tag);
-    console.log('On remove tag :' + this.selectedTags);
+    // console.log('On remove tag :' + this.selectedTags);
     closeIcon.style.display = 'none';
     gg.style.backgroundColor = 'lightgrey';
     gg.style.color = '#000';
@@ -110,7 +109,7 @@ export class FiltersComponent implements OnInit {
         'isSearchFromFilters': 'yes',
       }
     };
-    console.log('On filter: ' + this.selectedTags);
+    // console.log('On filter: ' + this.selectedTags);
     this.selectedTags = [];
     this.router.navigate(['/main/home/search/list'], navigationExtras);
   }
@@ -126,6 +125,5 @@ export class FiltersComponent implements OnInit {
       gg.style.backgroundColor = 'lightgrey';
       gg.style.color = '#000';
     }
-    // this.router.navigateByUrl('/main/search/###/ ');
   }
 }

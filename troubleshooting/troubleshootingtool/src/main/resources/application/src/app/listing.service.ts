@@ -18,6 +18,7 @@ export class ListingService {
   public categoriesList: string[] = [];
   public keyword: string;
   public id: string;
+  public index: string;
 
   constructor(private http: HttpClient) {
   }
@@ -76,12 +77,12 @@ export class ListingService {
 
   post_question(qa: QAEntry) {
     // const body = JSON.stringify(qa);
-    console.log(qa);
+    // console.log(qa);
     return this.http.post(this.baseUrl + '/qnas/', qa, { headers, responseType: 'text' });
 
   }
   post_answer(qa: QAEntry, id: string) {
-    console.log(qa);
+    // console.log(qa);
     // console.log(this.baseUrl + '/qnas/' + id);
     return this.http.put(this.baseUrl + '/qnas/' + id, qa, httpOptions);
   }
@@ -91,7 +92,8 @@ export class ListingService {
   }
 
   get_files(id: string) {
-    // console.log('In listing service' + JSON.stringify(file));
+    console.log('In listing service' +id);
+    // if (id !== '') {
     return this.http.get(this.baseUrl + '/files/' + id, httpOptions);
   }
 

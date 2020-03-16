@@ -3,15 +3,15 @@
     <mat-icon>close</mat-icon>
   </div>
   <div class="layout">
-    <div style="">
-      <div class="question">{{ response.Question.question }}</div>
+    <div *ngIf="editedResponse !== undefined">
+      <div class="question">{{ editedResponse.Question.question }}</div>
       <div
         class="description"
-        [innerHTML]="response.Question.description"
+        [innerHTML]="editedResponse.Question.description"
       ></div>
-      <div>
+      <div *ngIf="editedResponse !== undefined">
         <span
-          *ngFor="let tag of response.tags"
+          *ngFor="let tag of editedResponse.tags"
           class="chips"
           (click)="onTagClick(tag)"
         >
@@ -25,54 +25,79 @@
             >attachment</mat-icon
           >
         </div>
-        <div *ngFor="let item of getAttachmentFileNames()">
-          <div class="attachment-items" (click)="onAttachmentClick(item)">
-            {{ item }}
+        <div *ngFor="let item of questionFiles">
+          <div
+            class="attachment-items"
+            (click)="onAttachmentClick(item.fileName, 'question')"
+          >
+            {{ item.fileName }}
           </div>
-          <!-- <div *ngIf="item.includes('/png')"><img style="max-width: 70px; max-height: 50px;" src="{{ item }}" /></div> -->
-          <!-- <div *ngIf="item.includes('/pdf')"><iframe src="{{ item }}"></iframe></div> -->
         </div>
       </div>
       <div class="qn-details">
         <div>
           <p class="answer-count" id="answercount">
-            {{ response.answerCount }} Answers
+            {{ editedResponse.answerCount }} Answers
           </p>
         </div>
         <div class="posted-details">
           <div class="posted">Posted on</div>
           <div class="posted-date">
-            {{ response.Question.creationDate | date: "mediumDate" }}
+            {{ editedResponse.Question.creationDate | date: "mediumDate" }}
           </div>
         </div>
       </div>
     </div>
     <mat-divider></mat-divider>
-    <div class="list-of-answers" *ngFor="let item of response.Answers">
-      <div class="answers">
-        <div class="vote-layout">
-          <mat-icon>arrow_drop_up</mat-icon>
-          <div class="vote">{{ item.voteCount }}</div>
-          <div>Votes</div>
-          <mat-icon>arrow_drop_down</mat-icon>
-        </div>
-        <div style="width: 100%;">
-          <div class="answer-layout">
-            <div class="answer" *ngIf="item.isApproved">Approved</div>
-            <div class="description" [innerHTML]="item.description"></div>
+    <div *ngIf="editedResponse !== undefined">
+      <div class="list-of-answers" *ngFor="let item of editedResponse.Answers">
+        <div class="answers">
+          <div class="vote-layout">
+            <mat-icon class="arrow">arrow_drop_up</mat-icon>
+            <div class="vote">{{ item.voteCount }}</div>
+            <div>Votes</div>
+            <mat-icon class="arrow">arrow_drop_down</mat-icon>
           </div>
-          <div style="float: right;margin-bottom: 10px;margin-right: 10px;" class="posted-details">
-            <div class="posted">Posted on</div>
+          <div style="width: 100%;display: flex;">
+            <div class="answer-layout" style="width: 100%;">
+              <div class="answer" *ngIf="item.isApproved">Approved</div>
+              <div class="ansdescription" [innerHTML]="item.description"></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div
+            *ngIf="answerFiles[item.id].imageModelList.length > 0"
+            style="font-size: smaller;margin-left: 16px;"
+          >
+            <div style="display: flex;align-items: center;">
+              <div>Attachments</div>
+              <mat-icon style="margin-left: 4px;">attachment</mat-icon>
+            </div>
+            <div>
+              <div *ngFor="let answer of answerFiles[item.id].imageModelList">
+                <div
+                  class="attachment-items"
+                  (click)="onAttachmentClick(answer.fileName, answer.id)"
+                >
+                  {{ answer.fileName }}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="ans-posted-details">
+            <div class="posted">Posted by {{ item.ownerUserName }}</div>
             <div class="posted-date">
               {{ item.postedDate | date: "mediumDate" }}
             </div>
           </div>
         </div>
-      </div>
 
-      <mat-divider></mat-divider>
+        <mat-divider></mat-divider>
+      </div>
     </div>
-    <div>
+
+    <div *ngIf="index==='approved'">
       <ejs-richtexteditor
         #imageRTE
         id="imageRTE"

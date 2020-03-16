@@ -26,13 +26,13 @@
         <div class="question-layout">
           <a
             class="question"
-            [routerLink]="['/main/qna', list.Question.id]"
+            [routerLink]="['/main/qna/approved/', list.Question.id]"
             (click)="onClick(list.Question.id)"
             >{{ list.Question.question }}</a
           >
           <div
             class="description"
-            [routerLink]="['/main/qna', list.Question.id]"
+            [routerLink]="['/main/qna/approved/', list.Question.id]"
             (click)="onClick(list.Question.id)"
           >
             {{ list.Question.description }}

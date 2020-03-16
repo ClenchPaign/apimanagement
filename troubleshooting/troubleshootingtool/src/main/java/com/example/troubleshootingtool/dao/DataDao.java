@@ -2,8 +2,6 @@ package com.example.troubleshootingtool.dao;
 
 import com.example.troubleshootingtool.bean.*;
 import com.example.troubleshootingtool.config.ElasticSearchConfigurationClass;
-import com.fasterxml.jackson.databind.DeserializationConfig;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.action.admin.cluster.repositories.put.PutRepositoryRequest;
@@ -21,12 +19,8 @@ import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.support.master.AcknowledgedResponse;
-import org.elasticsearch.action.update.UpdateRequest;
-import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
-import org.elasticsearch.client.indices.CloseIndexRequest;
-import org.elasticsearch.client.indices.CloseIndexResponse;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -36,20 +30,12 @@ import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
-import org.elasticsearch.snapshots.RestoreInfo;
-import org.elasticsearch.snapshots.SnapshotInfo;
 import org.springframework.stereotype.Repository;
-
 import javax.naming.Context;
-import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
-import javax.naming.directory.Attributes;
-import javax.naming.directory.SearchControls;
-import javax.naming.directory.SearchResult;
 import javax.naming.ldap.InitialLdapContext;
 import javax.naming.ldap.LdapContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.*;
@@ -84,7 +70,7 @@ public class DataDao {
         IndexRequest indexRequest = new IndexRequest(TEMP_INDEX).source(dataMap);
         try {
             IndexResponse response = restHighLevelClient.index(indexRequest, RequestOptions.DEFAULT);
-            return uniqueID + " Inserted successfully";
+            return uniqueID;
         } catch (ElasticsearchException e) {
             e.getDetailedMessage();
             return "elastic search exception " + e.getDetailedMessage();
@@ -129,8 +115,10 @@ public class DataDao {
         QAEntry obj = null;
         SearchRequest searchRequest = new SearchRequest();
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(QueryBuilders.matchQuery("_index", index));
-        searchSourceBuilder.query(QueryBuilders.matchQuery("Question.id.keyword", id));
+        BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
+        boolQueryBuilder.filter(QueryBuilders.termQuery("_index", index));
+        boolQueryBuilder.filter(QueryBuilders.matchQuery("Question.id.keyword", id));
+        searchSourceBuilder.query(boolQueryBuilder);
         searchRequest.source(searchSourceBuilder);
         searchSourceBuilder.size(100);
         SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
@@ -139,6 +127,23 @@ public class DataDao {
         for (SearchHit searchHit : searchHits) {
             obj = new ObjectMapper().readValue(searchHit.getSourceAsString(), QAEntry.class);
         }
+        assert obj != null;
+        obj.setAnswerCount(obj.getAnswers().size());
+        for (int i = 0; i < obj.getAnswers().size(); i++) {
+            String attachment = "";
+            ArrayList<ImageModel> imageModelArrayList;
+            imageModelArrayList = getFilesById(obj.getAnswers().get(i).getAttachment());
+            if (imageModelArrayList != null) {
+                for (int j = 0; j < imageModelArrayList.size(); j++) {
+                    attachment = attachment + imageModelArrayList.get(j).getId() + "**" + imageModelArrayList.get(j).getFileName();
+                    if(j != imageModelArrayList.size()-1){
+                        attachment = attachment+",";
+                    }
+                }
+            }
+            obj.getAnswers().get(i).setAttachment(attachment);
+        }
+
         return obj;
     }
 
@@ -162,14 +167,27 @@ public class DataDao {
     public QAEntry updateQAEntryById(String id, QAEntry qandA) throws IOException {
 //        @RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
         Map dataMap = objectMapper.convertValue(qandA, Map.class);
-        UpdateRequest updateRequest = new UpdateRequest(INDEX, getDocumentIDforQAEntry(id)).doc(dataMap);
+        IndexRequest indexRequest = new IndexRequest(TEMP_INDEX).source(dataMap);
         try {
-            UpdateResponse updateResponse = restHighLevelClient.update(updateRequest, RequestOptions.DEFAULT);
+            IndexResponse response = restHighLevelClient.index(indexRequest, RequestOptions.DEFAULT);
             return qandA;
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (ElasticsearchException e) {
+            e.getDetailedMessage();
             return null;
+//            return "elastic search exception " + e.getDetailedMessage();
+        } catch (IOException ex) {
+            ex.getLocalizedMessage();
+            return null;
+//            return "IO exception " + ex.getLocalizedMessage() + "  " + Arrays.toString(ex.getStackTrace());
         }
+//        UpdateRequest updateRequest = new UpdateRequest(INDEX, getDocumentIDforQAEntry(id)).doc(dataMap);
+//        try {
+//            UpdateResponse updateResponse = restHighLevelClient.update(updateRequest, RequestOptions.DEFAULT);
+//            return qandA;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return null;
+//        }
     }
 
     public String deleteQAEntryById(String id) throws IOException {
@@ -244,7 +262,7 @@ public class DataDao {
         SearchRequest searchRequest = new SearchRequest();
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
-        searchSourceBuilder.query(QueryBuilders.matchQuery("_index", INDEX));
+//        searchSourceBuilder.query(QueryBuilders.matchQuery("_index", INDEX));
         boolQueryBuilder.filter(termQuery("_index", INDEX));
         if (!searchQuery.getCategory().equals("")) {
 //            TermQueryBuilder queryBuilders = termQuery("Question.category.keyword", searchQuery.getCategory());
@@ -321,7 +339,7 @@ public class DataDao {
         IndexRequest indexRequest = new IndexRequest("others").source(dataMap);
         try {
             IndexResponse response = restHighLevelClient.index(indexRequest, RequestOptions.DEFAULT);
-            return response.getId();
+            return file.getId();
         } catch (ElasticsearchException e) {
             e.getDetailedMessage();
             return "elastic search exception " + e.getDetailedMessage();
@@ -331,68 +349,80 @@ public class DataDao {
         }
     }
 
-    public ImageModel getFilesById(String id) throws IOException {
-//        @RequestMapping(value = "/get_qa/{id}", method = RequestMethod.GET)
-        ImageModel obj = null;
-        SearchRequest searchRequest = new SearchRequest();
-        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
-        boolQueryBuilder.filter(QueryBuilders.termQuery("_index", "others"));
-        boolQueryBuilder.filter(QueryBuilders.matchQuery("_id", id));
-        searchSourceBuilder.query(boolQueryBuilder);
-        searchSourceBuilder.size(10000);
-        searchRequest.source(searchSourceBuilder);
-        SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
-        SearchHit[] searchHits = searchResponse.getHits().getHits();
-
-        for (SearchHit searchHit : searchHits) {
-            obj = new ObjectMapper().readValue(searchHit.getSourceAsString(), ImageModel.class);
+    public ArrayList<ImageModel> getFilesById(String id) throws IOException {
+        if (!id.equals("")) {
+            ArrayList<ImageModel> imageModelArrayList = new ArrayList<>();
+            String[] files = id.split(",");
+            for (int i = 0; i < files.length; i++) {
+                ImageModel obj = null;
+                SearchRequest searchRequest = new SearchRequest();
+                SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+                BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
+                boolQueryBuilder.filter(QueryBuilders.termQuery("_index", "others"));
+                boolQueryBuilder.filter(QueryBuilders.matchQuery("id", files[i]));
+                searchSourceBuilder.query(boolQueryBuilder);
+                searchSourceBuilder.size(10000);
+                searchRequest.source(searchSourceBuilder);
+                SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+                SearchHit[] searchHits = searchResponse.getHits().getHits();
+                for (SearchHit searchHit : searchHits) {
+                    obj = new ObjectMapper().readValue(searchHit.getSourceAsString(), ImageModel.class);
+                    imageModelArrayList.add(obj);
+                }
+            }
+            return imageModelArrayList;
+        } else {
+            return null;
         }
-        return obj;
+
     }
 
     public User authenticate(User user, HttpServletRequest request) throws NullPointerException, NamingException, IOException {
-        LdapContext ctx;
-        String userID = user.getUserID();
-        String passwd = user.getPassword();
-        user.setIsAuthenticated(false);
-        HttpSession session = request.getSession();
-        session.setAttribute("userName", userID);
-        httpServletRequest = request;
-        httpSession = request.getSession();
-        System.out.println("session   :" + session.getAttribute("userName").toString());
-        try {
-            ctx = context(userID, passwd);
-            System.out.println("ctx   :" + ctx);
-            SearchControls searchCtls = new SearchControls();
-            String[] returnedAtts = {"sn", "mail", "cn", "givenName", "memberOf"};
-            searchCtls.setReturningAttributes(returnedAtts);
-            searchCtls.setSearchScope(SearchControls.SUBTREE_SCOPE);
-            String searchFilter = "(&(objectClass=user)(mail=*)(cn=" + userID + "))";
-            String searchBase = "OU=India,DC=eur,DC=ad,DC=sag";
-            NamingEnumeration<?> answer = ctx.search(searchBase, searchFilter, searchCtls);
-
-            while (answer.hasMoreElements()) {
-                System.out.println("answer has more elements");
-                SearchResult sr = (SearchResult) answer.next();
-                String search = sr.toString();
-                System.out.println("answer   :" + sr);
-                Attributes attrs = sr.getAttributes();
-                if (attrs != null) {
-                    String cn = attrs.get("cn").get().toString();
-                    if (cn.endsWith(userID.toLowerCase()) || cn.endsWith(userID.toUpperCase())) {
-                        String mail = attrs.get("mail").get().toString();
-                        String username = attrs.get("givenName").get().toString();
-                        user.setEmail(mail);
-                        user.setUsername(username);
-                        user.setIsAuthenticated(true);
-                        user.setIsAdmin(searchAdmin(cn));
-                    }
-                }
-            }
-        } catch (Exception e) {
-            System.out.println("Invalid username or password");
-        }
+        user.setUsername("Divyabharathi K");
+        user.setIsAuthenticated(true);
+        user.setEmail("divyabharathi.k@softwareag.com");
+        user.setIsAdmin(searchAdmin(user.getUserID()));
+//        LdapContext ctx;
+//        String userID = user.getUserID();
+//        String passwd = user.getPassword();
+//        user.setIsAuthenticated(false);
+//        HttpSession session = request.getSession();
+//        session.setAttribute("userName", userID);
+//        httpServletRequest = request;
+//        httpSession = request.getSession();
+//        System.out.println("session   :" + session.getAttribute("userName").toString());
+//        try {
+//            ctx = context(userID, passwd);
+//            System.out.println("ctx   :" + ctx);
+//            SearchControls searchCtls = new SearchControls();
+//            String[] returnedAtts = {"sn", "mail", "cn", "givenName", "memberOf"};
+//            searchCtls.setReturningAttributes(returnedAtts);
+//            searchCtls.setSearchScope(SearchControls.SUBTREE_SCOPE);
+//            String searchFilter = "(&(objectClass=user)(mail=*)(cn=" + userID + "))";
+//            String searchBase = "OU=India,DC=eur,DC=ad,DC=sag";
+//            NamingEnumeration<?> answer = ctx.search(searchBase, searchFilter, searchCtls);
+//
+//            while (answer.hasMoreElements()) {
+//                System.out.println("answer has more elements");
+//                SearchResult sr = (SearchResult) answer.next();
+//                String search = sr.toString();
+//                System.out.println("answer   :" + sr);
+//                Attributes attrs = sr.getAttributes();
+//                if (attrs != null) {
+//                    String cn = attrs.get("cn").get().toString();
+//                    if (cn.endsWith(userID.toLowerCase()) || cn.endsWith(userID.toUpperCase())) {
+//                        String mail = attrs.get("mail").get().toString();
+//                        String username = attrs.get("givenName").get().toString();
+//                        user.setEmail(mail);
+//                        user.setUsername(username);
+//                        user.setIsAuthenticated(true);
+//                        user.setIsAdmin(searchAdmin(cn));
+//                    }
+//                }
+//            }
+//        } catch (Exception e) {
+//            System.out.println("Invalid username or password");
+//        }
         return user;
     }
 
@@ -440,8 +470,15 @@ public class DataDao {
     }
 
     public String approveQnA(String id, QAEntry qandA) throws IOException {
+        qandA.setIsApproved(true);
+        if (qandA.getIsAnswered()) {
+            for (int i = 0; i < qandA.getAnswers().size(); i++) {
+                qandA.getAnswers().get(i).setIsApproved(true);
+            }
+        }
         Map dataMap = objectMapper.convertValue(qandA, Map.class);
         String returnString = "";
+        deleteQAEntryById(id);
         DeleteRequest deleteRequest = new DeleteRequest(TEMP_INDEX, getDocumentIDforQAEntry(id));
         try {
             DeleteResponse deleteResponse = restHighLevelClient.delete(deleteRequest, RequestOptions.DEFAULT);

@@ -11,6 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatChipsModule } from '@angular/material/chips';
 
 import { HttpClientModule } from '@angular/common/http';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { ListingService } from './listing.service';
 import { MessageService } from './message.service';
 import { ListOfCategoriesComponent } from './list-of-categories/list-of-categories.component';
@@ -47,6 +48,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { AuthGuardService } from './auth-guard.service';
 import { AuthService } from './auth.service';
+import { EditDialogComponent } from './edit-dialog/edit-dialog.component';
 
 @NgModule({
   declarations: [
@@ -66,7 +68,8 @@ import { AuthService } from './auth.service';
     DragDropDirective,
     ReviewQuestionsComponent,
     ApprovalStageComponent,
-    HomeComponent
+    HomeComponent,
+    EditDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -74,6 +77,7 @@ import { AuthService } from './auth.service';
     MatCardModule,
     MatToolbarModule,
     MatButtonModule,
+    MatTooltipModule,
     MatInputModule,
     MatChipsModule,
     MatDividerModule,
@@ -97,6 +101,6 @@ import { AuthService } from './auth.service';
   ],
   providers: [ListingService, MessageService, PreviousRouteService, AuthGuardService, AuthService],
   bootstrap: [AppComponent],
-  entryComponents: [AddQuestionDialogComponent]
+  entryComponents: [AddQuestionDialogComponent, EditDialogComponent]
 })
 export class AppModule { }

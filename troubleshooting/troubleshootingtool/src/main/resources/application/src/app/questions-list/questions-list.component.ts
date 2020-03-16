@@ -188,7 +188,7 @@ export class QuestionsListComponent implements OnInit {
         tagList.push(j);
       }
       this.listingService.setCategoriesList(this.response[i].Question.category);
-      console.log('cats-- ' + this.response[i].Question.category);
+      // console.log('cats-- ' + this.response[i].Question.category);
     }
     this.listingService.setTags(tagList);
     const noResult = document.getElementById('no_results');

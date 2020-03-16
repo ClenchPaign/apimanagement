@@ -7,15 +7,15 @@
 
   <div class="parent">
     <div class="card-set">
-      <mat-card class="card" (click)="cardClick('Questions Posted')">
+      <mat-card class="card" (click)="cardClick('QUESTIONS POSTED')">
         <div>Questions posted</div>
         <div class="number-values">{{ questionsposted }}</div>
       </mat-card>
-      <mat-card class="card" (click)="cardClick('Questions Answered')">
+      <mat-card class="card" (click)="cardClick('QUESTIONS ANSWERED')">
         <div>Questions answered</div>
         <div class="number-values">{{ questionsanswered }}</div>
       </mat-card>
-      <mat-card class="card" (click)="cardClick('Pending questions for Approval')">
+      <mat-card class="card" (click)="cardClick('PENDING QUESTIONS FOR APPROVAL')">
         <div>Pending for Approval</div>
         <div class="number-values">{{ pendingquestions }}</div>
       </mat-card>
@@ -32,8 +32,8 @@
             <div class="answer-text">Answers</div>
           </div>
           <div class="question-layout">
-            <a class="question" id="ques" [routerLink]="['/main/qna', list.Question.id]">{{ list.Question.question }}</a>
-            <div class="description" [routerLink]="['/main/qna', list.Question.id]" >{{ list.Question.description }}</div>
+            <a class="question" id="ques" (click)="questionDetails(list.Question.id)">{{ list.Question.question }}</a>
+            <div class="description" (click)="questionDetails(list.Question.id)" >{{ list.Question.description }}</div>
               <span *ngFor="let tag of list.tags" class="chips"> {{ tag }}</span>
           </div>
         </div>

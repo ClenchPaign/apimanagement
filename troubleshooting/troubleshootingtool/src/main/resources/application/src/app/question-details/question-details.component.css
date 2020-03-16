@@ -44,6 +44,7 @@
 
 .answer {
   margin-top: 10px;
+  margin-bottom: 10px;
   color: #657506;
   font-size: smaller;
   padding-top: 4px;
@@ -54,6 +55,7 @@
   width: min-content;
   white-space: nowrap;
   background-color: #eafa8f;
+  align-content: end;
 }
 .richtexteditor {
   margin-top: 16px;
@@ -69,8 +71,16 @@
   justify-content: space-between;
 }
 .posted-details {
-  text-align: center;
   width: max-content;
+}
+
+
+.ans-posted-details {
+  text-align: right;
+  height: min-content;
+  margin-right: 16px;
+  margin-bottom: 16px;
+  /* background-color: aquamarine; */
 }
 
 .answer-count {
@@ -88,6 +98,11 @@
   margin-bottom: 10px;
   font-size: smaller;
   white-space: pre-wrap;
+}
+.ansdescription {
+  font-size: smaller;
+  white-space: pre-wrap;
+  width: 100%;
 }
 
 .chips {
@@ -134,18 +149,24 @@
 .question {
   font-size: x-large;
 }
-mat-icon {
-  font-family: "Material Icons";
+/* mat-icon {
   rotate: 60 deg;
+} */
+
+.arrow {
+  font-size: 50px;
 }
 
-.attachment-items{
+.attachment-items {
   cursor: pointer;
   width: max-content;
-  padding: 4px;
-  background-color: lightgrey;
+  padding-left: 6px;
+  padding-right: 6px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  background-color: #CDE6F9;
   margin: 2px;
-  border-radius: 4px;
+  border-radius: 8px;
 }
 .posted-date {
   font-size: small;
@@ -171,9 +192,10 @@ mat-icon {
   font-family: Roboto, Helvetica, Arial, sans-serif;
   margin-left: 10px;
   margin-top: 10px;
+  margin-bottom: 16px;
   display: inline-block;
 }
-.list-of-answers{
+.list-of-answers {
   background-color: rgb(247, 247, 247);
 }
 /* ----------------------------------------------------------------------------------------------------- */

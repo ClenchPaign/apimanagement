@@ -84,7 +84,7 @@ export class SearchComponent implements OnInit {
       }
     };
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
-      this.router.navigate(['main/qna/' + id], this.navigationExtras));
+      this.router.navigate(['main/qna/approved/' + id], this.navigationExtras));
 
   }
 

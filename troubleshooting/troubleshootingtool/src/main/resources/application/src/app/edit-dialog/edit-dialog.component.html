@@ -1,0 +1,28 @@
+<ejs-richtexteditor
+  #imageRTE
+  id="imageRTE"
+  class="richtexteditor"
+  height="400px"
+  [(ngModel)]="description"
+>
+</ejs-richtexteditor>
+<div class="button-layout">
+  <button
+    mat-button
+    ejs-button
+    class="dlt-button-post"
+    type="submit"
+    (click)="save(description)"
+  >
+    SAVE
+  </button>
+  <button
+    mat-button
+    ejs-button
+    type="submit"
+    class="dlt-button-post"
+    (click)="onNoClick()"
+  >
+    CANCEL
+  </button>
+</div>

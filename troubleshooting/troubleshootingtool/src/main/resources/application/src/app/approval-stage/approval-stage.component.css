@@ -28,7 +28,7 @@
   padding-right: 8px;
   padding-bottom: 8px;
 }
-.white-snackbar{
+.white-snackbar {
   background: #1776bf;
 }
 
@@ -55,7 +55,6 @@ mat-icon {
   align-items: center;
 }
 .fileitem {
-  background-color: lightgrey;
   border-radius: 4px;
   width: max-content;
   padding-left: 4px;
@@ -91,10 +90,10 @@ mat-icon {
 .richtexteditor {
   align-self: center;
   z-index: 1;
-  min-width: 95%;
-  max-width: 95%;
-  min-height: 350px;
-  max-height: 700px;
+  margin-left: 16px;
+  margin-right: 16px;
+  max-width: 98%;
+  max-height: 300px;
 }
 .search {
   width: 100%;
@@ -135,8 +134,41 @@ mat-icon {
 .attachment-items {
   cursor: pointer;
   width: max-content;
-  padding: 4px;
-  background-color: lightgrey;
-  margin: 2px;
-  border-radius: 4px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color:#CDE6F9;
+  color: #1776bf;
+  margin-bottom: 4px;
+  font-size: smaller;
+  border-radius: 10px;
 }
+
+.answer_description {
+  background-color: #f8f8f8;
+  border: lightgray;
+  border-style: solid;
+  border-radius: 2px;
+  border-width: 0.5px;
+  margin-bottom: 16px;
+  margin-left: 16px;
+  margin-right: 16px;
+  padding: 16px;
+}
+.question_description {
+  background-color: #f8f8f8;
+  border: lightgray;
+  border-style: solid;
+  display: flex;
+  border-radius: 2px;
+  border-width: 0.5px;
+  margin-bottom: 16px;
+  margin-left: 16px;
+  margin-right: 16px;
+  padding: 16px;
+}
+.outerlayout {
+  margin-left: 24px;
+}
+

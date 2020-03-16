@@ -6,10 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.naming.NamingException;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -18,17 +17,12 @@ public class DataController {
 
     @Autowired
     private DataDao dataDao;
-    private static String UPLOADED_FOLDER = "F://temp//";
 
 
     public DataController(DataDao dataDao) {
         this.dataDao = dataDao;
     }
 
-    @RequestMapping("/api/hi")
-    public String hi() {
-        return "Hello world!";
-    }
 
     //    @GetMapping("/all")
     @GetMapping("/qnas")
@@ -93,7 +87,7 @@ public class DataController {
     }
 
     @RequestMapping(value = "/files/{id}", method = RequestMethod.GET)
-    public ImageModel getFiles(@PathVariable("id") String id) throws IOException {
+    public ArrayList<ImageModel> getFiles(@PathVariable("id") String id) throws IOException {
         return dataDao.getFilesById(id);
     }
 

@@ -1,0 +1,13 @@
+.dlt-button-post {
+    margin-top: 16px;
+    margin-left: 16px;
+    margin-right: 16px;
+    width: max-content;
+    color: #ffffff;
+    background-color: #1776bf;
+    font-family: Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  .button-layout {
+      float: right;
+  }

@@ -39,14 +39,14 @@
       <div
         class="uploadfilecontainer"
         appDragDrop
-        (onFileDropped)="uploadFile($event)"
+        (onFileDropped)="uploadFile($event,'question')"
       >
         <input
           hidden
           type="file"
           #fileInput
           multiple
-          (change)="uploadFile($event.target.files)"
+          (change)="uploadFile($event.target.files,'question')"
         />
         <div>Drag & Drop files here</div>
         <div style="margin-left: 10px;margin-right: 10px;">or</div>
@@ -62,8 +62,9 @@
 
       <div class="upload-table">
         <div class="fileitem" *ngFor="let item of files; let i = index">
+          <!-- change files and remove files methods -->
           <div class="item">
-            {{ item }}<mat-icon (click)="removeFiles(item)">close</mat-icon>
+            {{ item }}<mat-icon (click)="removeFiles(item,'question')">close</mat-icon>
           </div>
         </div>
       </div>
@@ -131,7 +132,38 @@
         [(ngModel)]="val"
       >
       </ejs-richtexteditor>
+      <label class="textarea" style="margin-top: 16px;margin-bottom: 16px;">Attachments for Solution</label>
+      <div
+        class="uploadfilecontainer"
+        appDragDrop
+        (onFileDropped)="uploadFile($event,'answer')"
+      >
+        <input
+          hidden
+          type="file"
+          #fileInput
+          multiple
+          (change)="uploadFile($event.target.files,'answer')"
+        />
+        <div>Drag & Drop files here</div>
+        <div style="margin-left: 10px;margin-right: 10px;">or</div>
+        <button
+          mat-button
+          class="button"
+          type="button"
+          (click)="fileInput.click()"
+        >
+          Browse Files
+        </button>
+      </div>
 
+      <div class="upload-table">
+        <div class="fileitem" *ngFor="let item of answerfiles; let i = index">
+          <div class="item">
+            {{ item }}<mat-icon (click)="removeFiles(item,'answer')">close</mat-icon>
+          </div>
+        </div>
+      </div>
       <button
         mat-button
         ejs-button

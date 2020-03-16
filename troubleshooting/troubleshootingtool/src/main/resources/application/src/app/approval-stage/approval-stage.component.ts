@@ -10,9 +10,15 @@ import { FormControl, Validators } from '@angular/forms';
 import { Answer } from '../data-models/Answer';
 import { RichTextEditorComponent } from '@syncfusion/ej2-angular-richtexteditor';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { ImageModel } from '../data-models/ImageModel';
-import { Template } from '@angular/compiler/src/render3/r3_ast';
+import { ImageModel, AnswerFiles } from '../data-models/ImageModel';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
+import { EditDialogComponent } from '../edit-dialog/edit-dialog.component';
+
+export interface DialogData {
+  type: string;
+  description: string;
+}
 @Component({
   selector: 'app-approval-stage',
   templateUrl: './approval-stage.component.html',
@@ -29,7 +35,7 @@ export class ApprovalStageComponent implements OnInit {
   categoryList: string[];
   tagList: string[];
   base64String: any;
-  uploadedFiles: string[] = [];
+  // uploadedFiles: string[] = [];
   tagsResponse: any;
   response: any;
   visible = true;
@@ -38,56 +44,101 @@ export class ApprovalStageComponent implements OnInit {
   addOnBlur = true;
   imageUrlPREVIEW: any;
   questionData: any;
-  attachment: string[] = [];
-  returnAttachment: string[] = [];
-  returnAttachmentFileName: string[] = [];
-  attachmentList: any = [];
+  files: string[] = [];
 
+  answerFiles: AnswerFiles[] = [];
+  questionFiles: ImageModel[] = [];
+
+  questionDescription: string;
   navigationExtras: NavigationExtras;
-  public files: string[] = [];
 
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
-  @ViewChild('valueTemplate', { static: true })
-  private template: Template;
+  // @ViewChild('valueTemplate', { static: true })
+  // private template: Template;
   @ViewChild('imageRTE', { static: true })
   private rteObj: RichTextEditorComponent;
-  @ViewChild('imageRTEForAnswer', { static: true })
-  private rteObjAnswer: RichTextEditorComponent;
+  // @ViewChild('imageRTEForAnswer', { static: true })
+  // private rteObjAnswer: RichTextEditorComponent;
 
   question = new FormControl('', [
     Validators.required,
   ]);
   categories = new FormControl();
+  userID: string;
+  userName: string;
+  isLoaded: boolean;
 
   constructor(
     private listingService: ListingService,
     private router: Router,
     private route: ActivatedRoute,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    public dialog: MatDialog
+    // public answerFiles: AnswerFiles[],
+    // public questionFiles: ImageModel[]
   ) { }
 
   ngOnInit() {
     this.id = this.listingService.id;
+    this.userID = localStorage.getItem('userID');
+    this.userName = localStorage.getItem('username');
     this.route.paramMap.subscribe(params => {
       this.id = params.get('id');
-      console.log('ID in approval stage:' + this.id);
+      // console.log('ID in approval stage:' + this.id);
     });
     this.listingService.getReviewQuestionForID(this.id).subscribe(
       data => {
-        console.log('GET Review qn is successful ', data);
+        console.log('Review qn is successful ', data);
         this.questionData = data;
-        this.onLoad();
-        const temp: string = this.questionData.Question.attachment;
-        this.attachment = temp.split(',');
-        for (const val of this.attachment) {
-          let img: any;
-          this.listingService.get_files(val).subscribe(data => {
-            img = data;
-            this.attachmentList.push(data);
-            this.returnAttachment.push(img.base64Image);
-            this.returnAttachmentFileName.push(img.fileName);
-          },
-            res => { });
+        this.questionDescription = this.questionData.Question.description;
+        this.question.setValue(this.questionData.Question.question);
+        this.categories.setValue(this.questionData.Question.category);
+        this.questionData.tags.forEach(element => {
+          this.fruits.push({ name: element });
+        });
+        if (this.questionData.Question.attachment !== '') {
+          this.listingService.get_files(this.questionData.Question.attachment).subscribe(
+            dataInside => {
+              const files: any = dataInside;
+              this.questionFiles = files;
+            });
+        }
+
+        if (this.questionData.isAnswered) {
+          for (const answer of this.questionData.Answers) {
+            if (answer.attachment !== '') {
+              const attaDiv = answer.attachment.split(',');
+              const imgModelList: ImageModel[] = [];
+              for (const att of attaDiv) {
+                const obj = att.split('**');
+                const imgModel = new ImageModel(obj[0], obj[1], '');
+                imgModelList.push(imgModel);
+              }
+              const anss = new AnswerFiles(answer.id, imgModelList);
+              this.answerFiles.push(anss);
+            } else {
+              const anss = new AnswerFiles(answer.id, []);
+              this.answerFiles.push(anss);
+            }
+          }
+          // for (let i = 0; i < this.questionData.Answers.length; i++) {
+          //   this.listingService.get_files(this.questionData.Answers[i].attachment).subscribe(
+          //     dataInside => {
+          //       const files: any = dataInside;
+          //       const anss = new AnswerFiles(this.questionData.Answers[i].id, files);
+          //       this.answerFiles.push(anss);
+          //       console.log(this.questionData.Answers[i].id + '=' + this.questionData.Answers[i].attachment);
+          //     }, res => {
+          //       console.log(this.questionData.Answers[i].id + '=' + this.questionData.Answers[i].attachment);
+          //       const anss = new AnswerFiles(this.questionData.Answers[i].id, []);
+          //       this.answerFiles.push(anss);
+          //     });
+          //   if (i === this.questionData.Answers.length - 1) {
+          //     this.isLoaded = true;
+          //   }
+          // }
+        } else {
+          this.isLoaded = true;
         }
       });
 
@@ -107,54 +158,86 @@ export class ApprovalStageComponent implements OnInit {
       'Formats', 'OrderedList', 'UnorderedList', '|', 'CreateLink', '|', 'Undo', 'Redo', '|', 'SourceCode'];
     // this.rteObj.insertImageSettings.saveFormat = 'Base64';
     this.rteObj.enableResize = true;
-    this.rteObjAnswer.toolbarSettings.items = ['Bold', 'Italic', 'Underline', '|',
-      'Formats', 'OrderedList', 'UnorderedList', '|', 'CreateLink', '|', 'Undo', 'Redo', '|', 'SourceCode'];
-    this.rteObjAnswer.enableResize = true;
+
+    // this.rteObjAnswer.toolbarSettings.items = ['Bold', 'Italic', 'Underline', '|',
+    //   'Formats', 'OrderedList', 'UnorderedList', '|', 'CreateLink', '|', 'Undo', 'Redo', '|', 'SourceCode'];
+    // this.rteObjAnswer.enableResize = true;
   }
 
-  onAttachmentClick(itemName: string) {
-    for (const item of this.attachmentList) {
-      if (itemName === item.fileName) {
-        if (item.base64Image.includes('/png') || item.base64Image.includes('/jpeg')) {
-          const image = new Image();
-          image.src = item.base64Image;
-          const w = window.open(item.fileName);
-          w.document.write(image.outerHTML);
-        } else {
-          this.showPdf(item.base64Image, item.fileName);
+  onAttachmentClick(itemName: string, type: string) {
+    console.log('type=' + type);
+    if (type === 'question') {
+      for (const item of this.questionFiles) {
+        if (itemName === item.fileName) {
+          if (item.base64Image.includes('/png') || item.base64Image.includes('/jpeg')) {
+            const image = new Image();
+            image.src = item.base64Image;
+            const w = window.open(item.fileName);
+            w.document.write(image.outerHTML);
+          } else {
+            this.showPdf(item.base64Image, item.fileName);
+          }
         }
       }
+    } else {
+      let attachment: ImageModel;
+      this.listingService.get_files(type).subscribe(
+        dataInside => {
+          const attachmentObject = dataInside;
+          attachment = attachmentObject[0];
+          if (attachment.base64Image.includes('/png') || attachment.base64Image.includes('/jpeg')) {
+            const image = new Image();
+            image.src = attachment.base64Image;
+            const w = window.open(attachment.fileName);
+            w.document.write(image.outerHTML);
+          } else {
+            this.showPdf(attachment.base64Image, attachment.fileName);
+          }
+        }, res => {
+
+        }
+      );
+      // list = this.answerFiles[Number(type)].imageModelList;
     }
   }
   showPdf(src: string, fileName: string) {
-    const downloadLink = document.createElement("a");
+    const downloadLink = document.createElement('a');
     downloadLink.href = src;
     downloadLink.download = fileName;
     downloadLink.click();
   }
-  getAttachments(): string[] {
-    return this.returnAttachment;
-  }
 
-  getAttachmentFileNames(): string[] {
-    return this.returnAttachmentFileName;
-  }
+  // onLoad() {
+  //   this.questionDescription = this.questionData.Question.description;
+  //   // console.log('qn desc->' + this.questionData.Question.description);
+  //   if (this.questionData.isAnswered) {
+  //     // this.rteObjAnswer.valueTemplate = this.questionData.Answers[0].description;
+  //   }
+  //   this.question.setValue(this.questionData.Question.question);
+  //   this.categories.setValue(this.questionData.Question.category);
+  //   const temp: string = this.questionData.Question.attachment;
+  //   this.attachment = temp.split(',');
+  //   this.uploadedFiles = this.attachment;
+  //   this.questionData.tags.forEach(element => {
+  //     this.fruits.push({ name: element });
+  //   });
+  //   // this.rteObj.valueTemplate = this.questionData.Question.description;
+  // }
+  openDialog(descriptionStr: string, typeStr: string): void {
+    const dialogRef = this.dialog.open(EditDialogComponent, {
+      width: '90%',
+      data: { type: typeStr, description: descriptionStr }
+    });
 
-  onLoad() {
-    this.rteObj.valueTemplate = this.questionData.Question.description;
-    if (this.questionData.isAnswered) {
-      this.rteObjAnswer.valueTemplate = this.questionData.Answers[0].description;
-    }
-    this.question.setValue(this.questionData.Question.question);
-    this.categories.setValue(this.questionData.Question.category);
-    const temp: string = this.questionData.Question.attachment;
-    this.attachment = temp.split(',');
-    this.uploadedFiles = this.attachment;
-    this.questionData.tags.forEach(element => {
-      this.fruits.push({ name: element });
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log('The dialog was closed' + result.description);
+      if (result.type === 'question') {
+        this.questionDescription = result.description;
+      } else {
+        this.questionData.Answers[Number(result.type)].description = result.description;
+      }
     });
   }
-
   // filters for categories
   getFilteredList() {
     return this.result;
@@ -230,77 +313,78 @@ export class ApprovalStageComponent implements OnInit {
     this.files = this.files.filter(item => item !== file);
     console.log('remove file:' + file);
   }
-  uploadFile(event) {
-    for (const droppedFile of event) {
-      this.files.push(droppedFile.name);
-      const reader = new FileReader();
-      console.log('Name ', droppedFile.name);
-      reader.readAsDataURL(droppedFile);
-      reader.onload = (e) => {
-        const imageModel: ImageModel = new ImageModel('', droppedFile.name, reader.result as string);
-        this.listingService.upload_files(imageModel).subscribe(data => {
-          console.log('Upload', data);
-          this.uploadedFiles.push(data);
-        });
-      };
-    }
-  }
+  // uploadFile(event) {
+  //   for (const droppedFile of event) {
+  //     this.files.push(droppedFile.name);
+  //     const reader = new FileReader();
+  //     console.log('Name ', droppedFile.name);
+  //     reader.readAsDataURL(droppedFile);
+  //     reader.onload = (e) => {
+  //       const imageModel: ImageModel = new ImageModel('', droppedFile.name, reader.result as string);
+  //       this.listingService.upload_files(imageModel).subscribe(data => {
+  //         console.log('Upload', data);
+  //         this.uploadedFiles.push(data);
+  //       });
+  //     };
+  //   }
+  // }
 
 
   post_qaentry() {
     const question = this.question.value;
-    const description = this.rteObj.getText();
+    // const description = this.rteObj.getText();
+    const description = this.questionDescription;
     const categories = this.categories.value;
     this.quesTags = [];
-    let ans;
-    let approveAnswer: boolean;
-    const approveAnswerEle = document.getElementById('approveAnswer') as HTMLInputElement;
-    if (approveAnswerEle.checked) {
-      approveAnswer = true;
-    } else {
-      approveAnswer = false;
-    }
+    // let approveAnswer: boolean;
+    // const approveAnswerEle = document.getElementById('approveAnswer') as HTMLInputElement;
+    // if (approveAnswerEle.checked) {
+    //   approveAnswer = true;
+    // } else {
+    //   approveAnswer = false;
+    // }
     for (const tags of this.fruits) {
       this.quesTags.push(tags.name);
     }
     console.log(this.quesTags);
-    const d = new Date();
-    const creationDate = d.getTime();
     let isAnswered: boolean;
     const ques = new Question(this.questionData.Question.id, categories,
-      question, description, this.uploadedFiles.toString(), creationDate, this.questionData.Question.ownerId, creationDate);
-
+      question, description, this.questionData.Question.attachment, this.questionData.Question.creationDate,
+      this.questionData.Question.ownerId, this.questionData.Question.lastModifiedDate);
+    let qa: QAEntry;
+    // let answer: Answer;
     if (this.questionData.isAnswered) {
       isAnswered = true;
-      if (this.val === '') {
-        ans = this.questionData.Answers[0].description;
-      } else {
-        ans = this.val;
-      }
+      // if (this.val === '') {
+      //   ans = this.questionData.Answers[0].description;
+      //   answer = new Answer('0', ans, this.questionData.Answers[0].postedDate, this.questionData.Answers[0].ownerUserId,
+      //     this.questionData.Answers[0].ownerUserName, this.questionData.Answers[0].lastEditedDate,
+      //     this.questionData.Answers[0].attachment, 0, true);
+      // } else {
+      //   ans = this.val;
+      // }
     } else {
       isAnswered = false;
     }
-    const answer = new Answer('0', ans, creationDate, '',
-    '', creationDate, 0, approveAnswer);
-    let qa: QAEntry;
+
     if (isAnswered) {
-      qa = new QAEntry(ques, [answer], this.quesTags, true, 1, 0);
+      qa = new QAEntry(ques, this.questionData.Answers, this.quesTags, true, this.questionData.isApproved, 1, 0);
     } else {
-      qa = new QAEntry(ques, [], this.quesTags, false, 0, 0);
+      qa = new QAEntry(ques, [], this.quesTags, false, false, 0, 0);
     }
     if (question === '' || categories === undefined || description === '') {
       // validate form
       console.log('Form incomplete');
-      this._snackBar.open('Provide the required fields', "OK", {
-        duration: 2000,
-        verticalPosition: 'top',
-        panelClass: ['white-snackbar']
-      });
+      this.openSnackBar('Provide the required fields', 'OK');
     } else {
-      console.log('Form posted');
+      console.log('Question approved ', qa);
       this.listingService.approve_question(qa, this.questionData.Question.id).subscribe(data => {
         console.log('Question approved ', data);
         this.openSnackBar('Question approved successfully', 'OK');
+        setTimeout(() => {
+          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
+            this.router.navigate(['/main/qna/approved/' + this.questionData.Question.id]));
+        }, 2000);
       });
     }
   }
@@ -318,8 +402,6 @@ export class ApprovalStageComponent implements OnInit {
       verticalPosition: 'top',
       panelClass: ['white-snackbar']
     });
-    // window.location.replace('http://localhost:4343/main/dashboard');
-    // window.location.replace('/main/dashboard');
     this.router.navigateByUrl('/main');
   }
 }

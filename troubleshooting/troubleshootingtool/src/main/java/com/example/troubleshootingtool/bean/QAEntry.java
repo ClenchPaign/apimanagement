@@ -1,6 +1,7 @@
 package com.example.troubleshootingtool.bean;
 
 import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -11,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "Answers",
         "tags",
         "isAnswered",
+        "isApproved",
         "answerCount",
         "score"
 })
@@ -24,6 +26,8 @@ public class QAEntry {
     private List<String> tags = null;
     @JsonProperty("isAnswered")
     private Boolean isAnswered;
+    @JsonProperty("isApproved")
+    private Boolean isApproved;
     @JsonProperty("answerCount")
     private Integer answerCount;
     @JsonProperty("score")
@@ -31,26 +35,17 @@ public class QAEntry {
 
     /**
      * No args constructor for use in serialization
-     *
      */
     public QAEntry() {
     }
 
-    /**
-     *
-     * @param score
-     * @param answerCount
-     * @param question
-     * @param isAnswered
-     * @param answers
-     * @param tags
-     */
-    public QAEntry(Question question, List<Answer> answers, List<String> tags, Boolean isAnswered, Integer answerCount, Integer score) {
+    public QAEntry(Question question, List<Answer> answers, List<String> tags, Boolean isAnswered,Boolean isApproved, Integer answerCount, Integer score) {
         super();
         this.question = question;
         this.answers = answers;
         this.tags = tags;
         this.isAnswered = isAnswered;
+        this.isApproved = isApproved;
         this.answerCount = answerCount;
         this.score = score;
     }
@@ -93,6 +88,16 @@ public class QAEntry {
     @JsonProperty("isAnswered")
     public void setIsAnswered(Boolean isAnswered) {
         this.isAnswered = isAnswered;
+    }
+
+    @JsonProperty("isApproved")
+    public Boolean getIsApproved() {
+        return isApproved;
+    }
+
+    @JsonProperty("isApproved")
+    public void setIsApproved(Boolean isApproved) {
+        this.isApproved = isApproved;
     }
 
     @JsonProperty("answerCount")

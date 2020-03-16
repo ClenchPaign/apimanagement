@@ -8,3 +8,11 @@ export class ImageModel {
         this.base64Image = $base64Image;
     }
 }
+export class AnswerFiles {
+    public id: string;
+    public imageModelList: ImageModel[];
+    constructor($id: string, $imageModelList: ImageModel[]) {
+        this.id = $id;
+        this.imageModelList = $imageModelList;
+    }
+}

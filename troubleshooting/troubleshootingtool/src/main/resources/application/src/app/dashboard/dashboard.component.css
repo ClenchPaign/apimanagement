@@ -16,9 +16,10 @@
 }
 
 .head{
-  font-size: medium;
+  font-size: large;
+  font-weight: bolder;
+  color: #0f4c7b;
   font-family: sans-serif;
-
 }
 
 .headers .username {
@@ -73,6 +74,7 @@
 }
 .question-item {
   display: flex;
+  cursor: pointer;
   justify-content: left;
 }
 .answer-layout {
@@ -110,6 +112,7 @@
   font-size: medium;
   white-space: nowrap;
   text-overflow: ellipsis;
+  cursor: pointer;
   overflow: hidden;
 }
 
