@@ -374,3 +374,23 @@ ul.breadcrumb li:hover {
 .sm-breadcrumb li::before {
   font-size: 0.875rem;
 }
+
+.searchcard{
+  margin-top: 25%;
+  margin-left: 15%;
+  margin-right: 15%;
+  border-radius: 36px;
+}
+
+
+.searchcard-inside{
+  display: flex;
+}
+.search-result{
+  cursor: pointer;
+  padding: 16px;
+  
+}
+.search-result:hover{
+  background-color: lightblue;
+}

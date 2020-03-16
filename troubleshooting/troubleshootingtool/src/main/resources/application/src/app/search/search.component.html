@@ -43,7 +43,7 @@
       </button>
     </mat-menu>
   </div>
-  <div class="searchbar">
+  <div *ngIf="router.url != '/main'" class="searchbar">
     <div class="inside-searchbar">
       <div class="dummy">
         <div class="dummy-inside">
@@ -88,4 +88,41 @@
       </div>
     </div>
   </div>
+</div>
+<div *ngIf="router.url == '/main'">
+  <mat-card class="searchcard">
+    <div class="searchcard-inside">
+      <input
+        id="searchinput"
+        style="border: 0cm;
+          padding-right: 16px;
+          padding-left: 16px;
+          padding-top: 8px;
+          padding-bottom: 8px;
+          color: #000000;
+          outline: none;
+          font-size: medium;
+          width: 95%;"
+        placeholder="Search here"
+        (input)="search($event.target.value)"
+        input
+        (keyup.enter)="onEnter()"
+      />
+      <div style="width: 5%;">
+        <mat-icon style="padding: 5px;" (click)="onEnter()">search</mat-icon>
+      </div>
+    </div>
+    <div>
+      <div *ngFor="let list of getQuestions()" style="margin-top: 10px;">
+        <!-- <mat-divider></mat-divider> -->
+        <div
+          class="search-result"
+          [routerLink]="['main/qna/approved/', list.Question.id]"
+          (click)="onClick(list.Question.id)"
+        >
+          {{ list.Question.question }}
+        </div>
+      </div>
+    </div>
+  </mat-card>
 </div>
