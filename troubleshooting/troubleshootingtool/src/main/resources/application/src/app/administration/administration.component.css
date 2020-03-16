@@ -1,0 +1,47 @@
+/* :host {        
+    width:max-content;
+    height: max-content;
+}     */
+
+.span {
+    font-family: Roboto, Helvetica, Arial, sans-serif;
+    padding: 10px;
+    outline: none;
+    font-size: medium;
+    cursor: pointer;
+    display: flex;
+  
+    /* background-color: #ffffff; */
+  }
+  .parent {
+    width: max-content; 
+    height: 100%;
+  }
+  
+  /* .category {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    margin-left: 8px;
+    margin-right: 16px;
+    outline: none;
+    align-self: center;
+  } */
+  .category,.admin , .settings{
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    margin-left: 8px;
+    margin-right: 16px;
+    outline: none;
+    align-self: center;
+  }
+  .mat-icon{
+    color:#0f4c7b;;
+  }
+.category:hover,.admin:hover,.settings:hover {
+    background-color: #eeeeee;
+  }
+  
+  .router{
+    margin-left: 700px;
+    width: max-content;
+    height: max-content;
+  }
+  

@@ -1,0 +1,35 @@
+/* 
+.categories{
+    text-align: center;
+    display: block;
+    margin-left:auto;
+    margin-right:auto;  
+    width: max-content;
+    height: max-content;
+  } */
+  .dlt-button-post {
+    margin-top: 16px;
+    left: 16px;
+    width: max-content;
+    color: #ffffff;
+    background-color: #1776bf;
+    font-family: Roboto, Helvetica, Arial, sans-serif;
+    margin-right: 10px;
+  }
+  mat-tab-group{
+    margin-left: 230px;
+    
+  }
+
+  .parent{
+    margin-right: 100px;
+  }
+
+  h3{
+    font-family: Roboto, Helvetica, Arial, sans-serif;
+    color:#1776bf;
+  }
+  .span{
+    font-family: Roboto, Helvetica, Arial, sans-serif;
+    margin-top:10px;
+  }

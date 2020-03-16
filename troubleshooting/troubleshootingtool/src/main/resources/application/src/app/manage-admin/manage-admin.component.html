@@ -1,0 +1,66 @@
+<div style="width:1000px;margin-left: 40px;">
+  <div>
+    <mat-card class="admin">
+      <h3>Add Admin</h3>
+      <mat-divider></mat-divider>
+      <mat-form-field class="textarea">
+        <input [formControl]="admin" type="text" placeholder="Add Admin" matInput
+          (input)="filterUsers($event.target.value)" [matAutocomplete]="auto" />
+
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let option of getUsers() " [value]="option">
+            {{option }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+
+      <button mat-button class="dlt-button-post" type="submit" (click)="add_admin()">
+        ADD
+      </button>
+    </mat-card>
+  </div>
+  <div style="width: 1000px;margin-left: 0px;right: 500px;margin-top: 20px;">
+    <mat-card>
+      <h3>List of Admins</h3>
+      <mat-divider></mat-divider>
+      <div style="overflow-y: scroll;">
+        <div class="span" *ngFor="let option of get_admins() ">
+          {{option}}
+        </div>
+
+      </div>
+    </mat-card>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 
+<div>
+    <div class="admin">
+        <mat-form-field class="textarea">
+          <input [formControl]="admin" type="text" placeholder="Add Admin" matInput
+            (input)="filterUsers($event.target.value)" [matAutocomplete]="auto" />
+
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let option of getUsers() " [value]="option">
+              {{option }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        <button mat-button class="dlt-button-post" type="submit" (click)="add_admin()">
+          ADD
+        </button>
+    </div>
+  </div> -->

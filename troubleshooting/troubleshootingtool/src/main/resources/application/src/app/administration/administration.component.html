@@ -1,0 +1,21 @@
+<div class="parent" style="display: flex;">
+  <div>
+    <div class="span">
+      <mat-icon >category</mat-icon>
+      <div class="category"  (click)="manage_category()">Manage Category</div>
+    </div>
+    <div class="span">
+        <mat-icon >group_add</mat-icon> 
+        <div class="admin" (click)="manage_admin()">Manage Admin</div>
+      </div> 
+      <div class="span">
+        <mat-icon >settings</mat-icon> 
+        <div class="admin">Settings</div>
+      </div> 
+    </div>
+    <mat-divider [vertical]="true"></mat-divider>
+
+  </div>
+  <div style="margin-left: 450px;"><router-outlet></router-outlet>
+  </div>
+    

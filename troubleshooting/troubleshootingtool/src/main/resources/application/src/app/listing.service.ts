@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams, JsonpInterceptor } from '@angular/common/http';
 import { SearchQuery } from './data-models/SearchQuery';
 import { QAEntry } from './data-models/QAEntry';
 import { Question } from './data-models/Question';
 import { Answer } from './data-models/Answer';
 import { User } from './data-models/User';
+import { Categories } from './data-models/Categories';
+import { Admin } from './data-models/Admin';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' })
@@ -13,6 +15,7 @@ const headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Access-Co
 
 @Injectable()
 export class ListingService {
+
   public category: string;
   public tags: string[];
   public categoriesList: string[] = [];
@@ -23,7 +26,7 @@ export class ListingService {
   constructor(private http: HttpClient) {
   }
 
-  baseUrl = 'http://localhost:4343';
+  baseUrl = 'http://localhost:4040';
   getAllQuestions() {
     return this.http.get(this.baseUrl + '/qnas', httpOptions);
   }
@@ -121,5 +124,25 @@ export class ListingService {
 
   getReviewQuestionForID(id: string) {
     return this.http.get(this.baseUrl + '/review/' + id, httpOptions);
+  }
+
+  add_admin_category(admin_category: Categories) {
+    console.log(admin_category);
+    return this.http.post(this.baseUrl + '/category/add', admin_category, { headers, responseType: 'text' });
+  }
+  getLdapUsers(user: User) {
+    return this.http.post(this.baseUrl + '/admin/users', user, httpOptions);
+  }
+
+  add_admin(admin_name:Admin) {
+    console.log("admin n listng srv :" + JSON.stringify(admin_name));
+    return this.http.post(this.baseUrl + '/admin/add', admin_name, { headers, responseType: 'text' });
+  }
+  
+  getAllAdmins() {
+    return this.http.get(this.baseUrl + '/admin/get', httpOptions);
+  }
+  getAdminCategoies() {
+    return this.http.get(this.baseUrl + '/category/get', httpOptions);
   }
 }

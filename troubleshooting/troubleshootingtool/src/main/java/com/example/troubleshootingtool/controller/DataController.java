@@ -123,9 +123,15 @@ public class DataController {
         return dataDao.getQAEntryById(id, "review");
     }
 
-    @PostMapping("/admin")
+    @PostMapping("/admin/add")
     public String insertAdmin(@RequestBody Admin admin) {
+        System.out.println(admin.getUsername());
         return dataDao.insertAdmin(admin);
+    }
+
+    @GetMapping("/admin/get")
+    public List<String> getAdmin() throws IOException {
+        return dataDao.getAdmin();
     }
 
     @GetMapping("/repo")
@@ -144,4 +150,19 @@ public class DataController {
     public String restoreSnapshot() throws IOException {
         return dataDao.restoreSnapshot();
     }
+    @PostMapping("/category/add")
+    public String addCategory(@RequestBody Categories admin_category ) {
+        return dataDao.addCategory(admin_category);
+    }
+
+    @GetMapping("/category/get")
+    public List<String> getCategory() throws IOException {
+        return dataDao.getAdminCategories();
+    }
+
+    @PostMapping("/admin/users")
+    public List<String> getLdapUsers(@RequestBody User user)throws IOException{
+        return dataDao.getLdapUsers(user);
+    }
+
 }

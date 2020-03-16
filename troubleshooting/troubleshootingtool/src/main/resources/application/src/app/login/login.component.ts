@@ -4,7 +4,6 @@ import { ListingService } from '../listing.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { User } from '../data-models/User';
 import { element } from 'protractor';
-import { stringify } from 'querystring';
 
 @Component({
   selector: 'app-login',
@@ -49,6 +48,7 @@ export class LoginComponent implements OnInit {
           console.log('LDAP user auth is successful ', data);
           this.response = data;
           this.auth();
+          localStorage.setItem('password', password);
         },
         err => {
           this.authentication = 'false';

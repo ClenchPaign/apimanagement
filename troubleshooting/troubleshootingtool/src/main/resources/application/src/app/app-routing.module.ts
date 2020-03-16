@@ -14,6 +14,9 @@ import { ReviewQuestionsComponent } from './review-questions/review-questions.co
 import { ApprovalStageComponent } from './approval-stage/approval-stage.component';
 import { HomeComponent } from './home/home.component';
 import { AuthGuardService as AuthGuard } from './auth-guard.service';
+import { AdministrationComponent } from './administration/administration.component';
+import { ManageCategoryComponent } from './manage-category/manage-category.component';
+import { ManageAdminComponent } from './manage-admin/manage-admin.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -24,6 +27,10 @@ const routes: Routes = [
           { path: 'search/:tag/:keyword', component: QuestionsListComponent }
         ]
       },
+      { path: "administration", component: AdministrationComponent,children: [
+        { path: 'manage/category', component: ManageCategoryComponent },
+        { path: 'manage/admin', component: ManageAdminComponent},
+      ] },
       { path: 'review', component: ReviewQuestionsComponent },
       { path: 'add_qna', component: AddQaEntryComponent },
       { path: 'add_q', component: AddQuestionDialogComponent },
@@ -45,4 +52,5 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes, { onSameUrlNavigation: 'reload' })],
   exports: [RouterModule]
 })
+
 export class AppRoutingModule { }

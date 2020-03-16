@@ -2,7 +2,11 @@ package com.example.troubleshootingtool.dao;
 
 import com.example.troubleshootingtool.bean.*;
 import com.example.troubleshootingtool.config.ElasticSearchConfigurationClass;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.DeserializationConfig;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.action.admin.cluster.repositories.put.PutRepositoryRequest;
 import org.elasticsearch.action.admin.cluster.snapshots.create.CreateSnapshotRequest;
@@ -32,7 +36,11 @@ import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.stereotype.Repository;
 import javax.naming.Context;
+import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
+import javax.naming.directory.Attributes;
+import javax.naming.directory.SearchControls;
+import javax.naming.directory.SearchResult;
 import javax.naming.ldap.InitialLdapContext;
 import javax.naming.ldap.LdapContext;
 import javax.servlet.http.HttpServletRequest;
@@ -46,13 +54,14 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
 public class DataDao {
 
     String ADMIN = "admin";
+    String CATEGORY="category";
     private ElasticSearchConfigurationClass elasticSearchConfigurationClass;
 
     private RestHighLevelClient restHighLevelClient;
     String INDEX = "approved";
     String TEMP_INDEX = "review";
-    HttpServletRequest httpServletRequest;
-    HttpSession httpSession;
+     HttpServletRequest httpServletRequest;
+      HttpSession httpSession;
 
     private ObjectMapper objectMapper;
 
@@ -374,7 +383,6 @@ public class DataDao {
         } else {
             return null;
         }
-
     }
 
     public User authenticate(User user, HttpServletRequest request) throws NullPointerException, NamingException, IOException {
@@ -412,7 +420,9 @@ public class DataDao {
 //                    String cn = attrs.get("cn").get().toString();
 //                    if (cn.endsWith(userID.toLowerCase()) || cn.endsWith(userID.toUpperCase())) {
 //                        String mail = attrs.get("mail").get().toString();
-//                        String username = attrs.get("givenName").get().toString();
+//                        String givenName = attrs.get("givenName").get().toString();
+//                        String lastname=attrs.get("sn").get().toString();
+//                        String username=givenName+" "+lastname;
 //                        user.setEmail(mail);
 //                        user.setUsername(username);
 //                        user.setIsAuthenticated(true);
@@ -507,7 +517,7 @@ public class DataDao {
         IndexRequest indexRequest = new IndexRequest(ADMIN).source(dataMap);
         try {
             IndexResponse response = restHighLevelClient.index(indexRequest, RequestOptions.DEFAULT);
-            return " Inserted successfully";
+            return admin.getUsername()+" Inserted successfully";
         } catch (ElasticsearchException e) {
             e.getDetailedMessage();
             return "elastic search exception " + e.getDetailedMessage();
@@ -517,7 +527,7 @@ public class DataDao {
         }
     }
 
-    public boolean searchAdmin(String cn) throws IOException {
+      public boolean searchAdmin(String cn) throws IOException {
         Admin admins = null;
         SearchRequest searchRequest = new SearchRequest();
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
@@ -542,6 +552,24 @@ public class DataDao {
             return false;
         }
 
+    }
+    public List<String> getAdmin() throws IOException {
+        List<String> list = new ArrayList<>();
+        Admin admins = null;
+        SearchRequest searchRequest = new SearchRequest();
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
+        boolQueryBuilder.filter(QueryBuilders.termQuery("_index", ADMIN));
+        searchSourceBuilder.query(boolQueryBuilder);
+        searchSourceBuilder.size(1000);
+        searchRequest.source(searchSourceBuilder);
+        SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        SearchHit[] searchHits = searchResponse.getHits().getHits();
+        for (SearchHit searchHit : searchHits) {
+            admins = new ObjectMapper().readValue(searchHit.getSourceAsString(), Admin.class);
+            list.add(admins.getUsername());
+        }
+      return list;
     }
 
     public String rejectQnA(String id) throws IOException {
@@ -605,5 +633,80 @@ public class DataDao {
         }
     }
 
+    public String addCategory(Categories admin_category){
+        System.out.println(admin_category.getCategory());
+
+        Map dataMap = objectMapper.convertValue(admin_category, Map.class);
+        IndexRequest indexRequest = new IndexRequest(CATEGORY).source(dataMap);
+        try {
+
+            IndexResponse response = restHighLevelClient.index(indexRequest, RequestOptions.DEFAULT);
+            return  admin_category.getCategory();
+        } catch (ElasticsearchException e) {
+            e.getDetailedMessage();
+            return "elastic search exception " + e.getDetailedMessage();
+            }
+        catch (IOException ex) {
+            ex.getLocalizedMessage();
+            return "IO exception " + ex.getLocalizedMessage() + "  " + Arrays.toString(ex.getStackTrace());
+        }
+    }
+
+    public List<String> getAdminCategories() throws IOException {
+        List<String> list = new ArrayList<>();
+        Categories cat=null;
+        SearchRequest searchRequest = new SearchRequest();
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
+        boolQueryBuilder.filter(QueryBuilders.termQuery("_index", CATEGORY));
+        searchSourceBuilder.query(boolQueryBuilder);
+        searchSourceBuilder.size(1000);
+        searchRequest.source(searchSourceBuilder);
+        SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        SearchHit[] searchHits = searchResponse.getHits().getHits();
+        for (SearchHit searchHit : searchHits) {
+            cat =  new ObjectMapper().readValue(searchHit.getSourceAsString(), Categories.class);
+            list.add(cat.getCategory());
+        }
+        return list;
+    }
+
+
+    public List<String> getLdapUsers(User user)throws IOException{
+        List<String> list = new ArrayList<>();
+        LdapContext ctx;
+        String userID = user.getUserID();
+        String passwd = user.getPassword();
+        System.out.println("username"+userID);
+        System.out.println("pass"+passwd);
+        try {
+            ctx = context(userID, passwd);
+            System.out.println("ctx   :" + ctx);
+            SearchControls searchCtls = new SearchControls();
+            String[] returnedAtts = {"sn", "mail", "cn", "givenName", "memberOf"};
+            searchCtls.setReturningAttributes(returnedAtts);
+            searchCtls.setSearchScope(SearchControls.SUBTREE_SCOPE);
+            String searchFilter = "(&(objectClass=user)(mail=*))";
+            String searchBase = "OU=India,DC=eur,DC=ad,DC=sag";
+            NamingEnumeration<?> answer = ctx.search(searchBase, searchFilter, searchCtls);
+            while (answer.hasMoreElements()) {
+                System.out.println("answer has more elements");
+                SearchResult sr = (SearchResult) answer.next();
+                String search = sr.toString();
+                System.out.println("answer   :" + sr);
+                Attributes attrs = sr.getAttributes();
+                if (attrs != null) {
+                    String cn = attrs.get("cn").get().toString();
+                    list.add(cn);
+
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("user not found");
+        }
+        System.out.println("type:"+list.subList(1,4));
+        return list;
+
+    }
 
 }

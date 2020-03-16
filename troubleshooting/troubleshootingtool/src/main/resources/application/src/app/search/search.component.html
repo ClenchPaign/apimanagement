@@ -29,13 +29,13 @@
         <mat-icon>dashboard</mat-icon>
         <a class="menu-items">Dashboard</a>
       </button>
-      <button
-        *ngIf="isAdmin === 'true'"
-        mat-menu-item
-        [routerLink]="['/main/review']"
-      >
+      <button *ngIf="isAdmin === 'true'" mat-menu-item [routerLink]="['/main/review']">
         <mat-icon>how_to_reg</mat-icon>
         <a class="menu-items">Approvals</a>
+      </button>
+      <button *ngIf="isAdmin === 'true'" mat-menu-item [routerLink]="['/main/administration']">
+        <mat-icon>settings</mat-icon>
+        <a class="menu-items">Administration</a>
       </button>
       <button mat-menu-item (click)="logout()">
         <mat-icon>logout</mat-icon>

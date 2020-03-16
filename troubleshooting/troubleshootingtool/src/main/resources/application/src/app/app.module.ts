@@ -48,6 +48,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { AuthGuardService } from './auth-guard.service';
 import { AuthService } from './auth.service';
+import { AdministrationComponent } from './administration/administration.component';
+import { ManageCategoryComponent } from './manage-category/manage-category.component';
+import { ManageAdminComponent } from './manage-admin/manage-admin.component';
 import { EditDialogComponent } from './edit-dialog/edit-dialog.component';
 
 @NgModule({
@@ -69,6 +72,9 @@ import { EditDialogComponent } from './edit-dialog/edit-dialog.component';
     ReviewQuestionsComponent,
     ApprovalStageComponent,
     HomeComponent,
+    AdministrationComponent,
+    ManageCategoryComponent,
+    ManageAdminComponent,
     EditDialogComponent
   ],
   imports: [
