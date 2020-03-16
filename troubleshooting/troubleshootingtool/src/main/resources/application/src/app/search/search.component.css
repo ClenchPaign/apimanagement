@@ -391,8 +391,7 @@ ul.breadcrumb li:hover {
 .search-result{
   cursor: pointer;
   padding: 16px;
-  
 }
 .search-result:hover{
-  background-color: lightblue;
+  background-color: #eeeeee;
 }

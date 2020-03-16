@@ -12,21 +12,22 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./manage-admin.component.css']
 })
 export class ManageAdminComponent implements OnInit {
-  flag_admin: boolean;
-  all_admins: any;
+  flagAdmin: boolean;
+  allAdmins: any;
   username: any; password: any;
   result: any;
   resultUsers: string[] = [];
   users: string[];
   admin = new FormControl();
 
-  constructor(private listingService: ListingService,
+  constructor(
+    private listingService: ListingService,
     private router: Router,
-    private snackbar: MatSnackBar ) { }
+    private snackbar: MatSnackBar) { }
 
   ngOnInit() {
-    this.username = localStorage.getItem("userID");
-    this.password = localStorage.getItem("password");
+    this.username = localStorage.getItem('userID');
+    this.password = localStorage.getItem('password');
     const user = new User('', this.username, this.password, '', false, false);
     this.listingService.getLdapUsers(user).subscribe(data => {
       console.log('POST Request is successful ', data);
@@ -37,16 +38,16 @@ export class ManageAdminComponent implements OnInit {
 
     this.listingService.getAllAdmins().subscribe(data => {
       console.log('POST Request is successful ', data);
-      this.all_admins = data;
-      console.log(this.all_admins);
+      this.allAdmins = data;
+      console.log(this.allAdmins);
     }
     );
   }
   getUsers() {
     return this.resultUsers;
   }
-  get_admins(){
-    return this.all_admins;
+  get_admins() {
+    return this.allAdmins;
   }
 
   filterUsers(value: string): string[] {
@@ -67,19 +68,21 @@ export class ManageAdminComponent implements OnInit {
 
 
   add_admin() {
-    this.flag_admin = false;
+    this.flagAdmin = false;
     const admin = this.admin.value;
     console.log(admin);
     const admin_name = new Admin(admin);
-    this.all_admins.forEach((value) => {
+    this.allAdmins.forEach((value) => {
       if (value.match(admin)) {
-        this.flag_admin = true;
-        alert("Admin already exists");
+        this.flagAdmin = true;
+        alert('Admin already exists');
       }
     });
-    if (this.flag_admin === false) {
+    if (this.flagAdmin === false) {
       this.listingService.add_admin(admin_name).subscribe(data => {
         console.log('POST Request is successful ', data);
+        this.admin.setValue('');
+        this.allAdmins.push(admin_name.user);
         this.openSnackBar('New Admin added successfully', 'OK');
       }, res => {
         console.log(res);

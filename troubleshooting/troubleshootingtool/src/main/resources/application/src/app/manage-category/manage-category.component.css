@@ -1,12 +1,4 @@
-/* 
-.categories{
-    text-align: center;
-    display: block;
-    margin-left:auto;
-    margin-right:auto;  
-    width: max-content;
-    height: max-content;
-  } */
+
   .dlt-button-post {
     margin-top: 16px;
     left: 16px;
@@ -16,13 +8,15 @@
     font-family: Roboto, Helvetica, Arial, sans-serif;
     margin-right: 10px;
   }
-  mat-tab-group{
-    margin-left: 230px;
-    
-  }
+  
 
   .parent{
-    margin-right: 100px;
+    width: 100%;
+  }
+
+  .textarea {
+    margin-top: 16px;
+    width: 50%;
   }
 
   h3{
@@ -32,4 +26,7 @@
   .span{
     font-family: Roboto, Helvetica, Arial, sans-serif;
     margin-top:10px;
+  }
+  .category-card{
+    margin: 24px;
   }

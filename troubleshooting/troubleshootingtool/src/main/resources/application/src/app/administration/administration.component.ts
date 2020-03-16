@@ -12,13 +12,14 @@ export class AdministrationComponent implements OnInit {
   constructor(private listingService: ListingService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
+    this.router.navigateByUrl('/main/administration/manage_category');
   }
   manage_category() {
-    console.log("inside adminstratn");
-    this.router.navigateByUrl("/main/administration/manage/category");
+    console.log('inside adminstratn');
+    this.router.navigateByUrl('/main/administration/manage_category');
   }
   manage_admin() {
-    console.log("inside adminstratn");
-    this.router.navigateByUrl("/main/administration/manage/admin");
+    console.log('inside adminstratn');
+    this.router.navigateByUrl('/main/administration/manage_admin');
   }
 }

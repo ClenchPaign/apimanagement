@@ -27,10 +27,12 @@ const routes: Routes = [
           { path: 'search/:tag/:keyword', component: QuestionsListComponent }
         ]
       },
-      { path: "administration", component: AdministrationComponent,children: [
-        { path: 'manage/category', component: ManageCategoryComponent },
-        { path: 'manage/admin', component: ManageAdminComponent},
-      ] },
+      {
+        path: 'administration', component: AdministrationComponent, children: [
+          { path: 'manage_category', component: ManageCategoryComponent },
+          { path: 'manage_admin', component: ManageAdminComponent },
+        ]
+      },
       { path: 'review', component: ReviewQuestionsComponent },
       { path: 'add_qna', component: AddQaEntryComponent },
       { path: 'add_q', component: AddQuestionDialogComponent },

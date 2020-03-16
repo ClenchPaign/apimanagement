@@ -29,14 +29,28 @@
         <mat-icon>dashboard</mat-icon>
         <a class="menu-items">Dashboard</a>
       </button>
-      <button *ngIf="isAdmin === 'true'" mat-menu-item [routerLink]="['/main/review']">
+      <button
+        *ngIf="isAdmin === 'true'"
+        mat-menu-item
+        [routerLink]="['/main/review']"
+      >
         <mat-icon>how_to_reg</mat-icon>
         <a class="menu-items">Approvals</a>
       </button>
-      <button *ngIf="isAdmin === 'true'" mat-menu-item [routerLink]="['/main/administration']">
+      <button
+        *ngIf="isAdmin === 'true'"
+        mat-menu-item
+        [routerLink]="['/main/administration']"
+        [matMenuTriggerFor]="animals" 
+      >
         <mat-icon>settings</mat-icon>
         <a class="menu-items">Administration</a>
       </button>
+      <mat-menu #animals="matMenu" xPosition="before">
+        <button mat-menu-item [routerLink]="['/main/administration/manage_category']">Manage Categories</button>
+        <button mat-menu-item [routerLink]="['/main/administration/manage_admin']">Manage Admin</button>
+        <button mat-menu-item>Settings</button>
+      </mat-menu>
       <button mat-menu-item (click)="logout()">
         <mat-icon>logout</mat-icon>
         <a class="menu-items">Logout</a>
@@ -109,7 +123,7 @@
         (keyup.enter)="onEnter()"
       />
       <div style="width: 5%;">
-        <mat-icon style="padding: 5px;" (click)="onEnter()">search</mat-icon>
+        <mat-icon style="padding: 5px;cursor: pointer;" (click)="onEnter()">search</mat-icon>
       </div>
     </div>
     <div>

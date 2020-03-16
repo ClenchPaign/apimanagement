@@ -26,14 +26,12 @@ export class ListingService {
   constructor(private http: HttpClient) {
   }
 
-  baseUrl = 'http://localhost:4040';
+  baseUrl = 'http://localhost:4343';
   getAllQuestions() {
     return this.http.get(this.baseUrl + '/qnas', httpOptions);
   }
 
-  getAllCategories() {
-    return this.http.get(this.baseUrl + '/categories', httpOptions);
-  }
+
   setCategory(cat: string) {
     this.category = cat;
   }
@@ -95,7 +93,7 @@ export class ListingService {
   }
 
   get_files(id: string) {
-    console.log('In listing service' +id);
+    console.log('In listing service' + id);
     // if (id !== '') {
     return this.http.get(this.baseUrl + '/files/' + id, httpOptions);
   }
@@ -128,21 +126,24 @@ export class ListingService {
 
   add_admin_category(admin_category: Categories) {
     console.log(admin_category);
-    return this.http.post(this.baseUrl + '/category/add', admin_category, { headers, responseType: 'text' });
+    return this.http.post(this.baseUrl + '/categories/add', admin_category, { headers, responseType: 'text' });
   }
+
+  getAllCategories() {
+    return this.http.get(this.baseUrl + '/categories/get', httpOptions);
+  }
+
   getLdapUsers(user: User) {
     return this.http.post(this.baseUrl + '/admin/users', user, httpOptions);
   }
 
-  add_admin(admin_name:Admin) {
-    console.log("admin n listng srv :" + JSON.stringify(admin_name));
+  add_admin(admin_name: Admin) {
+    console.log('admin n listng srv :' + JSON.stringify(admin_name));
     return this.http.post(this.baseUrl + '/admin/add', admin_name, { headers, responseType: 'text' });
   }
-  
+
   getAllAdmins() {
     return this.http.get(this.baseUrl + '/admin/get', httpOptions);
   }
-  getAdminCategoies() {
-    return this.http.get(this.baseUrl + '/category/get', httpOptions);
-  }
+
 }

@@ -1,19 +1,27 @@
-
 .dlt-button-post {
-    margin-top: 16px;
-    left: 16px;
-    width: max-content;
-    color: #ffffff;
-    background-color: #1776bf;
-    font-family: Roboto, Helvetica, Arial, sans-serif;
-    margin-right: 10px;
-  }
-  
-h3{
+  margin-top: 16px;
+  left: 16px;
+  width: max-content;
+  color: #ffffff;
+  background-color: #1776bf;
   font-family: Roboto, Helvetica, Arial, sans-serif;
-  color:#1776bf;
+  margin-right: 10px;
 }
-.span{
+
+h3 {
   font-family: Roboto, Helvetica, Arial, sans-serif;
-  margin-top:10px;
+  color: #1776bf;
+}
+.span {
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+  margin-top: 10px;
+}
+
+.textarea {
+  margin-top: 16px;
+  width: 50%;
+}
+
+.admin-card {
+  margin: 24px;
 }

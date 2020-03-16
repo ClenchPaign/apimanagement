@@ -54,10 +54,10 @@ public class DataController {
         return dataDao.deleteQAEntryById(id);
     }
 
-    @GetMapping("/categories")
-    public List<String> getCategories() throws IOException {
-        return dataDao.getAllCategories();
-    }
+//    @GetMapping("/categories")
+//    public List<String> getCategories() throws IOException {
+//        return dataDao.getAdminCategories();
+//    }
 
     @GetMapping("/tags")
     public List<String> getAllTags() throws IOException {
@@ -150,12 +150,12 @@ public class DataController {
     public String restoreSnapshot() throws IOException {
         return dataDao.restoreSnapshot();
     }
-    @PostMapping("/category/add")
+    @PostMapping("/categories/add")
     public String addCategory(@RequestBody Categories admin_category ) {
         return dataDao.addCategory(admin_category);
     }
 
-    @GetMapping("/category/get")
+    @GetMapping("/categories/get")
     public List<String> getCategory() throws IOException {
         return dataDao.getAdminCategories();
     }

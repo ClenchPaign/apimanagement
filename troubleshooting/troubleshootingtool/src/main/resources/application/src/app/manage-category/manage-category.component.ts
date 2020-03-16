@@ -11,56 +11,45 @@ import { Categories } from '../data-models/Categories';
   styleUrls: ['./manage-category.component.css']
 })
 export class ManageCategoryComponent implements OnInit {
-  flag_category: boolean;
-  all_categories: any;
-  admin_categories:any;
+  flagCategory: boolean;
+  adminCategories: any;
   categories = new FormControl();
-  constructor(private listingService: ListingService,
+  constructor(
+    private listingService: ListingService,
     private router: Router,
     private snackbar: MatSnackBar) { }
 
   ngOnInit() {
-    console.log("inside manage cat");
+    console.log('inside manage cat');
     this.listingService.getAllCategories().subscribe(data => {
       console.log('POST Request is successful ', data);
-      this.all_categories = data;
-    }
-    );
-    this.listingService.getAdminCategoies().subscribe(data => {
-      console.log('POST Request is successful ', data);
-      this.admin_categories = data;
+      this.adminCategories = data;
     }
     );
   }
 
-  get_category(){
-    return this.all_categories;
+  get_adminCategory() {
+    return this.adminCategories;
   }
-  get_admin_category(){
-    return this.admin_categories;
-  }
-  
-  add_category() {
-    this.flag_category = false;
+
+  addCategory() {
+    this.flagCategory = false;
     const categories = this.categories.value;
-    const admin_category = new Categories(categories);
-    this.all_categories.forEach((value) => {
+    const adminCategory = new Categories(categories);
+    this.adminCategories.forEach((value) => {
       if (value.match(categories)) {
-        this.flag_category = true;
-        alert("Category already exists");
+        this.flagCategory = true;
+        alert('Category already exists');
       }
     });
-    this.admin_categories.forEach((value) => {
-      if (value.match(categories)) {
-        this.flag_category = true;
-        alert("Category already exists");
-      }
-    });
-    if (this.flag_category === false) {
-      this.listingService.add_admin_category(admin_category).subscribe(data => {
+    if (this.flagCategory === false) {
+      this.listingService.add_admin_category(adminCategory).subscribe(data => {
         console.log('POST Request is successful ', data);
+        this.categories.setValue('');
+        this.adminCategories.push(adminCategory.category);
         this.openSnackBar('New Category added successfully', 'OK');
-
+      }, res => {
+        this.openSnackBar('Problem in adding new category', 'OK');
       });
     }
   }

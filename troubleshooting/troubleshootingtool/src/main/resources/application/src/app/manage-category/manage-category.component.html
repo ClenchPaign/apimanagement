@@ -1,29 +1,36 @@
-
-<div style="width:1000px;margin-left: 40px;">
+<div class="parent">
   <div>
-  <mat-card class="categories">
-    <h3>Add Category</h3>
-    <mat-divider></mat-divider>
-    <mat-form-field class="textarea">
-      <input [formControl]="categories" type="text" placeholder="Add category" matInput />
-    </mat-form-field>
+    <mat-card class="category-card">
+      <h3>Add Category</h3>
+      <mat-divider></mat-divider>
+      <mat-form-field class="textarea">
+        <input
+          [formControl]="categories"
+          type="text"
+          placeholder="Add category"
+          matInput
+        />
+      </mat-form-field>
 
-    <button mat-button class="dlt-button-post" type="submit" (click)="add_category()">ADD
-    </button>
-  </mat-card>
-</div>
-  <div style="width: 1000px;margin-left: 0px;right: 500px;margin-top: 20px;">
-    <mat-card>
-      <h3>List of categories</h3>
+      <button
+        mat-button
+        class="dlt-button-post"
+        type="submit"
+        (click)="addCategory()"
+      >
+        ADD
+      </button>
+    </mat-card>
+  </div>
+  <div>
+    <mat-card class="category-card">
+      <h3>List of Categories</h3>
       <mat-divider></mat-divider>
       <div style="overflow-y: scroll;">
-        <div class="span" *ngFor="let option of get_category() " >
-          {{option}}
-     </div>
-     <div class="span" *ngFor="let option of get_admin_category() " >
-      {{option}}
- </div>
-    </div>
+        <div class="span" *ngFor="let option of get_adminCategory()">
+          {{ option }}
+        </div>
+      </div>
     </mat-card>
   </div>
 </div>
