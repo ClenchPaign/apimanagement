@@ -20,7 +20,7 @@ export class SearchComponent implements OnInit {
   navigationExtras: NavigationExtras;
   
 
-  constructor(private listingService: ListingService, private route: ActivatedRoute, private router: Router, private eRef: ElementRef) {
+  constructor(private listingService: ListingService, private route: ActivatedRoute, public router: Router, private eRef: ElementRef) {
     // this.route.queryParams.subscribe(params => {
     //   this.tags = params['tags'];
     //   console.log('In search comp: ' + this.tags);
