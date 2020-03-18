@@ -10,14 +10,20 @@ import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
+
+import java.util.Objects;
 
 
 @Configuration
 public class ElasticSearchConfigurationClass extends AbstractFactoryBean<RestHighLevelClient> {
+    @Autowired
+    private Environment env;
 
     private static final Logger LOG = LoggerFactory.getLogger(ElasticSearchConfigurationClass.class);
 
@@ -26,8 +32,8 @@ public class ElasticSearchConfigurationClass extends AbstractFactoryBean<RestHig
     @Value("${spring.data.elasticsearch.cluster-name}")
     private String clusterName;
 
-    @Value("${elasticsearch.host}")
-    private String elasticsearchHost;
+//    @Value("${elasticsearch.host}")
+//    private String elasticsearchHost;
     @Value("${elasticsearch.port}")
     private int elasticsearchPort;
 
@@ -63,7 +69,7 @@ public class ElasticSearchConfigurationClass extends AbstractFactoryBean<RestHig
     private RestHighLevelClient buildClient() {
         try {
             restHighLevelClient = new RestHighLevelClient(
-                    RestClient.builder( new HttpHost(elasticsearchHost,elasticsearchPort))
+                    RestClient.builder( new HttpHost(Objects.requireNonNull(env.getProperty("ELASTICSEARCH_HOST")),elasticsearchPort))
 //                            new HttpHost("10.60.37.26", 9200, "http"),
 //                            new HttpHost("10.60.37.26", 9201, "http"))
 //                           new HttpHost("127.0.0.1", 9200, "http"),
