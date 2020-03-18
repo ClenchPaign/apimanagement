@@ -679,12 +679,18 @@ public class DataDao {
         searchSourceBuilder.query(boolQueryBuilder);
         searchSourceBuilder.size(1000);
         searchRequest.source(searchSourceBuilder);
-        SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
-        SearchHit[] searchHits = searchResponse.getHits().getHits();
-        for (SearchHit searchHit : searchHits) {
-            cat = new ObjectMapper().readValue(searchHit.getSourceAsString(), Categories.class);
-            list.add(cat.getCategory());
+        try{
+            SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+            SearchHit[] searchHits = searchResponse.getHits().getHits();
+            for (SearchHit searchHit : searchHits) {
+                cat = new ObjectMapper().readValue(searchHit.getSourceAsString(), Categories.class);
+                list.add(cat.getCategory());
+            }
+        }catch (Exception e){
+            list.add(e.getMessage());
+            list.add(e.getLocalizedMessage());
         }
+
         return list;
     }
 
