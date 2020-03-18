@@ -17,8 +17,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
-import java.util.Objects;
-
 
 @Configuration
 public class ElasticSearchConfigurationClass extends AbstractFactoryBean<RestHighLevelClient> {
@@ -68,8 +66,17 @@ public class ElasticSearchConfigurationClass extends AbstractFactoryBean<RestHig
 
     private RestHighLevelClient buildClient() {
         try {
+//            System.out.println("ELASTICSEARCH_HOST-"+env.getProperty("ElasticsearchHost"));
+            String elasticsearchHost = System.getenv("ElasticsearchHost");
+            System.out.println("ElasticsearchHost-"+System.getenv("ElasticsearchHost"));
+//            System.out.println("ELASTICSEARCH_HOST2-"+System.getenv("DOCKER_HOST"));
+//            Map<String, String> envs = System.getenv();
+//            for (String env :
+//                    envs.keySet()) {
+//                System.out.format("%s=%s%n",env,envs.get(env));
+//            }
             restHighLevelClient = new RestHighLevelClient(
-                    RestClient.builder( new HttpHost(Objects.requireNonNull(env.getProperty("ELASTICSEARCH_HOST")),elasticsearchPort))
+                    RestClient.builder( new HttpHost(elasticsearchHost,elasticsearchPort))
 //                            new HttpHost("10.60.37.26", 9200, "http"),
 //                            new HttpHost("10.60.37.26", 9201, "http"))
 //                           new HttpHost("127.0.0.1", 9200, "http"),
