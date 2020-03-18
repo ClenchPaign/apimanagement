@@ -18,7 +18,7 @@ export class SearchComponent implements OnInit {
   isAdmin: any;
   password: string;
   navigationExtras: NavigationExtras;
-  
+
 
   constructor(private listingService: ListingService, private route: ActivatedRoute, public router: Router, private eRef: ElementRef) {
     // this.route.queryParams.subscribe(params => {

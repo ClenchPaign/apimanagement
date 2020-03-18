@@ -62,7 +62,7 @@
   min-width: 100%;
   max-width: 100%;
   z-index: 1;
-  min-height: 350px;
+  min-height: 300px;
   max-height: 700px;
 }
 
@@ -135,30 +135,29 @@
   border-radius: 15px;
   cursor: pointer;
 }
-.vote {
-  font-size: large;
-  color: blue;
-}
+
 .vote-layout {
   width: min-content;
-  justify-content: center;
   padding: 5px;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .question {
   font-size: x-large;
 }
-/* mat-icon {
-  rotate: 60 deg;
-} */
-
 .arrow {
   font-size: 50px;
 }
+.vote {
+  color: #657506;
+  font-size: larger;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 
 .attachment-items {
-  cursor: pointer;
+  /* cursor: pointer;
   width: max-content;
   padding-left: 6px;
   padding-right: 6px;
@@ -166,7 +165,21 @@
   padding-bottom: 2px;
   background-color: #CDE6F9;
   margin: 2px;
-  border-radius: 8px;
+  border-radius: 8px; */
+
+  cursor: pointer;
+  width: fit-content;
+  height: fit-content;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  background-color: #CDE6F9;
+  border-color: lightblue;
+  border-style: solid;
+  border-radius: 24px;
+  border-width: .5px;
+  margin-top: 4px;
 }
 .posted-date {
   font-size: small;
@@ -191,11 +204,84 @@
   background-color: #1776bf;
   font-family: Roboto, Helvetica, Arial, sans-serif;
   margin-left: 10px;
-  margin-top: 10px;
-  margin-bottom: 16px;
+  margin-top: 24px;
+  margin-bottom: 24px;
   display: inline-block;
 }
 .list-of-answers {
   background-color: rgb(247, 247, 247);
+}
+
+.add_attachment{
+  margin-top: 16px;
+  cursor: pointer;
+  width: max-content;
+  height: fit-content;
+  font-size: smaller;
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  background-color: #eeeeee;
+  border-color: lightgray;
+  border-style: solid;
+  border-radius: 24px;
+  border-width: .5px;
+  align-self: end;
+  margin-right: 24px;
+}
+
+.uploadfilecontainer {
+  width: 60%;
+  margin-top: 16px;
+  margin-left: 16px;
+  font-size: smaller;
+  display: flex;
+  justify-content: center;
+  text-decoration: none;
+  border: none;
+  align-self: center;
+  align-items: center;
+  height: 50px;
+  border: 0.5px dashed #0f4c7b;
+  border-radius: 0px;
+}
+
+.uploadfilecontainer:hover {
+  cursor: pointer;
+  background-color: #ceeafd !important;
+  opacity: 0.8;
+}
+
+.button {
+  background-color: #1776bf;
+  color: #ffffff;
+  margin-left: 24px;
+}
+.fileitem {
+  background-color: #eeeeee;
+  border-radius: 4px;
+  width: max-content;
+  padding-left: 4px;
+  margin-top: 4px;
+  margin-left: 16px;
+}
+.upload-table {
+  font-size: small;
+  font-weight: bold;
+  margin-left: 16px;
+}
+.item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.delete {
+  cursor: pointer;
+  position: absolute;
+  margin-right: 36px;
+  margin-top: 8px;
+  right: 0;
 }
 /* ----------------------------------------------------------------------------------------------------- */

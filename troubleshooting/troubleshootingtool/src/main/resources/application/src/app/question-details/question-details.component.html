@@ -53,15 +53,17 @@
       <div class="list-of-answers" *ngFor="let item of editedResponse.Answers">
         <div class="answers">
           <div class="vote-layout">
-            <mat-icon class="arrow">arrow_drop_up</mat-icon>
+            <mat-icon [inline]="true" class="arrow">arrow_drop_up</mat-icon>
             <div class="vote">{{ item.voteCount }}</div>
             <div>Votes</div>
-            <mat-icon class="arrow">arrow_drop_down</mat-icon>
+            <mat-icon [inline]="true" class="arrow">arrow_drop_down</mat-icon>
           </div>
           <div style="width: 100%;display: flex;">
+            <div><mat-icon *ngIf="isAdmin === 'true'" class="delete" (click)="openDialog(item.id)">delete</mat-icon></div>
             <div class="answer-layout" style="width: 100%;">
               <div class="answer" *ngIf="item.isApproved">Approved</div>
               <div class="ansdescription" [innerHTML]="item.description"></div>
+
             </div>
           </div>
         </div>
@@ -93,27 +95,77 @@
           </div>
         </div>
 
-        <mat-divider></mat-divider>
+        <mat-divider style="margin-bottom: 16px;"></mat-divider>
       </div>
     </div>
 
-    <div *ngIf="index==='approved'">
+    <div *ngIf="index === 'approved'" style="display: flex;flex-direction: column;">
+      <div class="answer-count">Your Answer</div>
       <ejs-richtexteditor
         #imageRTE
         id="imageRTE"
         class="richtexteditor"
         width="100%"
-        height="350px"
+        height="300px"
         [(ngModel)]="val"
       ></ejs-richtexteditor>
-      <button
-        mat-button
-        class="dlt-button-post-answer"
-        type="submit"
-        (click)="post_ans()"
-      >
-        Post Answer
-      </button>
+      <div style="display: flex; align-items: center;">
+        <div style="width: 10%;">
+          <div class="add_attachment" (click)="openAttachment()">
+            Add attachment
+          </div>
+        </div>
+        
+        <div
+          id="hidden_attachment"
+          style="visibility: hidden;width: 100%; display: flex;align-items: center;"
+        >
+          <div
+            class="uploadfilecontainer"
+            appDragDrop
+            (onFileDropped)="uploadFile($event)"
+          >
+            <input
+              hidden
+              type="file"
+              #fileInput
+              multiple
+              (change)="uploadFile($event.target.files)"
+            />
+            <div>Drag & Drop files here</div>
+            <div style="margin-left: 10px;margin-right: 10px;">or</div>
+            <button
+              mat-button
+              class="button"
+              type="button"
+              (click)="fileInput.click()"
+            >
+              Browse Files
+            </button>
+          </div>
+          <div class="upload-table">
+            <div
+              class="fileitem"
+              *ngFor="let item of answerfiles; let i = index"
+            >
+              <div class="item">
+                {{ item }}<mat-icon (click)="removeFiles(item)">close</mat-icon>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+      <div>
+        <button
+          mat-button
+          class="dlt-button-post-answer"
+          type="submit"
+          (click)="post_ans()"
+        >
+          Post Answer
+        </button>
+      </div>
     </div>
   </div>
 </div>

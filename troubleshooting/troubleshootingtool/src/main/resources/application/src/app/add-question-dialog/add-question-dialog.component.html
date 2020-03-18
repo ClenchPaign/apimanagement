@@ -66,7 +66,16 @@
           </div>
         </div>
       </div>
-      <mat-form-field class="textarea">
+      <mat-form-field class="textarea" style="margin-top: 16px;">
+        <mat-label>Category</mat-label>
+        <mat-select [formControl]="categories">
+          <mat-option *ngFor="let option of response" [value]="option">
+            {{ option }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- <mat-form-field class="textarea" style="margin-top: 16px;">
         <input
           [formControl]="categories"
           type="text"
@@ -81,7 +90,7 @@
             {{ option }}
           </mat-option>
         </mat-autocomplete>
-      </mat-form-field>
+      </mat-form-field> -->
 
       <mat-form-field class="textarea">
         <mat-chip-list #chipList>

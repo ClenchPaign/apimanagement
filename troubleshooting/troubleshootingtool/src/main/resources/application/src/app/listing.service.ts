@@ -82,7 +82,13 @@ export class ListingService {
     return this.http.post(this.baseUrl + '/qnas/', qa, { headers, responseType: 'text' });
 
   }
-  post_answer(qa: QAEntry, id: string) {
+  post_answer(qa: QAEntry) {
+    // console.log(qa);
+    // console.log(this.baseUrl + '/qnas/' + id);
+    return this.http.put(this.baseUrl + '/qnas/answer', qa, httpOptions);
+  }
+
+  updateQA(qa: QAEntry, id: string) {
     // console.log(qa);
     // console.log(this.baseUrl + '/qnas/' + id);
     return this.http.put(this.baseUrl + '/qnas/' + id, qa, httpOptions);

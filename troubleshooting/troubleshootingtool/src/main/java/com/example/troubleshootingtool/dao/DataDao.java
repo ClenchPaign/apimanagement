@@ -23,6 +23,8 @@ import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.support.master.AcknowledgedResponse;
+import org.elasticsearch.action.update.UpdateRequest;
+import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.settings.Settings;
@@ -35,6 +37,7 @@ import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.stereotype.Repository;
+
 import javax.naming.Context;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
@@ -54,14 +57,14 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
 public class DataDao {
 
     String ADMIN = "admin";
-    String CATEGORY="category";
+    String CATEGORY = "category";
     private ElasticSearchConfigurationClass elasticSearchConfigurationClass;
 
     private RestHighLevelClient restHighLevelClient;
     String INDEX = "approved";
     String TEMP_INDEX = "review";
-     HttpServletRequest httpServletRequest;
-      HttpSession httpSession;
+    HttpServletRequest httpServletRequest;
+    HttpSession httpSession;
 
     private ObjectMapper objectMapper;
 
@@ -145,8 +148,8 @@ public class DataDao {
             if (imageModelArrayList != null) {
                 for (int j = 0; j < imageModelArrayList.size(); j++) {
                     attachment = attachment + imageModelArrayList.get(j).getId() + "**" + imageModelArrayList.get(j).getFileName();
-                    if(j != imageModelArrayList.size()-1){
-                        attachment = attachment+",";
+                    if (j != imageModelArrayList.size() - 1) {
+                        attachment = attachment + ",";
                     }
                 }
             }
@@ -157,12 +160,15 @@ public class DataDao {
     }
 
 
-    public String getDocumentIDforQAEntry(String id) throws IOException {
+    public String getDocumentIDforQAEntry(String id, String index) throws IOException {
 //        @RequestMapping(value = "/get_qa/{id}", method = RequestMethod.GET)
         String obj = null;
         SearchRequest searchRequest = new SearchRequest();
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(QueryBuilders.matchQuery("Question.id.keyword", id));
+        BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
+        boolQueryBuilder.filter(QueryBuilders.termQuery("_index", index));
+        boolQueryBuilder.filter(QueryBuilders.termQuery("Question.id.keyword", id));
+        searchSourceBuilder.query(boolQueryBuilder);
         searchRequest.source(searchSourceBuilder);
         searchSourceBuilder.size(100);
         SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
@@ -173,7 +179,7 @@ public class DataDao {
         return obj;
     }
 
-    public QAEntry updateQAEntryById(String id, QAEntry qandA) throws IOException {
+    public QAEntry postAnswer(QAEntry qandA) throws IOException {
 //        @RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
         Map dataMap = objectMapper.convertValue(qandA, Map.class);
         IndexRequest indexRequest = new IndexRequest(TEMP_INDEX).source(dataMap);
@@ -199,9 +205,22 @@ public class DataDao {
 //        }
     }
 
+    public QAEntry updateQAEntryById(String id, QAEntry qandA) throws IOException {
+        Map dataMap = objectMapper.convertValue(qandA, Map.class);
+        UpdateRequest updateRequest = new UpdateRequest(INDEX, getDocumentIDforQAEntry(id, INDEX)).doc(dataMap);
+        try {
+            UpdateResponse updateResponse = restHighLevelClient.update(updateRequest, RequestOptions.DEFAULT);
+            return qandA;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
     public String deleteQAEntryById(String id) throws IOException {
 //        @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
-        DeleteRequest deleteRequest = new DeleteRequest(INDEX, getDocumentIDforQAEntry(id));
+        DeleteRequest deleteRequest = new DeleteRequest(INDEX, getDocumentIDforQAEntry(id, INDEX));
         try {
             DeleteResponse deleteResponse = restHighLevelClient.delete(deleteRequest, RequestOptions.DEFAULT);
             return "Deleted successfully";
@@ -489,7 +508,7 @@ public class DataDao {
         Map dataMap = objectMapper.convertValue(qandA, Map.class);
         String returnString = "";
         deleteQAEntryById(id);
-        DeleteRequest deleteRequest = new DeleteRequest(TEMP_INDEX, getDocumentIDforQAEntry(id));
+        DeleteRequest deleteRequest = new DeleteRequest(TEMP_INDEX, getDocumentIDforQAEntry(id, TEMP_INDEX));
         try {
             DeleteResponse deleteResponse = restHighLevelClient.delete(deleteRequest, RequestOptions.DEFAULT);
             returnString = "Removed from review successfully";
@@ -517,7 +536,7 @@ public class DataDao {
         IndexRequest indexRequest = new IndexRequest(ADMIN).source(dataMap);
         try {
             IndexResponse response = restHighLevelClient.index(indexRequest, RequestOptions.DEFAULT);
-            return admin.getUsername()+" Inserted successfully";
+            return admin.getUsername() + " Inserted successfully";
         } catch (ElasticsearchException e) {
             e.getDetailedMessage();
             return "elastic search exception " + e.getDetailedMessage();
@@ -527,7 +546,7 @@ public class DataDao {
         }
     }
 
-      public boolean searchAdmin(String cn) throws IOException {
+    public boolean searchAdmin(String cn) throws IOException {
         Admin admins = null;
         SearchRequest searchRequest = new SearchRequest();
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
@@ -553,6 +572,7 @@ public class DataDao {
         }
 
     }
+
     public List<String> getAdmin() throws IOException {
         List<String> list = new ArrayList<>();
         Admin admins = null;
@@ -569,12 +589,13 @@ public class DataDao {
             admins = new ObjectMapper().readValue(searchHit.getSourceAsString(), Admin.class);
             list.add(admins.getUsername());
         }
-      return list;
+        return list;
     }
 
     public String rejectQnA(String id) throws IOException {
         String returnString = "";
-        DeleteRequest deleteRequest = new DeleteRequest(TEMP_INDEX, getDocumentIDforQAEntry(id));
+        System.out.println(getDocumentIDforQAEntry(id, TEMP_INDEX));
+        DeleteRequest deleteRequest = new DeleteRequest(TEMP_INDEX, getDocumentIDforQAEntry(id, TEMP_INDEX));
         try {
             DeleteResponse deleteResponse = restHighLevelClient.delete(deleteRequest, RequestOptions.DEFAULT);
             returnString = "Removed from review successfully";
@@ -633,28 +654,24 @@ public class DataDao {
         }
     }
 
-    public String addCategory(Categories admin_category){
+    public String addCategory(Categories admin_category) throws IOException {
         System.out.println(admin_category.getCategory());
 
         Map dataMap = objectMapper.convertValue(admin_category, Map.class);
         IndexRequest indexRequest = new IndexRequest(CATEGORY).source(dataMap);
-        try {
-
-            IndexResponse response = restHighLevelClient.index(indexRequest, RequestOptions.DEFAULT);
-            return  admin_category.getCategory();
-        } catch (ElasticsearchException e) {
-            e.getDetailedMessage();
-            return "elastic search exception " + e.getDetailedMessage();
-            }
-        catch (IOException ex) {
-            ex.getLocalizedMessage();
-            return "IO exception " + ex.getLocalizedMessage() + "  " + Arrays.toString(ex.getStackTrace());
-        }
+//        try {
+        IndexResponse response = restHighLevelClient.index(indexRequest, RequestOptions.DEFAULT);
+        return admin_category.getCategory();
+//        } catch (ElasticsearchException e) {
+//            e.getDetailedMessage();
+//        } catch (IOException ex) {
+//            ex.getLocalizedMessage();
+//        }
     }
 
     public List<String> getAdminCategories() throws IOException {
         List<String> list = new ArrayList<>();
-        Categories cat=null;
+        Categories cat = null;
         SearchRequest searchRequest = new SearchRequest();
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
@@ -665,20 +682,20 @@ public class DataDao {
         SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
         SearchHit[] searchHits = searchResponse.getHits().getHits();
         for (SearchHit searchHit : searchHits) {
-            cat =  new ObjectMapper().readValue(searchHit.getSourceAsString(), Categories.class);
+            cat = new ObjectMapper().readValue(searchHit.getSourceAsString(), Categories.class);
             list.add(cat.getCategory());
         }
         return list;
     }
 
 
-    public List<String> getLdapUsers(User user)throws IOException{
+    public List<String> getLdapUsers(User user) throws IOException {
         List<String> list = new ArrayList<>();
         LdapContext ctx;
         String userID = user.getUserID();
         String passwd = user.getPassword();
-        System.out.println("username"+userID);
-        System.out.println("pass"+passwd);
+        System.out.println("username" + userID);
+        System.out.println("pass" + passwd);
         try {
             ctx = context(userID, passwd);
             System.out.println("ctx   :" + ctx);
@@ -698,13 +715,12 @@ public class DataDao {
                 if (attrs != null) {
                     String cn = attrs.get("cn").get().toString();
                     list.add(cn);
-
                 }
             }
         } catch (Exception e) {
             System.out.println("user not found");
         }
-        System.out.println("type:"+list.subList(1,4));
+        System.out.println("type:" + list.subList(1, 4));
         return list;
 
     }

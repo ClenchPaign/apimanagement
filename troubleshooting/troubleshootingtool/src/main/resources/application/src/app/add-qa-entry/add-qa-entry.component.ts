@@ -223,7 +223,7 @@ export class AddQaEntryComponent implements OnInit {
     const answer = new Answer('0', ans, creationDate, this.userID,
       this.userName, creationDate, this.uploadedFAnswerFiles.toString(), 0, false);
     const qa = new QAEntry(ques, [answer], this.quesTags, true, false, 1, 0);
-    console.log('Posted', qa);
+    // console.log('Posted', qa);
     if (question === '' || description === '') {
       this.openSnackBar('Provide the required fields', 'OK');
     } else {

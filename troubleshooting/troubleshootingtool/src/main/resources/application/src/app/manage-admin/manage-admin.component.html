@@ -23,7 +23,7 @@
     <mat-card class="admin-card">
       <h3>List of Admins</h3>
       <mat-divider></mat-divider>
-      <div style="overflow-y: scroll;">
+      <div style="overflow-y: scroll;max-height: 400px;">
         <div class="span" *ngFor="let option of get_admins() ">
           {{option}}
         </div>

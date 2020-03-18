@@ -114,15 +114,15 @@ export class DashboardComponent implements OnInit {
         temp = temp.replace(/<[^>]*>/g, '');
         qa.Question.description = temp;
         if (qa.isApproved) {
-          console.log('if');
-          let userAnswered = false;
+          let answerByThisUser = false;
           for (const ans of qa.Answers) {
-            console.log('ans ' + ans.ownerUserId);
+            console.log('ans-' + ans.id + ans.ownerUserId + ' ' + ans.isApproved);
             if (ans.ownerUserId === this.userID && ans.isApproved === false) {
-              userAnswered = true;
+              console.log('answer By This User');
+              answerByThisUser = true;
             }
           }
-          if (userAnswered) {
+          if (answerByThisUser) {
             this.editedResponse.push(qa);
           }
         } else {

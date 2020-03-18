@@ -206,6 +206,17 @@ export class ApprovalStageComponent implements OnInit {
     downloadLink.download = fileName;
     downloadLink.click();
   }
+  deleteAnswer(answerID: string) {
+    console.log(answerID);
+    if (this.questionData.isAnswered && this.questionData.Answers.length === 1) {
+      this.questionData.isAnswered = false;
+    }
+    this.questionData.Answers = this.questionData.Answers.filter(item => item.id !== answerID);
+    for (let i = 0; i < this.questionData.Answers.length; i++) {
+      this.questionData.Answers[i].id = i.toString();
+    }
+    this.questionData.answerCount = this.questionData.Answers.length;
+  }
 
   // onLoad() {
   //   this.questionDescription = this.questionData.Question.description;
@@ -366,12 +377,13 @@ export class ApprovalStageComponent implements OnInit {
     } else {
       isAnswered = false;
     }
-
     if (isAnswered) {
-      qa = new QAEntry(ques, this.questionData.Answers, this.quesTags, true, this.questionData.isApproved, 1, 0);
+      qa = new QAEntry(ques, this.questionData.Answers, this.quesTags, true,
+        this.questionData.isApproved, this.questionData.Answers.length, 0);
     } else {
       qa = new QAEntry(ques, [], this.quesTags, false, false, 0, 0);
     }
+    // console.log('Question approved ', qa);
     if (question === '' || categories === undefined || description === '') {
       // validate form
       console.log('Form incomplete');
@@ -393,6 +405,7 @@ export class ApprovalStageComponent implements OnInit {
     this.listingService.reject_question(this.questionData.Question.id).subscribe(data => {
       console.log('Question rejected ', data);
       this.openSnackBar('Question rejected', 'OK');
+      this.router.navigateByUrl('/main');
     });
   }
 
@@ -402,6 +415,5 @@ export class ApprovalStageComponent implements OnInit {
       verticalPosition: 'top',
       panelClass: ['white-snackbar']
     });
-    this.router.navigateByUrl('/main');
   }
 }

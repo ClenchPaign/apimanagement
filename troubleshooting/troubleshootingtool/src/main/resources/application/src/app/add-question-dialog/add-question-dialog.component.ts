@@ -180,11 +180,15 @@ export class AddQuestionDialogComponent implements OnInit {
     const d = new Date();
     const creationDate = d.getTime();
     const ques = new Question('', categories, question, description,
-    this.uploadedFiles.toString(), creationDate, userID, creationDate);
-    const qa = new QAEntry(ques, [], this.quesTags, false,false, 0, 0);
+      this.uploadedFiles.toString(), creationDate, userID, creationDate);
+    const qa = new QAEntry(ques, [], this.quesTags, false, false, 0, 0);
     this.listingService.post_question(qa).subscribe(data => {
       console.log('POST Request is successful ', JSON.stringify(qa));
       this.openSnackBar('Question posted successfully', 'OK');
+      setTimeout(() => {
+        this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
+          this.router.navigate(['/main/qna/review/' + data]));
+      }, 2000);
     });
   }
 
@@ -193,7 +197,7 @@ export class AddQuestionDialogComponent implements OnInit {
       duration: 3000,
       verticalPosition: 'top'
     });
-    this.router.navigateByUrl('/main');
+    
     // // window.location.replace('http://localhost:4343/main/dashboard');
     // window.location.replace('/main/dashboard');
   }

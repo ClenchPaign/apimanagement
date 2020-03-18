@@ -48,6 +48,11 @@ public class DataController {
         return dataDao.updateQAEntryById(id, qandA);
     }
 
+    @RequestMapping(value = "/qnas/answer", method = RequestMethod.PUT)
+    public QAEntry postAnswer(@RequestBody QAEntry qandA) throws IOException {
+        return dataDao.postAnswer(qandA);
+    }
+
     //    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
     @RequestMapping(value = "/qnas/{id}", method = RequestMethod.DELETE)
     public String deleteQandA(@PathVariable("id") String id) throws IOException {
@@ -151,7 +156,7 @@ public class DataController {
         return dataDao.restoreSnapshot();
     }
     @PostMapping("/categories/add")
-    public String addCategory(@RequestBody Categories admin_category ) {
+    public String addCategory(@RequestBody Categories admin_category ) throws IOException {
         return dataDao.addCategory(admin_category);
     }
 

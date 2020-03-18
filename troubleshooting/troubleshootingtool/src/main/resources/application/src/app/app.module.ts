@@ -52,6 +52,7 @@ import { AdministrationComponent } from './administration/administration.compone
 import { ManageCategoryComponent } from './manage-category/manage-category.component';
 import { ManageAdminComponent } from './manage-admin/manage-admin.component';
 import { EditDialogComponent } from './edit-dialog/edit-dialog.component';
+import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 
 @NgModule({
   declarations: [
@@ -75,7 +76,8 @@ import { EditDialogComponent } from './edit-dialog/edit-dialog.component';
     AdministrationComponent,
     ManageCategoryComponent,
     ManageAdminComponent,
-    EditDialogComponent
+    EditDialogComponent,
+    ConfirmationDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -107,6 +109,6 @@ import { EditDialogComponent } from './edit-dialog/edit-dialog.component';
   ],
   providers: [ListingService, MessageService, PreviousRouteService, AuthGuardService, AuthService],
   bootstrap: [AppComponent],
-  entryComponents: [AddQuestionDialogComponent, EditDialogComponent]
+  entryComponents: [AddQuestionDialogComponent, EditDialogComponent, ConfirmationDialogComponent]
 })
 export class AppModule { }
