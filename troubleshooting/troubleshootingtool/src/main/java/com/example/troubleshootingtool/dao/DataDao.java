@@ -405,53 +405,53 @@ public class DataDao {
     }
 
     public User authenticate(User user, HttpServletRequest request) throws NullPointerException, NamingException, IOException {
-        user.setUsername("Divyabharathi K");
-        user.setIsAuthenticated(true);
-        user.setEmail("divyabharathi.k@softwareag.com");
-        user.setIsAdmin(searchAdmin(user.getUserID()));
-//        LdapContext ctx;
-//        String userID = user.getUserID();
-//        String passwd = user.getPassword();
-//        user.setIsAuthenticated(false);
-//        HttpSession session = request.getSession();
-//        session.setAttribute("userName", userID);
-//        httpServletRequest = request;
-//        httpSession = request.getSession();
-//        System.out.println("session   :" + session.getAttribute("userName").toString());
-//        try {
-//            ctx = context(userID, passwd);
-//            System.out.println("ctx   :" + ctx);
-//            SearchControls searchCtls = new SearchControls();
-//            String[] returnedAtts = {"sn", "mail", "cn", "givenName", "memberOf"};
-//            searchCtls.setReturningAttributes(returnedAtts);
-//            searchCtls.setSearchScope(SearchControls.SUBTREE_SCOPE);
-//            String searchFilter = "(&(objectClass=user)(mail=*)(cn=" + userID + "))";
-//            String searchBase = "OU=India,DC=eur,DC=ad,DC=sag";
-//            NamingEnumeration<?> answer = ctx.search(searchBase, searchFilter, searchCtls);
-//
-//            while (answer.hasMoreElements()) {
-//                System.out.println("answer has more elements");
-//                SearchResult sr = (SearchResult) answer.next();
-//                String search = sr.toString();
-//                System.out.println("answer   :" + sr);
-//                Attributes attrs = sr.getAttributes();
-//                if (attrs != null) {
-//                    String cn = attrs.get("cn").get().toString();
-//                    if (cn.endsWith(userID.toLowerCase()) || cn.endsWith(userID.toUpperCase())) {
-//                        String mail = attrs.get("mail").get().toString();
-//                        String givenName = attrs.get("givenName").get().toString();
-//                        String lastname=attrs.get("sn").get().toString();
-//                        String username=givenName+" "+lastname;
-//                        user.setEmail(mail);
-//                        user.setUsername(username);
-//                        user.setIsAuthenticated(true);
-//                        user.setIsAdmin(searchAdmin(cn));
-//                    }
-//                }
-//            }
-//        } catch (Exception e) {
-//            System.out.println("Invalid username or password");
-//        }
+//        user.setUsername("Divyabharathi K");
+//        user.setIsAuthenticated(true);
+//        user.setEmail("divyabharathi.k@softwareag.com");
+//        user.setIsAdmin(searchAdmin(user.getUserID()));
+        LdapContext ctx;
+        String userID = user.getUserID();
+        String passwd = user.getPassword();
+        user.setIsAuthenticated(false);
+        HttpSession session = request.getSession();
+        session.setAttribute("userName", userID);
+        httpServletRequest = request;
+        httpSession = request.getSession();
+        System.out.println("session   :" + session.getAttribute("userName").toString());
+        try {
+            ctx = context(userID, passwd);
+            System.out.println("ctx   :" + ctx);
+            SearchControls searchCtls = new SearchControls();
+            String[] returnedAtts = {"sn", "mail", "cn", "givenName", "memberOf"};
+            searchCtls.setReturningAttributes(returnedAtts);
+            searchCtls.setSearchScope(SearchControls.SUBTREE_SCOPE);
+            String searchFilter = "(&(objectClass=user)(mail=*)(cn=" + userID + "))";
+            String searchBase = "OU=India,DC=eur,DC=ad,DC=sag";
+            NamingEnumeration<?> answer = ctx.search(searchBase, searchFilter, searchCtls);
+
+            while (answer.hasMoreElements()) {
+                System.out.println("answer has more elements");
+                SearchResult sr = (SearchResult) answer.next();
+                String search = sr.toString();
+                System.out.println("answer   :" + sr);
+                Attributes attrs = sr.getAttributes();
+                if (attrs != null) {
+                    String cn = attrs.get("cn").get().toString();
+                    if (cn.endsWith(userID.toLowerCase()) || cn.endsWith(userID.toUpperCase())) {
+                        String mail = attrs.get("mail").get().toString();
+                        String givenName = attrs.get("givenName").get().toString();
+                        String lastname=attrs.get("sn").get().toString();
+                        String username=givenName+" "+lastname;
+                        user.setEmail(mail);
+                        user.setUsername(username);
+                        user.setIsAuthenticated(true);
+                        user.setIsAdmin(searchAdmin(cn));
+                    }
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Invalid username or password");
+        }
         return user;
     }
 
