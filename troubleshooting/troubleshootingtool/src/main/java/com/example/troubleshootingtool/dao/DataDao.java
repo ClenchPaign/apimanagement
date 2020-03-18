@@ -686,9 +686,12 @@ public class DataDao {
                 cat = new ObjectMapper().readValue(searchHit.getSourceAsString(), Categories.class);
                 list.add(cat.getCategory());
             }
-        }catch (Exception e){
-            list.add(e.getMessage());
+        } catch (ElasticsearchException e) {
+            list.add(e.getDetailedMessage());
             list.add(e.getLocalizedMessage());
+        } catch (IOException ex) {
+            list.add(ex.getMessage());
+            list.add("IO exception " + ex.getLocalizedMessage() + "  " + Arrays.toString(ex.getStackTrace()));
         }
 
         return list;
