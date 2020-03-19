@@ -23,6 +23,10 @@ public class DataController {
         this.dataDao = dataDao;
     }
 
+    @GetMapping("/error")
+    public String error() {
+        return "index.html";
+    }
 
     //    @GetMapping("/all")
     @GetMapping("/qnas")
