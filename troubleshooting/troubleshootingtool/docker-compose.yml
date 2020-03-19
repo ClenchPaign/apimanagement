@@ -3,7 +3,7 @@ services:
   troubleshootingapplication-1.0:
     image: "divyabhaarathy/troubleshootingtool-0.0.1"
     ports:
-      - "4444:4444"
+      - "4343:4343"
     networks:
       - elastic
     environment:
