@@ -6,6 +6,8 @@ services:
       - "4343:4343"
     networks:
       - elastic
+    environment:
+      - ElasticsearchHost=${ElasticsearchHost}
 
 networks:
   elastic:

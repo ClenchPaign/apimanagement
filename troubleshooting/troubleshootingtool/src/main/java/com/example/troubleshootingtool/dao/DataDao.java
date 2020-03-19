@@ -58,7 +58,7 @@ public class DataDao {
 
     String ADMIN = "admin";
     String CATEGORY = "category";
-    private ElasticSearchConfigurationClass elasticSearchConfigurationClass;
+    ElasticSearchConfigurationClass elasticSearchConfigurationClass;
 
     private RestHighLevelClient restHighLevelClient;
     String INDEX = "approved";
