@@ -26,7 +26,7 @@ export class ListingService {
   constructor(private http: HttpClient) {
   }
 
-  baseUrl = 'http://localhost:4386';
+  baseUrl = 'http://localhost:4444';
   getAllQuestions() {
     return this.http.get(this.baseUrl + '/qnas', httpOptions);
   }
