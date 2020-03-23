@@ -656,19 +656,40 @@ public class DataDao {
 
     public String addCategory(Categories admin_category) throws IOException {
         System.out.println(admin_category.getCategory());
-
         Map dataMap = objectMapper.convertValue(admin_category, Map.class);
         IndexRequest indexRequest = new IndexRequest(CATEGORY).source(dataMap);
-//        try {
         IndexResponse response = restHighLevelClient.index(indexRequest, RequestOptions.DEFAULT);
         return admin_category.getCategory();
-//        } catch (ElasticsearchException e) {
-//            e.getDetailedMessage();
-//        } catch (IOException ex) {
-//            ex.getLocalizedMessage();
-//        }
     }
 
+    public String deleteCategory(String category) throws IOException {
+        System.out.println(category);
+        DeleteRequest deleteRequest = new DeleteRequest(CATEGORY,getCategoryID(category));
+        DeleteResponse response = restHighLevelClient.delete(deleteRequest, RequestOptions.DEFAULT);
+        return "deleted category";
+    }
+
+    public String getCategoryID(String category){
+        SearchRequest searchRequest = new SearchRequest();
+        String id = "";
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
+        boolQueryBuilder.filter(QueryBuilders.termQuery("_index", CATEGORY));
+        boolQueryBuilder.filter(QueryBuilders.termQuery("category.keyword", category));
+        searchSourceBuilder.query(boolQueryBuilder);
+        searchSourceBuilder.size(1000);
+        searchRequest.source(searchSourceBuilder);
+        try{
+            SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+            SearchHit[] searchHits = searchResponse.getHits().getHits();
+            for (SearchHit searchHit : searchHits) {
+                id = searchHit.getId();
+            }
+            return id;
+        } catch (Exception ex) {
+            return id;
+        }
+    }
     public List<String> getAdminCategories() throws IOException {
         List<String> list = new ArrayList<>();
         Categories cat = null;
@@ -687,11 +708,7 @@ public class DataDao {
                 list.add(cat.getCategory());
             }
         } catch (ElasticsearchException e) {
-            list.add(e.getDetailedMessage());
-            list.add(e.getLocalizedMessage());
         } catch (IOException ex) {
-            list.add(ex.getMessage());
-            list.add("IO exception " + ex.getLocalizedMessage() + "  " + Arrays.toString(ex.getStackTrace()));
         }
 
         return list;
@@ -731,7 +748,34 @@ public class DataDao {
         }
         System.out.println("type:" + list.subList(1, 4));
         return list;
+    }
 
+    public String deleteAdmin(String admin) throws IOException {
+        DeleteRequest deleteRequest = new DeleteRequest(ADMIN,getAdminID(admin));
+        DeleteResponse response = restHighLevelClient.delete(deleteRequest, RequestOptions.DEFAULT);
+        return "Admin revoked";
+    }
+
+    public String getAdminID(String admin){
+        SearchRequest searchRequest = new SearchRequest();
+        String id = "";
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
+        boolQueryBuilder.filter(QueryBuilders.termQuery("_index", ADMIN));
+        boolQueryBuilder.filter(QueryBuilders.termQuery("user.keyword", admin));
+        searchSourceBuilder.query(boolQueryBuilder);
+        searchSourceBuilder.size(1000);
+        searchRequest.source(searchSourceBuilder);
+        try{
+            SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+            SearchHit[] searchHits = searchResponse.getHits().getHits();
+            for (SearchHit searchHit : searchHits) {
+                id = searchHit.getId();
+            }
+            return id;
+        } catch (Exception ex) {
+            return id;
+        }
     }
 
 }

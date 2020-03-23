@@ -152,4 +152,12 @@ export class ListingService {
     return this.http.get(this.baseUrl + '/admin/get', httpOptions);
   }
 
+  deleteCategory(item: string) {
+    return this.http.delete(this.baseUrl + '/categories/delete/' + item, { headers, responseType: 'text' });
+  }
+
+  deleteAdmin(item: string) {
+    return this.http.delete(this.baseUrl + '/admin/delete/' + item, { headers, responseType: 'text' });
+  }
+
 }

@@ -8,13 +8,8 @@
   margin-right: 10px;
 }
 
-h3 {
-  font-family: Roboto, Helvetica, Arial, sans-serif;
-  color: #1776bf;
-}
-.span {
-  font-family: Roboto, Helvetica, Arial, sans-serif;
-  margin-top: 10px;
+.parent {
+  width: 100%;
 }
 
 .textarea {
@@ -22,6 +17,28 @@ h3 {
   width: 50%;
 }
 
-.admin-card {
+h3 {
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+  color: #1776bf;
+}
+.span {
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+}
+.category-card {
   margin: 24px;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.content {
+  max-height: 400px;
+  overflow-y: scroll;
+}
+.content::-webkit-scrollbar {
+  display: none;
 }

@@ -1,7 +1,20 @@
-<div class="parent">
-  <div class="close" (click)="close()">
-    <mat-icon>close</mat-icon>
+<div class="head">
+  <div class="list">
+    <div class="breadcrumb" [routerLink]="['/main']">Home</div>
+    <mat-icon>chevron_right</mat-icon>
+    <div class="breadcrumb" [routerLink]="['/main/home/category']">
+      Category
+    </div>
+    <mat-icon>chevron_right</mat-icon>
+    <div *ngIf="editedResponse !== undefined" class="breadcrumb" 
+    [routerLink]="['/main/home/category/'+editedResponse.Question.category+'/0/5']">
+      {{ editedResponse.Question.category }}
+    </div>
+    <mat-icon>chevron_right</mat-icon>
+    <div *ngIf="editedResponse !== undefined"  class="breadcrumb"> {{ editedResponse.Question.question }}</div>
   </div>
+</div>
+<div class="parent">  
   <div class="layout">
     <div *ngIf="editedResponse !== undefined">
       <div class="question">{{ editedResponse.Question.question }}</div>
@@ -59,9 +72,11 @@
             <mat-icon [inline]="true" class="arrow">arrow_drop_down</mat-icon>
           </div>
           <div style="width: 100%;display: flex;">
-            <div><mat-icon *ngIf="isAdmin === 'true'" class="delete" (click)="openDialog(item.id)">delete</mat-icon></div>
             <div class="answer-layout" style="width: 100%;">
-              <div class="answer" *ngIf="item.isApproved">Approved</div>
+              <div style="display: flex;align-items: center;justify-content: space-between;">
+                <div class="answer" *ngIf="item.isApproved">Approved</div>
+                <div><mat-icon *ngIf="isAdmin === 'true'" class="delete" (click)="openDialog(item.id)">delete</mat-icon></div>
+              </div>
               <div class="ansdescription" [innerHTML]="item.description"></div>
 
             </div>

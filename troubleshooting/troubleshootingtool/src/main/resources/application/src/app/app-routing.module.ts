@@ -15,8 +15,7 @@ import { ApprovalStageComponent } from './approval-stage/approval-stage.componen
 import { HomeComponent } from './home/home.component';
 import { AuthGuardService as AuthGuard } from './auth-guard.service';
 import { AdministrationComponent } from './administration/administration.component';
-import { ManageCategoryComponent } from './manage-category/manage-category.component';
-import { ManageAdminComponent } from './manage-admin/manage-admin.component';
+import { ManageComponent } from './manage/manage.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -29,8 +28,7 @@ const routes: Routes = [
       },
       {
         path: 'administration', component: AdministrationComponent, children: [
-          { path: 'manage_category', component: ManageCategoryComponent },
-          { path: 'manage_admin', component: ManageAdminComponent },
+          { path: 'manage/:type', component: ManageComponent }
         ]
       },
       { path: 'review', component: ReviewQuestionsComponent },

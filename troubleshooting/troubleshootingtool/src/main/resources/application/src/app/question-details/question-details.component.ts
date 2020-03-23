@@ -277,7 +277,7 @@ export class QuestionDetailsComponent implements OnInit {
   openDialog(answerID: string): boolean {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '250px',
-      data: { text: 'Are you sure you want to delete this item?', result: 'no' }
+      data: { text: 'Are you sure you want to delete this answer?', result: 'no' }
     });
     dialogRef.afterClosed().subscribe((res) => {
       console.log('The dialog was closed' + res.result);

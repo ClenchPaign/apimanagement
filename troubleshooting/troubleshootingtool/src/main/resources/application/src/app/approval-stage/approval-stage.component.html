@@ -23,7 +23,11 @@
       <br />
       <div class="question_description">
         <div style="width: 99%;" [innerHTML]="questionDescription"></div>
-        <mat-icon style="width: 1%;margin-right: 10px;" (click)="openDialog(questionDescription,'question')">edit</mat-icon>
+        <mat-icon
+          style="width: 1%;margin-right: 10px;"
+          (click)="openDialog(questionDescription, 'question')"
+          >edit</mat-icon
+        >
       </div>
       <!-- <ejs-richtexteditor
         #imageRTE
@@ -42,7 +46,8 @@
           >
         </div>
         <div *ngFor="let item of questionFiles">
-          <div matTooltip="Click to download file"
+          <div
+            matTooltip="Click to download file"
             class="attachment-items"
             (click)="onAttachmentClick(item.fileName, 'question')"
           >
@@ -90,22 +95,6 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <!-- <mat-form-field class="textarea">
-        <input
-          [formControl]="categories"
-          type="text"
-          placeholder="Select a category*"
-          matInput
-          (input)="filter($event.target.value)"
-          [matAutocomplete]="auto"
-        />
-
-        <mat-autocomplete #auto="matAutocomplete">
-          <mat-option *ngFor="let option of getFilteredList()" [value]="option">
-            {{ option }}
-          </mat-option>
-        </mat-autocomplete>
-      </mat-form-field> -->
 
       <mat-form-field class="textarea">
         <mat-chip-list #chipList>
@@ -143,22 +132,42 @@
         </mat-chip-list>
       </mat-form-field>
 
-      <label *ngIf="questionData.isAnswered" class="textarea" style="margin-top: 16px;margin-bottom: 16px;">Solution</label>
+      <label
+        *ngIf="questionData.isAnswered"
+        class="textarea"
+        style="margin-top: 16px;margin-bottom: 16px;"
+        >Solution</label
+      >
       <div *ngFor="let item of questionData.Answers">
         <div class="answer_description">
+          <div class="answer" *ngIf="item.isApproved === false">
+            Pending for Approval
+          </div>
           <div style="display: flex;">
             <div style="width: 99%;" [innerHTML]="item.description"></div>
-            <mat-icon style="width: 1%;margin-right: 10px;" (click)="openDialog(item.description,item.id)">edit</mat-icon>
-            <mat-icon style="width: 1%;margin-right: 10px;" (click)="deleteAnswer(item.id)">delete</mat-icon>
+            <mat-icon
+              style="width: 1%;margin-right: 10px;"
+              (click)="openDialog(item.description, item.id)"
+              >edit</mat-icon
+            >
+            <mat-icon
+              style="width: 1%;margin-right: 10px;"
+              (click)="openDialog('deleteAction', item.id)"
+              >delete</mat-icon
+            >
           </div>
-          <div style="margin-bottom:16px" *ngIf="answerFiles[item.id].imageModelList.length > 0">
+          <div
+            style="margin-bottom:16px"
+            *ngIf="answerFiles[item.id].imageModelList.length > 0"
+          >
             <div style="display: flex;align-items: center;">
               <div>Attachments</div>
               <mat-icon style="margin-left: 4px;">attachment</mat-icon>
             </div>
             <div>
               <div *ngFor="let answer of answerFiles[item.id].imageModelList">
-                <div matTooltip="Click to download file"
+                <div
+                  matTooltip="Click to download file"
                   class="attachment-items"
                   (click)="onAttachmentClick(answer.fileName, answer.id)"
                 >
@@ -168,42 +177,23 @@
             </div>
           </div>
         </div>
-        <!-- <ejs-richtexteditor
-        #imageRTEForAnswer
-        id="imageRTEForAnswer"
-        class="richtexteditor"
-        style="margin-left: 16px;margin-top: 16px;"
-        width="95%"
-        height="350px"
-        [(ngModel)]="val"
-      >
-      </ejs-richtexteditor> -->
-        <!-- <div hidden style="margin-left: 16px; margin-top: 16px;">
-        <input id="approveAnswer" type="checkbox" />Check here to approve
-        Solution above
-      </div> -->
-
-        
       </div>
       <div>
         <button
+          mat-stroked-button
+          type="submit"
+          class="reject_button"
+          (click)="reject_qaentry()"
+        >
+          REJECT
+        </button>
+        <button
           mat-button
-          ejs-button
-          class="dlt-button-post"
+          class="approve_button"
           type="submit"
           (click)="post_qaentry()"
         >
           APPROVE
-        </button>
-        <button
-          mat-button
-          ejs-button
-          type="submit"
-          class="dlt-button-post"
-          (click)="reject_qaentry()"
-          style="background-color: #E0000E;"
-        >
-          REJECT
         </button>
       </div>
     </mat-card>

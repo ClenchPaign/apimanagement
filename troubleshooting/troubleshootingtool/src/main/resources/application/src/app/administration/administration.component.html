@@ -1,16 +1,16 @@
 <div class="parent" style="display: flex;">
   <div>
-    <div class="span" (click)="manage_category()">
+    <div class="span" [routerLink]="['/main/administration/manage/categories']">
       <mat-icon>category</mat-icon>
       <div class="option">Manage Category</div>
     </div>
-    <div class="span" (click)="manage_admin()">
+    <div class="span" [routerLink]="['/main/administration/manage/admin']">
       <mat-icon>group_add</mat-icon>
-      <div class="option" >Manage Admin</div>
+      <div class="option">Manage Admin</div>
     </div>
     <div class="span">
       <mat-icon>settings</mat-icon>
-      <div class="option" >Settings</div>
+      <div class="option">Settings</div>
     </div>
   </div>
   <mat-divider [vertical]="true"></mat-divider>

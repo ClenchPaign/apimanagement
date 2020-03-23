@@ -14,6 +14,7 @@ import { ImageModel, AnswerFiles } from '../data-models/ImageModel';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { EditDialogComponent } from '../edit-dialog/edit-dialog.component';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 
 export interface DialogData {
   type: string;
@@ -74,8 +75,6 @@ export class ApprovalStageComponent implements OnInit {
     private route: ActivatedRoute,
     private _snackBar: MatSnackBar,
     public dialog: MatDialog
-    // public answerFiles: AnswerFiles[],
-    // public questionFiles: ImageModel[]
   ) { }
 
   ngOnInit() {
@@ -235,19 +234,32 @@ export class ApprovalStageComponent implements OnInit {
   //   // this.rteObj.valueTemplate = this.questionData.Question.description;
   // }
   openDialog(descriptionStr: string, typeStr: string): void {
-    const dialogRef = this.dialog.open(EditDialogComponent, {
-      width: '90%',
-      data: { type: typeStr, description: descriptionStr }
-    });
+    if (descriptionStr === 'deleteAction') {
+      const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+        width: '250px',
+        data: { text: 'Are you sure you want to delete this answer?', result: 'no' }
+      });
+      dialogRef.afterClosed().subscribe((res) => {
+        console.log('The dialog was closed' + res.result);
+        if (res.result === 'yes') {
+          this.deleteAnswer(typeStr);
+        }
+      });
+    } else {
+      const dialogRef = this.dialog.open(EditDialogComponent, {
+        width: '90%',
+        data: { type: typeStr, description: descriptionStr }
+      });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed' + result.description);
-      if (result.type === 'question') {
-        this.questionDescription = result.description;
-      } else {
-        this.questionData.Answers[Number(result.type)].description = result.description;
-      }
-    });
+      dialogRef.afterClosed().subscribe((result) => {
+        console.log('The dialog was closed' + result.description);
+        if (result.type === 'question') {
+          this.questionDescription = result.description;
+        } else {
+          this.questionData.Answers[Number(result.type)].description = result.description;
+        }
+      });
+    }
   }
   // filters for categories
   getFilteredList() {
@@ -324,88 +336,75 @@ export class ApprovalStageComponent implements OnInit {
     this.files = this.files.filter(item => item !== file);
     console.log('remove file:' + file);
   }
-  // uploadFile(event) {
-  //   for (const droppedFile of event) {
-  //     this.files.push(droppedFile.name);
-  //     const reader = new FileReader();
-  //     console.log('Name ', droppedFile.name);
-  //     reader.readAsDataURL(droppedFile);
-  //     reader.onload = (e) => {
-  //       const imageModel: ImageModel = new ImageModel('', droppedFile.name, reader.result as string);
-  //       this.listingService.upload_files(imageModel).subscribe(data => {
-  //         console.log('Upload', data);
-  //         this.uploadedFiles.push(data);
-  //       });
-  //     };
-  //   }
-  // }
-
 
   post_qaentry() {
-    const question = this.question.value;
-    // const description = this.rteObj.getText();
-    const description = this.questionDescription;
-    const categories = this.categories.value;
-    this.quesTags = [];
-    // let approveAnswer: boolean;
-    // const approveAnswerEle = document.getElementById('approveAnswer') as HTMLInputElement;
-    // if (approveAnswerEle.checked) {
-    //   approveAnswer = true;
-    // } else {
-    //   approveAnswer = false;
-    // }
-    for (const tags of this.fruits) {
-      this.quesTags.push(tags.name);
-    }
-    console.log(this.quesTags);
-    let isAnswered: boolean;
-    const ques = new Question(this.questionData.Question.id, categories,
-      question, description, this.questionData.Question.attachment, this.questionData.Question.creationDate,
-      this.questionData.Question.ownerId, this.questionData.Question.lastModifiedDate);
-    let qa: QAEntry;
-    // let answer: Answer;
-    if (this.questionData.isAnswered) {
-      isAnswered = true;
-      // if (this.val === '') {
-      //   ans = this.questionData.Answers[0].description;
-      //   answer = new Answer('0', ans, this.questionData.Answers[0].postedDate, this.questionData.Answers[0].ownerUserId,
-      //     this.questionData.Answers[0].ownerUserName, this.questionData.Answers[0].lastEditedDate,
-      //     this.questionData.Answers[0].attachment, 0, true);
-      // } else {
-      //   ans = this.val;
-      // }
-    } else {
-      isAnswered = false;
-    }
-    if (isAnswered) {
-      qa = new QAEntry(ques, this.questionData.Answers, this.quesTags, true,
-        this.questionData.isApproved, this.questionData.Answers.length, 0);
-    } else {
-      qa = new QAEntry(ques, [], this.quesTags, false, false, 0, 0);
-    }
-    // console.log('Question approved ', qa);
-    if (question === '' || categories === undefined || description === '') {
-      // validate form
-      console.log('Form incomplete');
-      this.openSnackBar('Provide the required fields', 'OK');
-    } else {
-      console.log('Question approved ', qa);
-      this.listingService.approve_question(qa, this.questionData.Question.id).subscribe(data => {
-        console.log('Question approved ', data);
-        this.openSnackBar('Question approved successfully', 'OK');
-        setTimeout(() => {
-          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
-            this.router.navigate(['/main/qna/approved/' + this.questionData.Question.id]));
-        }, 2000);
-      });
-    }
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '300px',
+      data: { text: 'Are you sure you want to APPROVE this Entry?', result: 'no' }
+    });
+    dialogRef.afterClosed().subscribe((res) => {
+      console.log('The dialog was closed' + res.result);
+      if (res.result === 'yes') {
+        const question = this.question.value;
+        const description = this.questionDescription;
+        const categories = this.categories.value;
+        this.quesTags = [];
+        for (const tags of this.fruits) {
+          this.quesTags.push(tags.name);
+        }
+        console.log(this.quesTags);
+        let isAnswered: boolean;
+        const ques = new Question(this.questionData.Question.id, categories,
+          question, description, this.questionData.Question.attachment, this.questionData.Question.creationDate,
+          this.questionData.Question.ownerId, this.questionData.Question.lastModifiedDate);
+        let qa: QAEntry;
+        // let answer: Answer;
+        if (this.questionData.isAnswered) {
+          isAnswered = true;
+        } else {
+          isAnswered = false;
+        }
+        if (isAnswered) {
+          qa = new QAEntry(ques, this.questionData.Answers, this.quesTags, true,
+            this.questionData.isApproved, this.questionData.Answers.length, 0);
+        } else {
+          qa = new QAEntry(ques, [], this.quesTags, false, false, 0, 0);
+        }
+        // console.log('Question approved ', qa);
+        if (question === '' || categories === undefined || description === '') {
+          // validate form
+          console.log('Form incomplete');
+          this.openSnackBar('Provide the required fields', 'OK');
+        } else {
+          console.log('Question approved ', qa);
+          this.listingService.approve_question(qa, this.questionData.Question.id).subscribe(data => {
+            console.log('Question approved ', data);
+            this.openSnackBar('Question approved successfully', 'OK');
+            setTimeout(() => {
+              this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
+                this.router.navigate(['/main/qna/approved/' + this.questionData.Question.id]));
+            }, 2000);
+          });
+        }
+      }
+    });
+
   }
 
   reject_qaentry() {
-    this.listingService.reject_question(this.questionData.Question.id).subscribe(data => {
-      console.log('Question rejected ', data);
-      this.openSnackBar('Question rejected', 'OK');
-      this.router.navigateByUrl('/main');
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '300px',
+      data: { text: 'Are you sure you want to REJECT this Entry?', result: 'no' }
+    });
+    dialogRef.afterClosed().subscribe((res) => {
+      console.log('The dialog was closed' + res.result);
+      if (res.result === 'yes') {
+        this.listingService.reject_question(this.questionData.Question.id).subscribe(data => {
+          console.log('Question rejected ', data);
+          this.openSnackBar('Question rejected', 'OK');
+          this.router.navigateByUrl('/main');
+        });
+      }
     });
   }
 

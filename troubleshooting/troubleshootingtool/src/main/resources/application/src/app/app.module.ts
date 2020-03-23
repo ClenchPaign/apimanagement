@@ -49,10 +49,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { AuthGuardService } from './auth-guard.service';
 import { AuthService } from './auth.service';
 import { AdministrationComponent } from './administration/administration.component';
-import { ManageCategoryComponent } from './manage-category/manage-category.component';
-import { ManageAdminComponent } from './manage-admin/manage-admin.component';
 import { EditDialogComponent } from './edit-dialog/edit-dialog.component';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
+import { ManageComponent } from './manage/manage.component';
 
 @NgModule({
   declarations: [
@@ -74,10 +73,9 @@ import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-
     ApprovalStageComponent,
     HomeComponent,
     AdministrationComponent,
-    ManageCategoryComponent,
-    ManageAdminComponent,
     EditDialogComponent,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    ManageComponent
   ],
   imports: [
     BrowserModule,

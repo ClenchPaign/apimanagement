@@ -247,7 +247,6 @@ span {
   /* font-weight: bolder; */
 }
 
-
 /* .product-name-secondary {
   font-family: "Segoe UI", Tahoma, Verdana, sans-serif;
   font-size: small;
@@ -377,21 +376,22 @@ ul.breadcrumb li:hover {
   font-size: 0.875rem;
 }
 
-.searchcard{
+.searchcard {
   margin-top: 20%;
-  margin-left: 15%;
-  margin-right: 15%;
+  margin-left: 20%;
+  margin-right: 20%;
   border-radius: 36px;
+  box-shadow: 0 2px 10px -1px #eeeeee, 0 1px 10px 0 lightgray,
+    0 1px 10px 0 #eeeeee;
 }
 
-
-.searchcard-inside{
+.searchcard-inside {
   display: flex;
 }
-.search-result{
+.search-result {
   cursor: pointer;
   padding: 16px;
 }
-.search-result:hover{
+.search-result:hover {
   background-color: #eeeeee;
 }

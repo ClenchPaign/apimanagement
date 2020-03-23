@@ -121,12 +121,22 @@ mat-icon {
   display: inline-block;
 }
 
-.dlt-button-post {
+.approve_button {
   margin-top: 16px;
   left: 16px;
   width: max-content;
   color: #ffffff;
-  background-color: green;
+  background-color: #1776bf;
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+  margin-right: 10px;
+}
+
+.reject_button {
+  margin-top: 16px;
+  left: 16px;
+  width: max-content;
+  color: #1776bf;
+  background-color: #ffffff;
   font-family: Roboto, Helvetica, Arial, sans-serif;
   margin-right: 10px;
 }
@@ -138,11 +148,26 @@ mat-icon {
   padding-bottom: 4px;
   padding-left: 10px;
   padding-right: 10px;
-  background-color:#CDE6F9;
+  background-color: #cde6f9;
   color: #1776bf;
   margin-bottom: 4px;
   font-size: smaller;
   border-radius: 10px;
+}
+.answer {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  color: #657506;
+  font-size: smaller;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 8px;
+  padding-right: 8px;
+  border-radius: 4px;
+  width: min-content;
+  white-space: nowrap;
+  background-color: #eafa8f;
+  align-content: end;
 }
 
 .answer_description {
@@ -171,4 +196,3 @@ mat-icon {
 .outerlayout {
   margin-left: 24px;
 }
-

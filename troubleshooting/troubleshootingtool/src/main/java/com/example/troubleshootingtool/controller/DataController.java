@@ -169,9 +169,19 @@ public class DataController {
         return dataDao.getAdminCategories();
     }
 
+    @RequestMapping(value = "/categories/delete/{item}", method = RequestMethod.DELETE)
+    public String deleteCategory(@PathVariable("item") String item) throws IOException {
+        return dataDao.deleteCategory(item);
+    }
+
     @PostMapping("/admin/users")
     public List<String> getLdapUsers(@RequestBody User user)throws IOException{
         return dataDao.getLdapUsers(user);
+    }
+
+    @RequestMapping(value = "/admin/delete/{item}", method = RequestMethod.DELETE)
+    public String deleteAdmin(@PathVariable("item") String item) throws IOException {
+        return dataDao.deleteAdmin(item);
     }
 
 }
