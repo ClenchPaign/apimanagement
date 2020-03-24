@@ -116,10 +116,16 @@ export class CategoryOfQuestionsComponent implements OnInit {
     return straray;
     // return straray.lastIndexOf(2);
   }
+  main(){
+    this.router.navigateByUrl('/main');
+  }
+  goToCategory(){
+    this.router.navigateByUrl('/main/home/category');
+  }
   onClick(id: string) {
     console.log('clicked here --' + id);
     this.listingService.id = id;
-    // this.router.navigateByUrl('/cat');
+    this.router.navigateByUrl('/main/qna/approved/' + id);
   }
   onTagClick(tag: string) {
     console.log('clicked ' + tag);
@@ -132,7 +138,7 @@ export class CategoryOfQuestionsComponent implements OnInit {
       }
     };
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
-      // this.router.navigate(['/main/search/' + tag + '/ '], this.navigationExtras));
+      // this.router.navigate(['//#/main/search/' + tag + '/ '], this.navigationExtras));
       this.router.navigate(['/main/home/search/list'], this.navigationExtras));
     // this.router
     //   .navigateByUrl('/', { skipLocationChange: true })

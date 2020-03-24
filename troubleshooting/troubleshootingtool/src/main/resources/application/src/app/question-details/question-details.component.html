@@ -1,20 +1,25 @@
 <div class="head">
   <div class="list">
-    <div class="breadcrumb" [routerLink]="['/main']">Home</div>
+    <div class="breadcrumb" (click)="main()">Home</div>
     <mat-icon>chevron_right</mat-icon>
-    <div class="breadcrumb" [routerLink]="['/main/home/category']">
+    <div class="breadcrumb" (click)="goToCategory()">
       Category
     </div>
     <mat-icon>chevron_right</mat-icon>
-    <div *ngIf="editedResponse !== undefined" class="breadcrumb" 
-    [routerLink]="['/main/home/category/'+editedResponse.Question.category+'/0/5']">
+    <div
+      *ngIf="editedResponse !== undefined"
+      class="breadcrumb"
+      (click)="goToSpecificCategory(editedResponse.Question.category)"
+    >
       {{ editedResponse.Question.category }}
     </div>
     <mat-icon>chevron_right</mat-icon>
-    <div *ngIf="editedResponse !== undefined"  class="breadcrumb"> {{ editedResponse.Question.question }}</div>
+    <div *ngIf="editedResponse !== undefined" class="breadcrumb">
+      {{ editedResponse.Question.question }}
+    </div>
   </div>
 </div>
-<div class="parent">  
+<div class="parent">
   <div class="layout">
     <div *ngIf="editedResponse !== undefined">
       <div class="question">{{ editedResponse.Question.question }}</div>
@@ -72,13 +77,18 @@
             <mat-icon [inline]="true" class="arrow">arrow_drop_down</mat-icon>
           </div>
           <div style="width: 100%;display: flex;">
+            <div>
+              <mat-icon
+                *ngIf="isAdmin === 'true'"
+                class="delete"
+                (click)="openDialog(item.id)"
+                >delete</mat-icon
+              >
+            </div>
             <div class="answer-layout" style="width: 100%;">
-              <div style="display: flex;align-items: center;justify-content: space-between;">
-                <div class="answer" *ngIf="item.isApproved">Approved</div>
-                <div><mat-icon *ngIf="isAdmin === 'true'" class="delete" (click)="openDialog(item.id)">delete</mat-icon></div>
-              </div>
-              <div class="ansdescription" [innerHTML]="item.description"></div>
+              <div class="answer" *ngIf="item.isApproved">Approved</div>
 
+              <div class="ansdescription" [innerHTML]="item.description"></div>
             </div>
           </div>
         </div>
@@ -114,7 +124,10 @@
       </div>
     </div>
 
-    <div *ngIf="index === 'approved'" style="display: flex;flex-direction: column;">
+    <div
+      *ngIf="index === 'approved'"
+      style="display: flex;flex-direction: column;"
+    >
       <div class="answer-count">Your Answer</div>
       <ejs-richtexteditor
         #imageRTE
@@ -130,7 +143,7 @@
             Add attachment
           </div>
         </div>
-        
+
         <div
           id="hidden_attachment"
           style="visibility: hidden;width: 100%; display: flex;align-items: center;"
@@ -169,7 +182,6 @@
             </div>
           </div>
         </div>
-        
       </div>
       <div>
         <button

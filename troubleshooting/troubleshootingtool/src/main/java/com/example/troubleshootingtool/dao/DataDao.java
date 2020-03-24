@@ -440,8 +440,8 @@ public class DataDao {
                     if (cn.endsWith(userID.toLowerCase()) || cn.endsWith(userID.toUpperCase())) {
                         String mail = attrs.get("mail").get().toString();
                         String givenName = attrs.get("givenName").get().toString();
-                        String lastname=attrs.get("sn").get().toString();
-                        String username=givenName+" "+lastname;
+                        String lastname = attrs.get("sn").get().toString();
+                        String username = givenName + " " + lastname;
                         user.setEmail(mail);
                         user.setUsername(username);
                         user.setIsAuthenticated(true);
@@ -473,7 +473,7 @@ public class DataDao {
 //		DirContext ctx = new InitialLdapContext(env, null);
 
         LdapContext ctx = new InitialLdapContext(env, null);
-        System.out.println("ctx   :" + ctx.getEnvironment().values());
+//        System.out.println("ctx   :" + ctx.getEnvironment().values());
         return ctx;
     }
 
@@ -664,12 +664,12 @@ public class DataDao {
 
     public String deleteCategory(String category) throws IOException {
         System.out.println(category);
-        DeleteRequest deleteRequest = new DeleteRequest(CATEGORY,getCategoryID(category));
+        DeleteRequest deleteRequest = new DeleteRequest(CATEGORY, getCategoryID(category));
         DeleteResponse response = restHighLevelClient.delete(deleteRequest, RequestOptions.DEFAULT);
         return "deleted category";
     }
 
-    public String getCategoryID(String category){
+    public String getCategoryID(String category) {
         SearchRequest searchRequest = new SearchRequest();
         String id = "";
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
@@ -679,7 +679,7 @@ public class DataDao {
         searchSourceBuilder.query(boolQueryBuilder);
         searchSourceBuilder.size(1000);
         searchRequest.source(searchSourceBuilder);
-        try{
+        try {
             SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
             SearchHit[] searchHits = searchResponse.getHits().getHits();
             for (SearchHit searchHit : searchHits) {
@@ -690,6 +690,7 @@ public class DataDao {
             return id;
         }
     }
+
     public List<String> getAdminCategories() throws IOException {
         List<String> list = new ArrayList<>();
         Categories cat = null;
@@ -700,7 +701,7 @@ public class DataDao {
         searchSourceBuilder.query(boolQueryBuilder);
         searchSourceBuilder.size(1000);
         searchRequest.source(searchSourceBuilder);
-        try{
+        try {
             SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
             SearchHit[] searchHits = searchResponse.getHits().getHits();
             for (SearchHit searchHit : searchHits) {
@@ -715,48 +716,35 @@ public class DataDao {
     }
 
 
-    public List<String> getLdapUsers(User user) throws IOException {
+    public List<String> getLdapUsers(User user) throws NamingException {
         List<String> list = new ArrayList<>();
-        LdapContext ctx;
-        String userID = user.getUserID();
-        String passwd = user.getPassword();
-        System.out.println("username" + userID);
-        System.out.println("pass" + passwd);
-        try {
-            ctx = context(userID, passwd);
-            System.out.println("ctx   :" + ctx);
-            SearchControls searchCtls = new SearchControls();
-            String[] returnedAtts = {"sn", "mail", "cn", "givenName", "memberOf"};
-            searchCtls.setReturningAttributes(returnedAtts);
-            searchCtls.setSearchScope(SearchControls.SUBTREE_SCOPE);
-            String searchFilter = "(&(objectClass=user)(mail=*))";
-            String searchBase = "OU=India,DC=eur,DC=ad,DC=sag";
-            NamingEnumeration<?> answer = ctx.search(searchBase, searchFilter, searchCtls);
-            while (answer.hasMoreElements()) {
-                System.out.println("answer has more elements");
-                SearchResult sr = (SearchResult) answer.next();
-                String search = sr.toString();
-                System.out.println("answer   :" + sr);
-                Attributes attrs = sr.getAttributes();
-                if (attrs != null) {
-                    String cn = attrs.get("cn").get().toString();
-                    list.add(cn);
-                }
-            }
-        } catch (Exception e) {
-            System.out.println("user not found");
+        String searchText = user.getEmail();
+        //returns list of users matching search text
+        LdapContext ctx = context(user.getUserID(), user.getPassword());
+        SearchControls searchCtls = new SearchControls();
+        String[] returnedAtts = {"sn", "mail", "cn", "givenName", "memberOf"};
+        searchCtls.setReturningAttributes(returnedAtts);
+        searchCtls.setSearchScope(SearchControls.SUBTREE_SCOPE);
+        String searchFilter = "(&(objectClass=user)(cn=*" + searchText + "*))";
+//      String searchFilter = "(&(objectClass=user)(mail=*))";
+        String searchBase = "OU=India,DC=eur,DC=ad,DC=sag";
+        NamingEnumeration<?> answer = ctx.search(searchBase, searchFilter, searchCtls);
+        while (answer.hasMoreElements()) {
+            SearchResult sr = (SearchResult) answer.next();
+            Attributes attrs = sr.getAttributes();
+            String cn = attrs.get("cn").get().toString();
+            list.add(cn);
         }
-        System.out.println("type:" + list.subList(1, 4));
         return list;
     }
 
     public String deleteAdmin(String admin) throws IOException {
-        DeleteRequest deleteRequest = new DeleteRequest(ADMIN,getAdminID(admin));
+        DeleteRequest deleteRequest = new DeleteRequest(ADMIN, getAdminID(admin));
         DeleteResponse response = restHighLevelClient.delete(deleteRequest, RequestOptions.DEFAULT);
         return "Admin revoked";
     }
 
-    public String getAdminID(String admin){
+    public String getAdminID(String admin) {
         SearchRequest searchRequest = new SearchRequest();
         String id = "";
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
@@ -766,7 +754,7 @@ public class DataDao {
         searchSourceBuilder.query(boolQueryBuilder);
         searchSourceBuilder.size(1000);
         searchRequest.source(searchSourceBuilder);
-        try{
+        try {
             SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
             SearchHit[] searchHits = searchResponse.getHits().getHits();
             for (SearchHit searchHit : searchHits) {

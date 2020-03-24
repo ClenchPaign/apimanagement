@@ -25,6 +25,9 @@ export class ReviewQuestionsComponent {
       res => { console.log(res); });
   }
 
+  onClick(id: string) {
+    this.router.navigateByUrl('/main/approval/' + id);
+  }
   getQuestions() {
     this.editedResponse = this.response;
     for (let i = 0; i < this.editedResponse.length; i++) {
@@ -33,6 +36,13 @@ export class ReviewQuestionsComponent {
       this.editedResponse[i].Question.description = temp;
     }
     return this.editedResponse;
+  }
+
+  goToMain() {
+    this.router.navigateByUrl('/main');
+  }
+  goToApprovals() {
+    this.router.navigateByUrl('/main/review');
   }
 
 }

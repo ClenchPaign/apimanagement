@@ -182,4 +182,7 @@ export class DashboardComponent implements OnInit {
   questionDetails(id: string) {
     this.router.navigateByUrl('main/qna/' + this.index + '/' + id);
   }
+  goToMain() {
+    this.router.navigateByUrl('/main');
+  }
 }

@@ -1,5 +1,5 @@
 <div class="mat-toolbar">
-  <div class="header" [routerLink]="['/main']">
+  <div class="header"  (click)="main()">
     <mat-icon class="product-icon">devices</mat-icon>
     <div class="product">
       <div class="product-name">TROUBLESHOOTING TOOL</div>
@@ -20,19 +20,19 @@
     </div>
 
     <mat-menu #menu="matMenu">
-      <button mat-menu-item [routerLink]="['/main']">
+      <button mat-menu-item  (click)="main()">
         <mat-icon style="color: #0f4c7b;">person</mat-icon>
         <a class="menu-items">{{ username }}</a>
       </button>
       <mat-divider></mat-divider>
-      <button mat-menu-item [routerLink]="['/main/dashboard']">
+      <button mat-menu-item (click)="goTo('main/dashboard')">
         <mat-icon>dashboard</mat-icon>
         <a class="menu-items">Dashboard</a>
       </button>
       <button
         *ngIf="isAdmin === 'true'"
         mat-menu-item
-        [routerLink]="['/main/review']"
+        (click)="goTo('main/review')"
       >
         <mat-icon>how_to_reg</mat-icon>
         <a class="menu-items">Approvals</a>
@@ -40,18 +40,18 @@
       <button
         *ngIf="isAdmin === 'true'"
         mat-menu-item
-        [routerLink]="['/main/administration']"
+        (click)="goTo('main/administration')"
         [matMenuTriggerFor]="animals" 
       >
         <mat-icon>settings</mat-icon>
         <a class="menu-items">Administration</a>
       </button>
       <mat-menu #animals="matMenu" xPosition="before">
-        <button mat-menu-item [routerLink]="['/main/administration/manage/categories']">
+        <button mat-menu-item (click)="goTo('main/administration/manage/categories')">
           <mat-icon>category</mat-icon>
           <a class="menu-items">Manage Categories</a>
         </button>
-        <button mat-menu-item [routerLink]="['/main/administration/manage/admin']">
+        <button mat-menu-item (click)="goTo('main/administration/manage/admin')">
           <mat-icon>group_add</mat-icon>
           <a class="menu-items">Manage Admin</a>
         </button>

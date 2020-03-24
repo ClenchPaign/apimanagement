@@ -158,3 +158,36 @@
   border-radius: 15px;
 
 }
+
+mat-icon {
+  cursor: pointer;
+  padding: 2px;
+  margin-left: 5px;
+}
+.head {
+  display: flex;
+  width: fit-content;
+  margin-left: 24px;
+  margin-right: 24px;
+  justify-content: space-between;
+}
+
+.breadcrumb {
+  width: max-content;
+  font-family: sans-serif;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 300px;
+}
+
+.list {
+  margin-top: 5px;
+  width: max-content;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  font-size: small;
+  font-weight: bold;
+  color: #0f4c7b;
+}

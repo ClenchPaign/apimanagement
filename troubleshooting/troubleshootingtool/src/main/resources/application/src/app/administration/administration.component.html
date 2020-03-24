@@ -1,10 +1,10 @@
 <div class="parent" style="display: flex;">
   <div>
-    <div class="span" [routerLink]="['/main/administration/manage/categories']">
+    <div class="span" (click)="manage_category()">
       <mat-icon>category</mat-icon>
       <div class="option">Manage Category</div>
     </div>
-    <div class="span" [routerLink]="['/main/administration/manage/admin']">
+    <div class="span" (click)="manage_admin()" >
       <mat-icon>group_add</mat-icon>
       <div class="option">Manage Admin</div>
     </div>

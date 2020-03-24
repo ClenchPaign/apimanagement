@@ -173,6 +173,13 @@ export class QuestionsListComponent implements OnInit {
     );
   }
 
+  main(){
+    this.router.navigateByUrl('/main');
+  }
+  goToCategory(){
+    this.router.navigateByUrl('/main/home/category');
+  }
+
   getQuestions(): Array<QAEntry> {
     this.resultSize = this.response.length;
     const tagList: string[] = [];
@@ -215,7 +222,7 @@ export class QuestionsListComponent implements OnInit {
   onClick(id: string) {
     console.log('clicked ' + id);
     this.listingService.id = id;
-    // this.router.navigateByUrl('/cat');
+    this.router.navigateByUrl('/main/qna/approved/' + id);
   }
   onTagClick(tag: string) {
     console.log('clicked ' + tag);
@@ -239,11 +246,11 @@ export class QuestionsListComponent implements OnInit {
       }
     };
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
-      // this.router.navigate(['/main/search/' + tag + '/ '], this.navigationExtras));
+      // this.router.navigate(['/#/main/search/' + tag + '/ '], this.navigationExtras));
       this.router.navigate(['/main/home/search/list'], this.navigationExtras)
     );
     // this.listingService.keyword = tag;
-    // this.router.navigateByUrl('/main/home/search/' + tag + '/');
+    // this.router.navigateByUrl('/#/main/home/search/' + tag + '/');
     // this.router.navigateByUrl('/cat');
   }
 }

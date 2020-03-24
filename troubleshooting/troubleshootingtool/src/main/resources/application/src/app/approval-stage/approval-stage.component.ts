@@ -415,4 +415,11 @@ export class ApprovalStageComponent implements OnInit {
       panelClass: ['white-snackbar']
     });
   }
+
+  goToMain() {
+    this.router.navigateByUrl('/main');
+  }
+  goToApprovals() {
+    this.router.navigateByUrl('/main/review');
+  }
 }

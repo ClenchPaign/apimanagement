@@ -1,8 +1,18 @@
-<div class="outerlayout">
-  <div class="head">
-    <div class="close" [routerLink]="['/main']">
-      <mat-icon>close</mat-icon>
+<div class="head">
+  <div class="list">
+    <div class="breadcrumb" (click)="goToMain()">Home</div>
+    <mat-icon>chevron_right</mat-icon>
+    <div class="breadcrumb" (click)="goToApprovals()">
+      Approvals
     </div>
+    <mat-icon>chevron_right</mat-icon>
+    <div class="breadcrumb">
+      {{ questionData.Question.question }}
+    </div>
+  </div>
+</div>
+<div class="outerlayout">
+  <div class="headText">
     <div>APPROVAL PROCESS</div>
   </div>
 

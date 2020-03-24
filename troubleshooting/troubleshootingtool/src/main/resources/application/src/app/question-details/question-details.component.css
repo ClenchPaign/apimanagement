@@ -280,13 +280,22 @@
 
 .delete {
   cursor: pointer;
-  justify-self: flex-end;
+  float: right;
+  position: absolute;
+  right: 0;
+  margin-top: 10px;
+  margin-right: 11%;
+}
+mat-icon {
+  cursor: pointer;
+  padding: 2px;
+  margin-left: 5px;
 }
 .head {
   display: flex;
   width: fit-content;
-  margin-left: 10%;
-  margin-right: 10%;
+  margin-left: 24px;
+  margin-right: 24px;
   justify-content: space-between;
 }
 

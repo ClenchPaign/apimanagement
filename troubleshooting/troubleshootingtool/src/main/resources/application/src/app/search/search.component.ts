@@ -18,17 +18,23 @@ export class SearchComponent implements OnInit {
   isAdmin: any;
   password: string;
   navigationExtras: NavigationExtras;
+  inMainUrl: boolean;
 
 
-  constructor(private listingService: ListingService, private route: ActivatedRoute, public router: Router, private eRef: ElementRef) {
-    // this.route.queryParams.subscribe(params => {
-    //   this.tags = params['tags'];
-    //   console.log('In search comp: ' + this.tags);
-    //   this.searchdata = new SearchQuery('', this.tags, []);
-    //   this.ngOnInit();
-    // });
+  constructor(
+    private listingService: ListingService,
+    private route: ActivatedRoute,
+    public router: Router,
+    private eRef: ElementRef) {
   }
   ngOnInit() {
+    if (this.router.url === 'main') {
+      console.log(this.router.url);
+      this.inMainUrl = true;
+    } else {
+      console.log(this.router.url);
+      this.inMainUrl = false;
+    }
 
     this.listingService.searchForKeyword(this.searchdata, 0, 5).subscribe(
       data => {
@@ -55,6 +61,10 @@ export class SearchComponent implements OnInit {
   getTags(straray: Array<string>): Array<string> {
     straray = straray.slice(0, 5);
     return straray;
+  }
+  goTo(path: string) {
+    console.log(path);
+    this.router.navigateByUrl('/' + path);
   }
   search(value: any) {
     let id = this.listingService.category;
@@ -132,7 +142,12 @@ export class SearchComponent implements OnInit {
       // this.router.navigate(['/main/search/' + tag + '/ '], this.navigationExtras));
       this.router.navigate(['/main/home/search/list'], this.navigationExtras));
   }
-
+  main() {
+    this.router.navigateByUrl('/main');
+  }
+  goToCategory() {
+    this.router.navigateByUrl('/main/home/category');
+  }
   logout() {
     // const user = new User(this.username, this.password, "", false);
     this.listingService.logout().subscribe(

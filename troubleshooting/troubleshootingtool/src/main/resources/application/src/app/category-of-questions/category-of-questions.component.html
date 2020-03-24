@@ -1,9 +1,9 @@
 <div>
   <div class="head">
     <div class="list">
-      <div class="breadcrumb" [routerLink]="['/main']">Home</div>
+      <div class="breadcrumb" (click)="main()">Home</div>
       <mat-icon>chevron_right</mat-icon>
-      <div class="breadcrumb" [routerLink]="['/main/home/category']">
+      <div class="breadcrumb" (click)="goToCategory()">
         Category
       </div>
       <mat-icon>chevron_right</mat-icon>
@@ -26,13 +26,11 @@
         <div class="question-layout">
           <a
             class="question"
-            [routerLink]="['/main/qna/approved/', list.Question.id]"
             (click)="onClick(list.Question.id)"
             >{{ list.Question.question }}</a
           >
           <div
             class="description"
-            [routerLink]="['/main/qna/approved/', list.Question.id]"
             (click)="onClick(list.Question.id)"
           >
             {{ list.Question.description }}

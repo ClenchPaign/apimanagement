@@ -175,7 +175,7 @@ public class DataController {
     }
 
     @PostMapping("/admin/users")
-    public List<String> getLdapUsers(@RequestBody User user)throws IOException{
+    public List<String> getLdapUsers(@RequestBody User user) throws NamingException {
         return dataDao.getLdapUsers(user);
     }
 

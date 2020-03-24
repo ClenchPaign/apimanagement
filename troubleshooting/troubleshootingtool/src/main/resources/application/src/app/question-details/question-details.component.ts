@@ -179,7 +179,15 @@ export class QuestionDetailsComponent implements OnInit {
       this.router.navigateByUrl(this.previousRoute.getPreviousUrl());
     }
   }
-
+  main() {
+    this.router.navigateByUrl('/main');
+  }
+  goToCategory() {
+    this.router.navigateByUrl('/main/home/category');
+  }
+  goToSpecificCategory(cat: string) {
+    this.router.navigateByUrl('/main/home/category/' + cat + '/0/5');
+  }
   onAttachmentClick(itemName: string, type: string) {
     console.log('type=' + type);
     if (type === 'question') {

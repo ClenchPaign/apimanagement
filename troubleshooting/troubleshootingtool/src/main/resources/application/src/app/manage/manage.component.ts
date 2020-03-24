@@ -57,12 +57,6 @@ export class ManageComponent implements OnInit {
     } else {
       this.header = 'Add Admin user';
       this.listHeader = 'List of Admin users';
-      this.username = localStorage.getItem('userID');
-      this.password = localStorage.getItem('password');
-      const user = new User('', this.username, this.password, '', false, false);
-      this.listingService.getLdapUsers(user).subscribe(data => {
-        this.result = data;
-      });
       this.listingService.getAllAdmins().subscribe(data => {
         console.log('POST Request is successful ', data);
         const res: any = data;
@@ -78,14 +72,22 @@ export class ManageComponent implements OnInit {
 
   filterUsers(value: string): string[] {
     this.resultUsers = [];
-    this.users = this.result;
+    this.username = localStorage.getItem('userID');
+    this.password = localStorage.getItem('password');
+    const user = new User('', this.username, this.password, value, false, false);
+    this.listingService.getLdapUsers(user).subscribe(data => {
+      this.result = data;
+      console.log(this.result);
+    });
     if (value !== undefined) {
       const filterValue = value.toLowerCase();
-      this.users.forEach((value) => {
-        if (value.toLowerCase().includes(filterValue)) {
-          this.resultUsers.push(value);
-        }
-      });
+      if (this.result !== undefined) {
+        this.result.forEach((value) => {
+          if (value.toLowerCase().includes(filterValue)) {
+            this.resultUsers.push(value);
+          }
+        });
+      }
     }
     return this.resultUsers;
   }
