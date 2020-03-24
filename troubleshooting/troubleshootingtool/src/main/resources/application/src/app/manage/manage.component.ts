@@ -77,7 +77,7 @@ export class ManageComponent implements OnInit {
     const user = new User('', this.username, this.password, value, false, false);
     this.listingService.getLdapUsers(user).subscribe(data => {
       this.result = data;
-      console.log(this.result);
+      // console.log(this.result);
     });
     if (value !== undefined) {
       const filterValue = value.toLowerCase();
