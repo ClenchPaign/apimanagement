@@ -8,7 +8,7 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  title = 'Troubleshooting tool';
+  title = 'Pantomath';
   category: any;
   constructor(private listingService: ListingService, private router: ActivatedRoute) { }
 
