@@ -8,6 +8,7 @@ services:
       - elastic
     environment:
       - ElasticsearchHost=${ElasticsearchHost}
+      - ElasticsearchPort=${ElasticsearchPort}
 
 networks:
   elastic:

@@ -32,8 +32,8 @@ public class ElasticSearchConfigurationClass extends AbstractFactoryBean<RestHig
 
 //    @Value("${elasticsearch.host}")
 //    private String elasticsearchHost;
-    @Value("${elasticsearch.port}")
-    private int elasticsearchPort;
+//    @Value("${elasticsearch.port}")
+//    private int elasticsearchPort;
 
     private RestHighLevelClient restHighLevelClient;
 
@@ -68,7 +68,8 @@ public class ElasticSearchConfigurationClass extends AbstractFactoryBean<RestHig
         try {
 //            System.out.println("ELASTICSEARCH_HOST-"+env.getProperty("ElasticsearchHost"));
             String elasticsearchHost = System.getenv("ElasticsearchHost");
-            System.out.println("ElasticsearchHost-"+System.getenv("ElasticsearchHost"));
+            int elasticsearchPort = Integer.parseInt(System.getenv("ElasticsearchPort"));
+            System.out.println("Elasticsearch host:"+System.getenv("ElasticsearchHost")+" port:"+elasticsearchPort);
 //            System.out.println("ELASTICSEARCH_HOST2-"+System.getenv("DOCKER_HOST"));
 //            Map<String, String> envs = System.getenv();
 //            for (String env :
