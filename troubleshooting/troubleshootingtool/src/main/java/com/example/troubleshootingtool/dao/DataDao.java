@@ -139,23 +139,23 @@ public class DataDao {
         for (SearchHit searchHit : searchHits) {
             obj = new ObjectMapper().readValue(searchHit.getSourceAsString(), QAEntry.class);
         }
-        assert obj != null;
-        obj.setAnswerCount(obj.getAnswers().size());
-        for (int i = 0; i < obj.getAnswers().size(); i++) {
-            String attachment = "";
-            ArrayList<ImageModel> imageModelArrayList;
-            imageModelArrayList = getFilesById(obj.getAnswers().get(i).getAttachment());
-            if (imageModelArrayList != null) {
-                for (int j = 0; j < imageModelArrayList.size(); j++) {
-                    attachment = attachment + imageModelArrayList.get(j).getId() + "**" + imageModelArrayList.get(j).getFileName();
-                    if (j != imageModelArrayList.size() - 1) {
-                        attachment = attachment + ",";
+        if (obj != null) {
+            obj.setAnswerCount(obj.getAnswers().size());
+            for (int i = 0; i < obj.getAnswers().size(); i++) {
+                String attachment = "";
+                ArrayList<ImageModel> imageModelArrayList;
+                imageModelArrayList = getFilesById(obj.getAnswers().get(i).getAttachment());
+                if (imageModelArrayList != null) {
+                    for (int j = 0; j < imageModelArrayList.size(); j++) {
+                        attachment = attachment + imageModelArrayList.get(j).getId() + "**" + imageModelArrayList.get(j).getFileName();
+                        if (j != imageModelArrayList.size() - 1) {
+                            attachment = attachment + ",";
+                        }
                     }
                 }
+                obj.getAnswers().get(i).setAttachment(attachment);
             }
-            obj.getAnswers().get(i).setAttachment(attachment);
         }
-
         return obj;
     }
 
@@ -180,29 +180,38 @@ public class DataDao {
     }
 
     public QAEntry postAnswer(QAEntry qandA) throws IOException {
-//        @RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
-        Map dataMap = objectMapper.convertValue(qandA, Map.class);
-        IndexRequest indexRequest = new IndexRequest(TEMP_INDEX).source(dataMap);
-        try {
-            IndexResponse response = restHighLevelClient.index(indexRequest, RequestOptions.DEFAULT);
-            return qandA;
-        } catch (ElasticsearchException e) {
-            e.getDetailedMessage();
-            return null;
-//            return "elastic search exception " + e.getDetailedMessage();
-        } catch (IOException ex) {
-            ex.getLocalizedMessage();
-            return null;
-//            return "IO exception " + ex.getLocalizedMessage() + "  " + Arrays.toString(ex.getStackTrace());
+        String id = getDocumentIDforQAEntry(qandA.getQuestion().getId(), TEMP_INDEX);
+        if (id == null) {
+            Map dataMap = objectMapper.convertValue(qandA, Map.class);
+            IndexRequest indexRequest = new IndexRequest(TEMP_INDEX).source(dataMap);
+            try {
+                IndexResponse response = restHighLevelClient.index(indexRequest, RequestOptions.DEFAULT);
+                return qandA;
+            } catch (ElasticsearchException e) {
+                e.getDetailedMessage();
+                return null;
+            } catch (IOException ex) {
+                ex.getLocalizedMessage();
+                return null;
+            }
+        } else {
+            QAEntry qaEntryUpdated = getQAEntryById(qandA.getQuestion().getId(), TEMP_INDEX);
+            for (int i = 0; i < qandA.getAnswers().size(); i++) {
+                if (!qandA.getAnswers().get(i).getIsApproved()) {
+                    qaEntryUpdated.getAnswers().add(qandA.getAnswers().get(i));
+                }
+            }
+            qaEntryUpdated.setAnswerCount(qaEntryUpdated.getAnswers().size());
+            Map dataMap = objectMapper.convertValue(qaEntryUpdated, Map.class);
+            UpdateRequest updateRequest = new UpdateRequest(TEMP_INDEX, id).doc(dataMap);
+            try {
+                UpdateResponse updateResponse = restHighLevelClient.update(updateRequest, RequestOptions.DEFAULT);
+                return qandA;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
         }
-//        UpdateRequest updateRequest = new UpdateRequest(INDEX, getDocumentIDforQAEntry(id)).doc(dataMap);
-//        try {
-//            UpdateResponse updateResponse = restHighLevelClient.update(updateRequest, RequestOptions.DEFAULT);
-//            return qandA;
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return null;
-//        }
     }
 
     public QAEntry updateQAEntryById(String id, QAEntry qandA) throws IOException {
