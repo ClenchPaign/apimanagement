@@ -168,9 +168,21 @@ export class AddQaEntryComponent implements OnInit {
   public removeFiles(file: string, type: string) {
     if (type === 'question') {
       this.files = this.files.filter(item => item !== file);
+      this.uploadedFiles.forEach(element => {
+        console.log(element);
+        if (element.includes(file)) {
+          this.uploadedFiles = this.uploadedFiles.filter(x => x !== element);
+        }
+      });
       console.log('remove file:' + file);
     } else {
       this.answerfiles = this.answerfiles.filter(item => item !== file);
+      this.uploadedFAnswerFiles.forEach(element => {
+        console.log(element);
+        if (element.includes(file)) {
+          this.uploadedFAnswerFiles = this.uploadedFAnswerFiles.filter(x => x !== element);
+        }
+      });
       console.log('remove file:' + file);
     }
   }

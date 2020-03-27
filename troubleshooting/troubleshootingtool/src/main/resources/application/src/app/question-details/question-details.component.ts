@@ -153,6 +153,11 @@ export class QuestionDetailsComponent implements OnInit {
 
   public removeFiles(file: string) {
     this.answerfiles = this.answerfiles.filter(item => item !== file);
+    this.uploadedFAnswerFiles.forEach(element => {
+      if (element.includes(file)) {
+        this.uploadedFAnswerFiles = this.uploadedFAnswerFiles.filter(x => x !== element);
+      }
+    });
     console.log('remove file:' + file);
   }
   uploadFile(event) {
@@ -352,7 +357,7 @@ export class QuestionDetailsComponent implements OnInit {
           console.log('file name-' + y.fileName);
         });
       });
-      // console.log('put Request is successful ', qa);
+      console.log('put Request is successful ', qa);
       this.listingService.post_answer(qa).subscribe(
         data => {
           console.log('put Request is successful ', data);

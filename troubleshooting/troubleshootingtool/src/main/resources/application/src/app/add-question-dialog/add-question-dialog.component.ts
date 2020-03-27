@@ -166,6 +166,12 @@ export class AddQuestionDialogComponent implements OnInit {
   }
   public removeFiles(file: string) {
     this.files = this.files.filter(item => item !== file);
+    this.uploadedFiles.forEach(element => {
+      console.log(element);
+      if (element.includes(file)) {
+        this.uploadedFiles = this.uploadedFiles.filter(x => x !== element);
+      }
+    });
     console.log('remove file:' + file);
   }
   post_qaentry() {

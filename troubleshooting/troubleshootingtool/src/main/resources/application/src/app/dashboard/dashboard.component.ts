@@ -33,8 +33,24 @@ export class DashboardComponent implements OnInit {
       data => {
         // Pending questions for Approval
         this.response = data;
-        let temp = this.response;
-        temp = temp.filter(qa => qa.Question.ownerId === this.userID);
+        let temp = [];
+        for (const qa of this.response) {
+          if (qa.isApproved) {
+            let answerByThisUser = false;
+            for (const ans of qa.Answers) {
+              if (ans.ownerUserId === this.userID && ans.isApproved === false) {
+                answerByThisUser = true;
+              }
+            }
+            if (answerByThisUser) {
+              temp.push(qa);
+            }
+          } else {
+            if (this.userID === qa.Question.ownerId) {
+              temp.push(qa);
+            }
+          }
+        }
         this.pendingquestions = temp.length;
       },
       res => { console.log(res); });
